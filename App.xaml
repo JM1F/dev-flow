@@ -2,8 +2,18 @@
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:local="clr-namespace:dev_flow"
-             StartupUri="MainWindow.xaml">
+             StartupUri="/Views/Shared/MainWindow.xaml">
     <Application.Resources>
-         
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="Assests/Styles/Themes/LightTheme.xaml"/>
+                <ResourceDictionary Source="Assests/Styles/Themes/DarkTheme.xaml"/>
+                <ResourceDictionary Source="Assests/Images/Icons/ConvertedIcons.xaml"/>
+                
+                <!-- Object Styles -->
+                <ResourceDictionary Source="Assests/Styles/MenuButtonStyle.xaml"/>
+                <ResourceDictionary Source="Assests/Styles/ToggleThemeButtonStyle.xaml"/>
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
     </Application.Resources>
 </Application>
