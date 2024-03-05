@@ -1,0 +1,10 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<SettingsFile xmlns="http://schemas.microsoft.com/VisualStudio/2004/01/settings" CurrentProfile="(Default)" GeneratedClassNamespace="dev_flow.Properties" GeneratedClassName="Settings">
+  <Profiles />
+  <Settings>
+    <Setting Name="Theme" Type="ThemeEnum" Scope="User">
+      <Value Profile="(Default)">LightTheme</Value>
+    </Setting>
+  </Settings>
+</SettingsFile>
+
