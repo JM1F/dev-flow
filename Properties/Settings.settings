@@ -3,7 +3,10 @@
   <Profiles />
   <Settings>
     <Setting Name="Theme" Type="ThemeEnum" Scope="User">
-      <Value Profile="(Default)">LightTheme</Value>
+      <Value Profile="(Default)">DarkTheme</Value>
+    </Setting>
+    <Setting Name="WorkspacePath" Type="System.String" Scope="Application">
+      <Value Profile="(Default)" />
     </Setting>
   </Settings>
 </SettingsFile>

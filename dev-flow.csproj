@@ -36,13 +36,9 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="SharpVectors" Version="1.8.4" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Resource Include="Assests\Images\Icons\BaseIcons\home.svg">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Resource>
+    <PackageReference Include="MahApps.Metro" Version="2.4.10" />
+    <PackageReference Include="MahApps.Metro.IconPacks" Version="4.11.0" />
+    <PackageReference Include="MaterialDesignThemes.MahApps" Version="1.0.0" />
   </ItemGroup>
   
 </Project>

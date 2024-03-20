@@ -28,7 +28,7 @@ namespace dev_flow.Commands
             _execute();
         }
 
-        public event EventHandler CanExecuteChanged;
+        public event EventHandler? CanExecuteChanged;
 
         protected virtual void OnCanExecuteChanged()
         {
