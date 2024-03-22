@@ -51,7 +51,7 @@ namespace dev_flow
         private void SetTheme()
         {
             ThemeManager.Current.ChangeTheme(this,
-                Settings.Default.Theme == ThemeEnum.LightTheme ? "Light.Cyan" : "Dark.Cyan");
+                Settings.Default.Theme == ThemeEnum.LightTheme ? "Light.Steel" : "Dark.Steel");
         }
     }
 }

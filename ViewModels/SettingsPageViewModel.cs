@@ -25,14 +25,14 @@ public class SettingsPageViewModel : ViewModelBase
 
         if (currentThemeName != null)
         {
-            if (currentThemeName == "Light.Cyan")
+            if (currentThemeName == "Light.Steel")
             {
-                ThemeManager.Current.ChangeTheme(Application.Current, "Dark.Cyan");
+                ThemeManager.Current.ChangeTheme(Application.Current, "Dark.Steel");
                 Settings.Default.Theme = ThemeEnum.DarkTheme;
             }
             else
             {
-                ThemeManager.Current.ChangeTheme(Application.Current, "Light.Cyan");
+                ThemeManager.Current.ChangeTheme(Application.Current, "Light.Steel");
                 Settings.Default.Theme = ThemeEnum.LightTheme;
             }
             Settings.Default.Save();

@@ -30,7 +30,7 @@
                                            Margin="0,0,20,0"
                                            Kind="CogsSolid" />
 
-            <TextBlock Grid.Column="1" FontSize="30" FontWeight="Medium">
+            <TextBlock Grid.Column="1" FontSize="30" FontWeight="Medium" Foreground="{DynamicResource MahApps.Brushes.Text}">
                 Settings
             </TextBlock>
 
@@ -39,10 +39,7 @@
         <Border Grid.Row="0" BorderThickness="0,0,0,1" BorderBrush="{DynamicResource MahApps.Brushes.Accent}" />
 
         <Grid Grid.Row="1">
-
-            <TextBlock FontSize="20">
-                Theme
-            </TextBlock>
+            
 
             <controls:ToggleSwitch Header="Change Application Theme"
                                    OffContent="Light"
