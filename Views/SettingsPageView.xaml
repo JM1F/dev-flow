@@ -3,7 +3,7 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-             xmlns:local="clr-namespace:dev_flow.Views"
+             xmlns:views="clr-namespace:dev_flow.Views"
              xmlns:iconPacks="http://metro.mahapps.com/winfx/xaml/iconpacks"
              xmlns:controls="http://metro.mahapps.com/winfx/xaml/controls"
              xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml"
@@ -40,12 +40,14 @@
         <Border Grid.Row="0" BorderThickness="0,0,0,2" BorderBrush="Gray" />
 
         <Grid Grid.Row="1">
-            
-            <controls:ToggleSwitch Header="Change Application Theme"
-                                   OffContent="Light"
-                                   OnContent="Dark"
-                                   IsOn="{Binding IsDarkTheme, Mode=OneWay}"
-                                   Command="{Binding ThemeChangedCommand}" />
+            <views:GeneralDisplayBoxControl Title="Theme" Margin="20">
+                    <controls:ToggleSwitch Header="Change Application Theme"
+                                           OffContent="Light"
+                                           OnContent="Dark"
+                                           IsOn="{Binding IsDarkTheme, Mode=OneWay}"
+                                           Command="{Binding ThemeChangedCommand}" />
+            </views:GeneralDisplayBoxControl>
+
         </Grid>
 
     </Grid>
