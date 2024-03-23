@@ -17,29 +17,6 @@
                 <ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.MahApps;component/Themes/MaterialDesignTheme.MahApps.Flyout.xaml" />
             </ResourceDictionary.MergedDictionaries>
             
-            <Style x:Key="PageStyle"
-                   BasedOn="{StaticResource MahApps.Styles.Page}"
-                   TargetType="{x:Type Page}">
-                <Setter Property="Background" Value="Transparent" />
-                <Setter Property="Template">
-                    <Setter.Value>
-                        <ControlTemplate TargetType="{x:Type Page}">
-                            <Grid Background="{TemplateBinding Background}">
-                                <Grid.RowDefinitions>
-                                    <RowDefinition Height="*" />
-                                    <RowDefinition Height="Auto" />
-                                </Grid.RowDefinitions>
-                                <ContentPresenter Grid.Row="0" />
-                                <TextBlock Grid.Row="1"
-                                           Margin="4"
-                                           FontSize="48"
-                                           Text="{TemplateBinding Title}" />
-                            </Grid>
-                        </ControlTemplate>
-                    </Setter.Value>
-                </Setter>
-            </Style>
-            
         </ResourceDictionary>
     </Application.Resources>
 </Application>

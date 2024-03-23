@@ -13,12 +13,12 @@ public class SettingsPageViewModel : ViewModelBase
 {
     public ICommand ThemeChangedCommand { get; }
     public static bool IsDarkTheme => Settings.Default.Theme == ThemeEnum.DarkTheme;
-    
+
     public SettingsPageViewModel()
     {
         ThemeChangedCommand = new RelayCommand(OnThemeChanged);
     }
-    
+
     private void OnThemeChanged()
     {
         var currentThemeName = ThemeManager.Current.DetectTheme()?.Name;
@@ -35,9 +35,8 @@ public class SettingsPageViewModel : ViewModelBase
                 ThemeManager.Current.ChangeTheme(Application.Current, "Light.Steel");
                 Settings.Default.Theme = ThemeEnum.LightTheme;
             }
+
             Settings.Default.Save();
         }
-
-
     }
 }

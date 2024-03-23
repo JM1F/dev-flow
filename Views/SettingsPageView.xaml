@@ -13,34 +13,34 @@
 
     <Grid>
         <Grid.RowDefinitions>
-            <RowDefinition Height="75" />
+            <RowDefinition Height="50" />
             <RowDefinition Height="Auto" />
         </Grid.RowDefinitions>
 
-        <Grid Grid.Row="0">
+        <Grid Grid.Row="0" Margin="0,0,0,10">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="Auto" />
                 <ColumnDefinition Width="Auto" />
             </Grid.ColumnDefinitions>
 
-            <iconPacks:PackIconFontAwesome Grid.Column="0"
+            <iconPacks:PackIconFontAwesome Grid.Column="0" VerticalAlignment="Center"
                                            Width="48"
                                            Height="48"
                                            Foreground="{DynamicResource MahApps.Brushes.Accent}"
                                            Margin="0,0,20,0"
                                            Kind="CogsSolid" />
 
-            <TextBlock Grid.Column="1" FontSize="30" FontWeight="Medium" Foreground="{DynamicResource MahApps.Brushes.Text}">
+            <TextBlock Grid.Column="1" FontSize="30" FontWeight="Medium" VerticalAlignment="Center"
+                       Foreground="{DynamicResource MahApps.Brushes.Text}">
                 Settings
             </TextBlock>
 
         </Grid>
 
-        <Border Grid.Row="0" BorderThickness="0,0,0,1" BorderBrush="{DynamicResource MahApps.Brushes.Accent}" />
+        <Border Grid.Row="0" BorderThickness="0,0,0,2" BorderBrush="Gray" />
 
         <Grid Grid.Row="1">
             
-
             <controls:ToggleSwitch Header="Change Application Theme"
                                    OffContent="Light"
                                    OnContent="Dark"

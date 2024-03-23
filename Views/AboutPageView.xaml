@@ -20,22 +20,23 @@
                 <ColumnDefinition Width="Auto" />
             </Grid.ColumnDefinitions>
 
-            <iconPacks:PackIconFontAwesome Grid.Column="0" 
+            <iconPacks:PackIconFontAwesome Grid.Column="0"
                                            Width="48"
                                            Height="48"
                                            Foreground="{DynamicResource MahApps.Brushes.Accent}"
                                            Margin="0,0,20,0"
-                                           Kind="CogsSolid"/>
-            
-            <TextBlock Grid.Column="1" FontSize="30" FontWeight="Medium" TextDecorations="" mah:HeaderedControlHelper.HeaderFontSize="50"
+                                           Kind="CogsSolid" />
+
+            <TextBlock Grid.Column="1" FontSize="30" FontWeight="Medium" TextDecorations=""
+                       mah:HeaderedControlHelper.HeaderFontSize="50"
                        Style="{StaticResource MahApps.Styles.TextBlock}"
                        Foreground="{DynamicResource MahApps.Brushes.Cyan}">
                 About
             </TextBlock>
-            
+
         </Grid>
-        
-        <Border Grid.Row="0" BorderThickness="0,0,0,1" BorderBrush="{DynamicResource MahApps.Brushes.Accent}"/>
+
+        <Border Grid.Row="0" BorderThickness="0,0,0,1" BorderBrush="{DynamicResource MahApps.Brushes.Accent}" />
 
     </Grid>
 </UserControl>

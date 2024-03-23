@@ -3,11 +3,10 @@ using dev_flow.ViewModels;
 
 namespace dev_flow.Views;
 
-public partial class SettingsPageView
+public partial class Home_WorkspacesView : UserControl
 {
-    public SettingsPageView()
+    public Home_WorkspacesView()
     {
         InitializeComponent();
-        DataContext = new SettingsPageViewModel();
     }
 }
