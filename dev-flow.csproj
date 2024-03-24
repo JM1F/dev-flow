@@ -10,9 +10,7 @@
 
   <ItemGroup>
     <Folder Include="Converters\" />
-    <Folder Include="Models\" />
     <Folder Include="Behaviours\" />
-    <Folder Include="Interfaces\" />
     <Folder Include="Services\" />
   </ItemGroup>
 

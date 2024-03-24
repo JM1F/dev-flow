@@ -3,10 +3,141 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-             xmlns:local="clr-namespace:dev_flow.Views"
-             mc:Ignorable="d"
-             d:DesignHeight="300" d:DesignWidth="300"
-             Background="Red"
-             Margin="0,10">
-    test1
+             xmlns:viewModels="clr-namespace:dev_flow.ViewModels"
+             xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+             mc:Ignorable="d">
+    <UserControl.DataContext>
+        <viewModels:Home_WorkspacesViewModel />
+    </UserControl.DataContext>
+
+
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition
+                Height="30" />
+            <RowDefinition
+                Height="*" />
+        </Grid.RowDefinitions>
+
+        <Border Grid.Row="0" BorderBrush="Gray" BorderThickness="1" CornerRadius="10">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition
+                        Width="Auto" />
+                    <ColumnDefinition
+                        Width="*" />
+                </Grid.ColumnDefinitions>
+
+                <Button
+                    Style="{StaticResource MaterialDesignToolButton}">
+                    <materialDesign:PackIcon
+                        Kind="Search"
+                        Opacity=".56" />
+                </Button>
+                <TextBox
+                    Grid.Column="1"
+                    MinWidth="200"
+                    Margin="8,0,0,0"
+                    VerticalAlignment="Center"
+                    materialDesign:HintAssist.Hint="Search for a workspace"
+                    materialDesign:TextFieldAssist.DecorationVisibility="Hidden"
+                    BorderThickness="0"
+                    Text="{Binding WorkspaceSearchTerm, UpdateSourceTrigger=PropertyChanged}" />
+            </Grid>
+        </Border>
+
+        <Grid Grid.Row="1">
+            <ScrollViewer Style="{DynamicResource MaterialDesignScrollViewer}" VerticalScrollBarVisibility="Visible">
+                <ItemsControl ItemsSource="{Binding WorkspaceCards}">
+                    <ItemsControl.ItemsPanel>
+                        <ItemsPanelTemplate>
+                            <WrapPanel Orientation="Horizontal" />
+                        </ItemsPanelTemplate>
+                    </ItemsControl.ItemsPanel>
+                    <ItemsControl.ItemTemplate>
+                        <DataTemplate>
+                            <ContentPresenter>
+                                <ContentPresenter.ContentTemplate>
+                                    <DataTemplate>
+                                        <materialDesign:Card
+                                            Width="200"
+                                            Style="{StaticResource MaterialDesignOutlinedCard}"
+                                            Margin="10"
+                                            Visibility="{Binding IsVisible, Converter={StaticResource BooleanToVisibilityConverter}}">
+                                            <Grid>
+                                                <Grid.RowDefinitions>
+                                                    <RowDefinition
+                                                        Height="40" />
+                                                    <RowDefinition
+                                                        Height="*" />
+                                                    <RowDefinition
+                                                        Height="Auto" />
+                                                </Grid.RowDefinitions>
+                                                <Grid
+                                                    Width="196"
+                                                    Height="40"
+                                                    Background="{DynamicResource MahApps.Brushes.Accent}" />
+                                                <Button
+                                                    Grid.Row="0"
+                                                    Margin="0,0,16,-20"
+                                                    HorizontalAlignment="Right"
+                                                    VerticalAlignment="Bottom"
+                                                    Background="{DynamicResource MahApps.Brushes.Accent}"
+                                                    Style="{StaticResource MaterialDesignFloatingActionMiniSecondaryButton}">
+                                                    <materialDesign:PackIcon
+                                                        Kind="ArrowRight" />
+                                                </Button>
+                                                <StackPanel
+                                                    Grid.Row="1"
+                                                    Margin="8,24,8,0">
+                                                    <TextBlock
+                                                        FontWeight="Bold" Text="{Binding Name}">
+                                                    </TextBlock>
+                                                    <TextBlock
+                                                        VerticalAlignment="Center"
+                                                        Text="Random Description?"
+                                                        TextWrapping="Wrap" />
+                                                </StackPanel>
+                                                <StackPanel
+                                                    Grid.Row="2"
+                                                    Margin="8"
+                                                    HorizontalAlignment="Right"
+                                                    Orientation="Horizontal">
+                                                    <Button
+                                                        Width="25"
+                                                        Padding="2,0,2,0"
+                                                        materialDesign:RippleAssist.IsCentered="True"
+                                                        Style="{StaticResource MaterialDesignOutlinedButton}">
+                                                        <materialDesign:PackIcon
+                                                            Kind="Edit" />
+                                                    </Button>
+                                                    <Button
+                                                        Width="25"
+                                                        Padding="2,0,2,0"
+                                                        materialDesign:RippleAssist.IsCentered="True"
+                                                        Style="{StaticResource MaterialDesignOutlinedButton}">
+                                                        <materialDesign:PackIcon
+                                                            Kind="Star" />
+                                                    </Button>
+                                                    <Button
+                                                        Width="25"
+                                                        Padding="2,0,2,0"
+                                                        materialDesign:RippleAssist.IsCentered="True"
+                                                        Style="{StaticResource MaterialDesignOutlinedButton}"
+                                                        Foreground="Red">
+                                                        <materialDesign:PackIcon
+                                                            Kind="Bin" />
+                                                    </Button>
+                                                </StackPanel>
+                                            </Grid>
+                                        </materialDesign:Card>
+                                    </DataTemplate>
+                                </ContentPresenter.ContentTemplate>
+                            </ContentPresenter>
+                        </DataTemplate>
+                    </ItemsControl.ItemTemplate>
+                </ItemsControl>
+            </ScrollViewer>
+        </Grid>
+    </Grid>
 </UserControl>

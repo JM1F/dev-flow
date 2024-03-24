@@ -4,6 +4,7 @@ using System.Windows;
 using ControlzEx.Theming;
 using dev_flow.Enums;
 using dev_flow.Properties;
+using Constants = dev_flow.Interfaces.Constants;
 
 namespace dev_flow
 {
@@ -20,12 +21,9 @@ namespace dev_flow
         {
             // Get the directory where the application is running
             string currentDirectory = Settings.Default.WorkspacePath;
-
-            // Directory name
-            string directoryName = "DEV_FLOW_WORKSPACES";
-
+            
             // Combine the app directory path with the directory name
-            string directoryPath = Path.Combine(currentDirectory, directoryName);
+            string directoryPath = Path.Combine(currentDirectory, Constants.TopLevelDirectory);
 
             // Check if the directory exists
             if (!Directory.Exists(directoryPath))

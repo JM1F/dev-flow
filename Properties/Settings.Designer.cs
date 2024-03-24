@@ -7,7 +7,9 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
+using System.Collections.ObjectModel;
 using dev_flow.Enums;
+using dev_flow.ViewModels;
 
 namespace dev_flow.Properties {
     
@@ -42,6 +44,17 @@ namespace dev_flow.Properties {
         public string WorkspacePath {
             get {
                 return ((string)(this["WorkspacePath"]));
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        public ObservableCollection<WorkspaceItem> Setting {
+            get {
+                return ((ObservableCollection<WorkspaceItem>)(this["Setting"]));
+            }
+            set {
+                this["Setting"] = value;
             }
         }
     }
