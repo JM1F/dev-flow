@@ -2,25 +2,50 @@
 using System.Collections.ObjectModel;
 using System.IO;
 using System.Linq;
-using dev_flow.Interfaces;
+using System.Threading.Tasks;
+using System.Windows;
+using System.Windows.Input;
+using dev_flow.Commands;
+using dev_flow.Helpers;
 using dev_flow.Models;
 using dev_flow.Properties;
 using dev_flow.ViewModels.Shared;
+using MahApps.Metro.Controls.Dialogs;
+using MaterialDesignThemes.Wpf;
+using Constants = dev_flow.Interfaces.Constants;
 
 namespace dev_flow.ViewModels;
 
 public class Home_WorkspacesViewModel : ViewModelBase
 {
-    private ObservableCollection<WorkspaceItem> _workspaceCards;
+    private RangedObservableCollection<WorkspaceItem> _workspaceCards =
+        new RangedObservableCollection<WorkspaceItem>();
 
-    public ObservableCollection<WorkspaceItem> WorkspaceCards
+    private RangedObservableCollection<WorkspaceItem> _displayedWorkspaceCards =
+        new RangedObservableCollection<WorkspaceItem>();
+
+    private RangedObservableCollection<WorkspaceItem> _newDisplayCards =
+        new RangedObservableCollection<WorkspaceItem>();
+
+    public ICommand AddWorkspaceCommand { get; }
+
+    public RangedObservableCollection<WorkspaceItem> WorkspaceCards
     {
         get => _workspaceCards;
         set
         {
             _workspaceCards = value;
             OnPropertyChanged(nameof(WorkspaceCards));
-            UpdateCardVisibility();
+        }
+    }
+
+    public RangedObservableCollection<WorkspaceItem> DisplayedWorkspaceCards
+    {
+        get => _displayedWorkspaceCards;
+        set
+        {
+            _displayedWorkspaceCards = value;
+            OnPropertyChanged(nameof(DisplayedWorkspaceCards));
         }
     }
 
@@ -36,57 +61,72 @@ public class Home_WorkspacesViewModel : ViewModelBase
             {
                 _workspaceSearchTerm = value;
                 OnPropertyChanged(nameof(WorkspaceSearchTerm));
-                UpdateCardVisibility();
+                UpdateDisplayedCards();
             }
         }
+    }
+
+    private bool _isLoading;
+
+    public bool IsLoading
+    {
+        get => _isLoading;
+        set
+        {
+            _isLoading = value;
+            OnPropertyChanged(nameof(IsLoading));
+        }
+    }
+
+    private void UpdateDisplayedCards()
+    {
+        IsLoading = true;
+        _newDisplayCards.Clear();
+
+        var filteredCards = string.IsNullOrEmpty(WorkspaceSearchTerm)
+            ? WorkspaceCards
+            : WorkspaceCards.Where(card => card.Name.ToLower().Contains(WorkspaceSearchTerm.ToLower()));
+
+        _newDisplayCards.AddRange(string.IsNullOrEmpty(WorkspaceSearchTerm)
+            ? filteredCards.Take(5)
+            : filteredCards.Take(20));
+
+        DisplayedWorkspaceCards = _newDisplayCards;
+        IsLoading = false;
     }
 
     public Home_WorkspacesViewModel()
     {
-        WorkspaceCards = new ObservableCollection<WorkspaceItem>();
+        AddWorkspaceCommand = new RelayCommand(OnAddWorkspace);
     }
 
-    private void UpdateCardVisibility()
+    private async void OnAddWorkspace()
     {
-        foreach (var workspace in WorkspaceCards)
-        {
-            var workspaceSearchTermLower = WorkspaceSearchTerm.ToLower();
-            // Converts workspace name to lowercase for comparison search
-            var workspaceNameLower = workspace.Name.ToLower();
-
-            if (string.IsNullOrWhiteSpace(workspaceSearchTermLower) ||
-                workspaceNameLower.Contains(workspaceSearchTermLower))
-            {
-                workspace.IsVisible = true;
-            }
-            else
-            {
-                workspace.IsVisible = false;
-            }
-        }
-
-        OnPropertyChanged(nameof(WorkspaceCards));
     }
 
-    private void GetWorkspacesFromDirectory()
+    private async Task GetWorkspacesFromDirectoryAsync()
     {
         try
         {
-            // Get the directory where the application is running
             var currentDirectory = Settings.Default.WorkspacePath;
             var rootDirectory = Path.Combine(currentDirectory, Constants.TopLevelDirectory);
             if (Directory.Exists(rootDirectory))
             {
-                var subDirectories = Directory.GetDirectories(rootDirectory, "*", SearchOption.AllDirectories);
+                var subDirectories = await Task.Run(() =>
+                    Directory.GetDirectories(rootDirectory, "*", SearchOption.AllDirectories));
 
                 foreach (var subDirectory in subDirectories)
                 {
-                    WorkspaceCards.Add(new WorkspaceItem(new WorkspaceModel()
+                    await Application.Current.Dispatcher.InvokeAsync(() =>
                     {
-                        Name = Path.GetFileName(subDirectory),
-                        IsFavorite = false,
-                        FullWorkspacePath = Path.GetFullPath(subDirectory)
-                    }));
+                        WorkspaceCards.Add(new WorkspaceItem(new WorkspaceModel()
+                        {
+                            Name = Path.GetFileName(subDirectory),
+                            IsFavorite = false,
+                            FullWorkspacePath = Path.GetFullPath(subDirectory),
+                            IsVisible = false
+                        }));
+                    });
                 }
             }
         }
@@ -96,15 +136,18 @@ public class Home_WorkspacesViewModel : ViewModelBase
         }
     }
 
-    private void ResetWorkspaces()
-    {
-        WorkspaceCards.Clear();
-        GetWorkspacesFromDirectory();
-    }
 
-    public void HandleTabClick()
+    public async void HandleTabClick()
     {
-        Console.WriteLine("Tab Workspace Clicked!!!!");
-        ResetWorkspaces();
+        IsLoading = true;
+
+        if (WorkspaceCards.Count == 0)
+        {
+            await Task.Run(GetWorkspacesFromDirectoryAsync);
+        }
+
+        DisplayedWorkspaceCards.Clear();
+        DisplayedWorkspaceCards.AddRange(WorkspaceCards.Take(5));
+        IsLoading = false;
     }
 }

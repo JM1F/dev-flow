@@ -7,17 +7,16 @@
              xmlns:iconPacks="http://metro.mahapps.com/winfx/xaml/iconpacks"
              xmlns:views="clr-namespace:dev_flow.Views"
              xmlns:viewmodels="clr-namespace:dev_flow.ViewModels"
+             xmlns:system="clr-namespace:System;assembly=System.Runtime"
              mc:Ignorable="d"
-             Style="{DynamicResource MetroPage}"
              Padding="25px">
-
     <Grid>
         <Grid.RowDefinitions>
-            <RowDefinition Height="50" />
-            <RowDefinition Height="Auto" />
+            <RowDefinition Height="15" />
+            <RowDefinition Height="*" />
         </Grid.RowDefinitions>
 
-        <Grid Grid.Row="0">
+        <Grid HorizontalAlignment="Right" Margin="0,0,20,-40" Grid.Row="0">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="Auto" />
                 <ColumnDefinition Width="Auto" />
@@ -39,14 +38,18 @@
         </Grid>
 
         <Grid Row="1">
-
             <TabControl Grid.Column="0" TabStripPlacement="Top" Background="Transparent"
-                        SelectionChanged="Selector_OnSelectionChanged"
                         mah:TabControlHelper.UnderlinePlacement="Bottom"
                         mah:TabControlHelper.UnderlineSelectedBrush="{DynamicResource MahApps.Brushes.Accent}"
                         mah:TabControlHelper.UnderlineMouseOverBrush="Gray"
                         mah:TabControlHelper.Underlined="TabPanel"
-                        Style="{DynamicResource MahApps.Styles.TabControl.Animated}">
+                        Style="{DynamicResource MahApps.Styles.TabControl.Animated}"
+                        SelectionChanged="Selector_OnSelectionChanged">
+                <TabControl.ItemsPanel>
+                    <ItemsPanelTemplate>
+                        <VirtualizingStackPanel IsVirtualizing="True" />
+                    </ItemsPanelTemplate>
+                </TabControl.ItemsPanel>
                 <mah:MetroTabItem Header="🗎 Workspaces">
                     <views:Home_WorkspacesView>
                         <views:Home_WorkspacesView.DataContext>
@@ -62,7 +65,6 @@
                     </views:Home_FavouritesView>
                 </mah:MetroTabItem>
             </TabControl>
-
         </Grid>
     </Grid>
 </UserControl>

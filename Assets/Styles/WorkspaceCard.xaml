@@ -1,0 +1,106 @@
+﻿<UserControl x:Class="dev_flow.Assets.Styles.WorkspaceCard"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:local="clr-namespace:dev_flow.Assets.Styles"
+             xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+             mc:Ignorable="d">
+
+    <Border CornerRadius="10" BorderBrush="{DynamicResource MahApps.Brushes.Gray}" Margin="15, 25,15,25"
+            BorderThickness="1"
+            RenderTransformOrigin="0.5,0.5" MaxWidth="196">
+        <Border.RenderTransform>
+            <ScaleTransform x:Name="scaleTransform" ScaleX="1" ScaleY="1" />
+        </Border.RenderTransform>
+        <Border.Triggers>
+            <EventTrigger RoutedEvent="MouseEnter">
+                <BeginStoryboard>
+                    <Storyboard>
+                        <DoubleAnimation Storyboard.TargetName="scaleTransform" Storyboard.TargetProperty="ScaleX"
+                                         To="1.1" Duration="0:0:0.3" />
+                        <DoubleAnimation Storyboard.TargetName="scaleTransform" Storyboard.TargetProperty="ScaleY"
+                                         To="1.1" Duration="0:0:0.3" />
+                    </Storyboard>
+                </BeginStoryboard>
+            </EventTrigger>
+            <EventTrigger RoutedEvent="MouseLeave">
+                <BeginStoryboard>
+                    <Storyboard>
+                        <DoubleAnimation Storyboard.TargetName="scaleTransform" Storyboard.TargetProperty="ScaleX"
+                                         To="1" Duration="0:0:0.3" />
+                        <DoubleAnimation Storyboard.TargetName="scaleTransform" Storyboard.TargetProperty="ScaleY"
+                                         To="1" Duration="0:0:0.3" />
+                    </Storyboard>
+                </BeginStoryboard>
+            </EventTrigger>
+        </Border.Triggers>
+        <materialDesign:Card UniformCornerRadius="9" materialDesign:ElevationAssist.Elevation="Dp0">
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition
+                        Height="40" />
+                    <RowDefinition
+                        Height="*" />
+                    <RowDefinition
+                        Height="Auto" />
+                </Grid.RowDefinitions>
+
+                <Grid
+                    Width="196"
+                    Height="40"
+                    Background="{DynamicResource MahApps.Brushes.Accent}" />
+                <Button
+                    Grid.Row="0"
+                    Margin="0,0,16,-20"
+                    HorizontalAlignment="Right"
+                    VerticalAlignment="Bottom"
+                    Background="{DynamicResource MahApps.Brushes.Accent}"
+                    Style="{StaticResource MaterialDesignFloatingActionMiniButton}"
+                    materialDesign:ElevationAssist.Elevation="Dp2"
+                    BorderBrush="{DynamicResource MahApps.Brushes.Gray}">
+                    <materialDesign:PackIcon
+                        Kind="ArrowRight" />
+                </Button>
+                <StackPanel
+                    Grid.Row="1"
+                    Margin="8,24,8,0">
+                    <TextBlock
+                        FontWeight="Bold" Text="{Binding Name}" TextTrimming="CharacterEllipsis">
+                    </TextBlock>
+                </StackPanel>
+                <StackPanel
+                    Grid.Row="2"
+                    Margin="8"
+                    HorizontalAlignment="Right"
+                    Orientation="Horizontal">
+                    <Button
+                        Width="25"
+                        Padding="2,0,2,0"
+                        materialDesign:RippleAssist.IsCentered="True"
+                        Style="{StaticResource MaterialDesignOutlinedButton}">
+                        <materialDesign:PackIcon
+                            Kind="Edit" />
+                    </Button>
+                    <Button
+                        Width="25"
+                        Padding="2,0,2,0"
+                        materialDesign:RippleAssist.IsCentered="True"
+                        Style="{StaticResource MaterialDesignOutlinedButton}">
+                        <materialDesign:PackIcon
+                            Kind="Star" />
+                    </Button>
+                    <Button
+                        Width="25"
+                        Padding="2,0,2,0"
+                        materialDesign:RippleAssist.IsCentered="True"
+                        Style="{StaticResource MaterialDesignOutlinedButton}"
+                        Foreground="Red">
+                        <materialDesign:PackIcon
+                            Kind="Bin" />
+                    </Button>
+                </StackPanel>
+            </Grid>
+        </materialDesign:Card>
+    </Border>
+</UserControl>

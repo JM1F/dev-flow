@@ -6,11 +6,12 @@
     <RootNamespace>dev_flow</RootNamespace>
     <Nullable>enable</Nullable>
     <UseWPF>true</UseWPF>
+    <ApplicationIcon>Assets\dev-flow-icon.ico</ApplicationIcon>
   </PropertyGroup>
 
   <ItemGroup>
-    <Folder Include="Converters\" />
     <Folder Include="Behaviours\" />
+    <Folder Include="Converters\" />
     <Folder Include="Services\" />
   </ItemGroup>
 
@@ -30,13 +31,20 @@
   </ItemGroup>
 
   <ItemGroup>
-    <None Remove="Assests\Images\Icons\home.svg" />
+    <None Remove="Assets\Images\Icons\home.svg" />
   </ItemGroup>
 
   <ItemGroup>
     <PackageReference Include="MahApps.Metro" Version="2.4.10" />
     <PackageReference Include="MahApps.Metro.IconPacks" Version="4.11.0" />
     <PackageReference Include="MaterialDesignThemes.MahApps" Version="1.0.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Remove="Assets\dev-flow-icon.ico" />
+    <Resource Include="Assets\dev-flow-icon.ico">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Resource>
   </ItemGroup>
   
 </Project>

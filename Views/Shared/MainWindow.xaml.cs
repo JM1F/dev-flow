@@ -51,18 +51,19 @@ namespace dev_flow.Views.Shared
 
         private void NavigationServiceEx_OnNavigated(object sender, NavigationEventArgs e)
         {
-            // select the menu item
+            // Select menu item
             HamburgerMenuControl.SetCurrentValue(HamburgerMenu.SelectedItemProperty,
                 HamburgerMenuControl.Items
                     .OfType<MenuItem>()
                     .FirstOrDefault(x => x.NavigationDestination == e.Uri));
+
             HamburgerMenuControl.SetCurrentValue(HamburgerMenu.SelectedOptionsItemProperty,
                 HamburgerMenuControl
                     .OptionsItems
                     .OfType<MenuItem>()
                     .FirstOrDefault(x => x.NavigationDestination == e.Uri));
 
-            // update back button
+            // Update back button
             GoBackButton.SetCurrentValue(VisibilityProperty,
                 _navigationManager.CanGoBack ? Visibility.Visible : Visibility.Collapsed);
         }

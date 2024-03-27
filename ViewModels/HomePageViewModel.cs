@@ -7,5 +7,4 @@ namespace dev_flow.ViewModels;
 
 public class HomePageViewModel : ViewModelBase
 {
-    public string PageTitle => "Home Page";
 }

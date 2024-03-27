@@ -3,141 +3,107 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-             xmlns:viewModels="clr-namespace:dev_flow.ViewModels"
+             xmlns:styles="clr-namespace:dev_flow.Assets.Styles"
+             xmlns:controls="http://metro.mahapps.com/winfx/xaml/controls"
              xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
              mc:Ignorable="d">
-    <UserControl.DataContext>
-        <viewModels:Home_WorkspacesViewModel />
-    </UserControl.DataContext>
 
+    <Border BorderBrush="{DynamicResource MahApps.Brushes.Gray}"
+            BorderThickness="1,0,1,1"
+            Margin="0,-4,0,0"
+            CornerRadius="0,0,10,10">
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition
+                    Height="50" />
+                <RowDefinition
+                    Height="*" />
+                <RowDefinition
+                    Height="30" />
+            </Grid.RowDefinitions>
 
-    <Grid>
-        <Grid.RowDefinitions>
-            <RowDefinition
-                Height="30" />
-            <RowDefinition
-                Height="*" />
-        </Grid.RowDefinitions>
+            <Border Grid.Row="0" BorderBrush="{DynamicResource MahApps.Brushes.Gray}"
+                    BorderThickness="1,0,1,1"
+                    Margin="10,0, 10,0"
+                    CornerRadius="0,0,10,10">
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition
+                            Width="Auto" />
+                        <ColumnDefinition
+                            Width="*" />
+                    </Grid.ColumnDefinitions>
 
-        <Border Grid.Row="0" BorderBrush="Gray" BorderThickness="1" CornerRadius="10">
-            <Grid>
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition
-                        Width="Auto" />
-                    <ColumnDefinition
-                        Width="*" />
-                </Grid.ColumnDefinitions>
+                    <Button
+                        Style="{StaticResource MaterialDesignToolButton}">
+                        <materialDesign:PackIcon
+                            Kind="Search"
+                            Opacity=".56" />
+                    </Button>
+                    <TextBox
+                        Grid.Column="1"
+                        MinWidth="200"
+                        Margin="8,0,0,0"
+                        VerticalAlignment="Center"
+                        materialDesign:HintAssist.Hint="Search for a workspace"
+                        materialDesign:TextFieldAssist.DecorationVisibility="Hidden"
+                        BorderThickness="0"
+                        Text="{Binding WorkspaceSearchTerm, UpdateSourceTrigger=PropertyChanged}" />
+                </Grid>
+            </Border>
 
-                <Button
-                    Style="{StaticResource MaterialDesignToolButton}">
-                    <materialDesign:PackIcon
-                        Kind="Search"
-                        Opacity=".56" />
-                </Button>
-                <TextBox
-                    Grid.Column="1"
-                    MinWidth="200"
-                    Margin="8,0,0,0"
-                    VerticalAlignment="Center"
-                    materialDesign:HintAssist.Hint="Search for a workspace"
-                    materialDesign:TextFieldAssist.DecorationVisibility="Hidden"
-                    BorderThickness="0"
-                    Text="{Binding WorkspaceSearchTerm, UpdateSourceTrigger=PropertyChanged}" />
-            </Grid>
-        </Border>
+            <ScrollViewer VerticalScrollBarVisibility="Auto" Grid.Row="1">
 
-        <Grid Grid.Row="1">
-            <ScrollViewer Style="{DynamicResource MaterialDesignScrollViewer}" VerticalScrollBarVisibility="Visible">
-                <ItemsControl ItemsSource="{Binding WorkspaceCards}">
-                    <ItemsControl.ItemsPanel>
-                        <ItemsPanelTemplate>
-                            <WrapPanel Orientation="Horizontal" />
-                        </ItemsPanelTemplate>
-                    </ItemsControl.ItemsPanel>
-                    <ItemsControl.ItemTemplate>
-                        <DataTemplate>
-                            <ContentPresenter>
-                                <ContentPresenter.ContentTemplate>
-                                    <DataTemplate>
-                                        <materialDesign:Card
-                                            Width="200"
-                                            Style="{StaticResource MaterialDesignOutlinedCard}"
-                                            Margin="10"
-                                            Visibility="{Binding IsVisible, Converter={StaticResource BooleanToVisibilityConverter}}">
-                                            <Grid>
-                                                <Grid.RowDefinitions>
-                                                    <RowDefinition
-                                                        Height="40" />
-                                                    <RowDefinition
-                                                        Height="*" />
-                                                    <RowDefinition
-                                                        Height="Auto" />
-                                                </Grid.RowDefinitions>
-                                                <Grid
-                                                    Width="196"
-                                                    Height="40"
-                                                    Background="{DynamicResource MahApps.Brushes.Accent}" />
-                                                <Button
-                                                    Grid.Row="0"
-                                                    Margin="0,0,16,-20"
-                                                    HorizontalAlignment="Right"
-                                                    VerticalAlignment="Bottom"
-                                                    Background="{DynamicResource MahApps.Brushes.Accent}"
-                                                    Style="{StaticResource MaterialDesignFloatingActionMiniSecondaryButton}">
-                                                    <materialDesign:PackIcon
-                                                        Kind="ArrowRight" />
-                                                </Button>
-                                                <StackPanel
-                                                    Grid.Row="1"
-                                                    Margin="8,24,8,0">
-                                                    <TextBlock
-                                                        FontWeight="Bold" Text="{Binding Name}">
-                                                    </TextBlock>
-                                                    <TextBlock
-                                                        VerticalAlignment="Center"
-                                                        Text="Random Description?"
-                                                        TextWrapping="Wrap" />
-                                                </StackPanel>
-                                                <StackPanel
-                                                    Grid.Row="2"
-                                                    Margin="8"
-                                                    HorizontalAlignment="Right"
-                                                    Orientation="Horizontal">
-                                                    <Button
-                                                        Width="25"
-                                                        Padding="2,0,2,0"
-                                                        materialDesign:RippleAssist.IsCentered="True"
-                                                        Style="{StaticResource MaterialDesignOutlinedButton}">
-                                                        <materialDesign:PackIcon
-                                                            Kind="Edit" />
-                                                    </Button>
-                                                    <Button
-                                                        Width="25"
-                                                        Padding="2,0,2,0"
-                                                        materialDesign:RippleAssist.IsCentered="True"
-                                                        Style="{StaticResource MaterialDesignOutlinedButton}">
-                                                        <materialDesign:PackIcon
-                                                            Kind="Star" />
-                                                    </Button>
-                                                    <Button
-                                                        Width="25"
-                                                        Padding="2,0,2,0"
-                                                        materialDesign:RippleAssist.IsCentered="True"
-                                                        Style="{StaticResource MaterialDesignOutlinedButton}"
-                                                        Foreground="Red">
-                                                        <materialDesign:PackIcon
-                                                            Kind="Bin" />
-                                                    </Button>
-                                                </StackPanel>
-                                            </Grid>
-                                        </materialDesign:Card>
-                                    </DataTemplate>
-                                </ContentPresenter.ContentTemplate>
-                            </ContentPresenter>
-                        </DataTemplate>
-                    </ItemsControl.ItemTemplate>
-                </ItemsControl>
+                <ScrollViewer.Resources>
+                    <Style TargetType="{x:Type ScrollBar}" BasedOn="{StaticResource MahApps.Styles.ScrollBar}">
+                        <Setter Property="Background" Value="{DynamicResource MahApps.Brushes.Gray}" />
+                        <Setter Property="Foreground" Value="{DynamicResource MahApps.Brushes.Gray}" />
+                    </Style>
+                </ScrollViewer.Resources>
+
+                <Grid HorizontalAlignment="Center">
+                    <ItemsControl ItemsSource="{Binding DisplayedWorkspaceCards}"
+                                  VirtualizingStackPanel.VirtualizationMode="Recycling"
+                                  ScrollViewer.IsDeferredScrollingEnabled="True"
+                                  VirtualizingStackPanel.IsVirtualizing="True">
+                        <ItemsControl.ItemsPanel>
+                            <ItemsPanelTemplate>
+                                <WrapPanel Orientation="Horizontal"
+                                           VirtualizingStackPanel.VirtualizationMode="Recycling"
+                                           ScrollViewer.IsDeferredScrollingEnabled="True"
+                                           VirtualizingStackPanel.IsVirtualizing="True" />
+                            </ItemsPanelTemplate>
+                        </ItemsControl.ItemsPanel>
+                        <ItemsControl.ItemTemplate>
+                            <DataTemplate>
+                                <styles:WorkspaceCard />
+                            </DataTemplate>
+                        </ItemsControl.ItemTemplate>
+                    </ItemsControl>
+
+                    <controls:ProgressRing Width="50" Height="50" VerticalAlignment="Center"
+                                           HorizontalAlignment="Center">
+                        <controls:ProgressRing.Style>
+                            <Style TargetType="controls:ProgressRing">
+                                <Style.Triggers>
+                                    <DataTrigger Binding="{Binding IsLoading}" Value="True">
+                                        <Setter Property="Visibility" Value="Visible" />
+                                    </DataTrigger>
+                                    <DataTrigger Binding="{Binding IsLoading}" Value="False">
+                                        <Setter Property="Visibility" Value="Collapsed" />
+                                    </DataTrigger>
+                                </Style.Triggers>
+                            </Style>
+                        </controls:ProgressRing.Style>
+                    </controls:ProgressRing>
+                </Grid>
             </ScrollViewer>
+
+            <Button Grid.Row="2" Content="Create Workspace"
+                    Margin="10,0"
+                    Style="{StaticResource MahApps.Styles.Button}"
+                    Command="{Binding AddWorkspaceCommand}"
+                    VerticalAlignment="Bottom" />
         </Grid>
-    </Grid>
+    </Border>
 </UserControl>

@@ -52,8 +52,6 @@ public class WorkspaceItem : ViewModelBase
         EditNameCommand = new RelayCommand(EditName);
         ToggleFavoriteCommand = new RelayCommand(ToggleFavorite);
         DeleteCommand = new RelayCommand(Delete);
-        
-        IsVisible = true;
     }
 
     private void EditName()

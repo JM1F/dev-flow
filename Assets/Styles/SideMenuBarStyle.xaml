@@ -3,6 +3,7 @@
                     xmlns:controls="http://metro.mahapps.com/winfx/xaml/controls"
                     xmlns:navigation="clr-namespace:dev_flow.Managers.Navigation"
                     xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes">
+    
     <DataTemplate x:Key="MenuItemTemplate" DataType="{x:Type controls:HamburgerMenuIconItem}">
         <Grid Height="48">
             <Grid.ColumnDefinitions>
@@ -82,6 +83,7 @@
                             </Grid>
                         </controls:ClipBorder>
                     </Grid>
+                    
                     <ControlTemplate.Triggers>
                         <Trigger Property="IsSelected" Value="True">
                             <Setter TargetName="Background" Property="Background"
@@ -219,33 +221,8 @@
         <Setter Property="ShowSelectionIndicator" Value="True" />
     </Style>
 
-    <Storyboard x:Key="NavigationStoryboard">
-        <DoubleAnimationUsingKeyFrames BeginTime="00:00:00"
-                                       Storyboard.TargetProperty="(UIElement.Opacity)">
-            <SplineDoubleKeyFrame KeyTime="00:00:00"
-                                  Value="0" />
-            <SplineDoubleKeyFrame KeyTime="00:00:00.150"
-                                  Value="1" />
-        </DoubleAnimationUsingKeyFrames>
-        <DoubleAnimationUsingKeyFrames BeginTime="00:00:00"
-                                       Storyboard.TargetProperty="(UIElement.RenderTransform).(TranslateTransform.Y)">
-            <SplineDoubleKeyFrame KeyTime="00:00:00"
-                                  Value="200" />
-            <SplineDoubleKeyFrame KeySpline="0.1, 0.9, 0.2, 1"
-                                  KeyTime="00:00:00.300"
-                                  Value="0" />
-        </DoubleAnimationUsingKeyFrames>
-    </Storyboard>
-
     <Style BasedOn="{StaticResource {x:Type Frame}}"
            TargetType="{x:Type Frame}">
-        <Setter Property="navigation:AnimateFrame.FrameNavigationStoryboard"
-                Value="{StaticResource NavigationStoryboard}" />
-        <Setter Property="RenderTransform">
-            <Setter.Value>
-                <TranslateTransform />
-            </Setter.Value>
-        </Setter>
         <Setter Property="Background"
                 Value="{DynamicResource MahApps.Brushes.Accent4}" />
         <Setter Property="ClipToBounds"
