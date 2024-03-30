@@ -6,7 +6,12 @@
              xmlns:styles="clr-namespace:dev_flow.Assets.Styles"
              xmlns:controls="http://metro.mahapps.com/winfx/xaml/controls"
              xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
-             mc:Ignorable="d">
+             mc:Ignorable="d"
+             xmlns:dialog="clr-namespace:MahApps.Metro.Controls.Dialogs;assembly=MahApps.Metro"
+             Loaded="Home_WorkspacesView_OnLoaded"
+             Unloaded="Home_WorkspacesView_OnUnloaded"
+             Name="HomeWorkspaces">
+
 
     <Border BorderBrush="{DynamicResource MahApps.Brushes.Gray}"
             BorderThickness="1,0,1,1"
@@ -66,6 +71,7 @@
                                   VirtualizingStackPanel.VirtualizationMode="Recycling"
                                   ScrollViewer.IsDeferredScrollingEnabled="True"
                                   VirtualizingStackPanel.IsVirtualizing="True">
+                        
                         <ItemsControl.ItemsPanel>
                             <ItemsPanelTemplate>
                                 <WrapPanel Orientation="Horizontal"
@@ -80,6 +86,20 @@
                             </DataTemplate>
                         </ItemsControl.ItemTemplate>
                     </ItemsControl>
+                    
+                    <TextBlock Text="No workspaces present, create one to get started."
+                               Visibility="{Binding IsMainCollectionEmpty, Converter={StaticResource BooleanToVisibilityConverter}}"
+                               VerticalAlignment="Center"
+                               FontSize="20"
+                               FontWeight="Medium"
+                               Style="{DynamicResource MahApps.Styles.Text}"/>
+
+                    <TextBlock Text="No search results found"
+                               Visibility="{Binding IsDisplayCollectionEmpty, Converter={StaticResource BooleanToVisibilityConverter}}"
+                               VerticalAlignment="Center"
+                               FontSize="20"
+                               FontWeight="Medium"
+                               Style="{DynamicResource MahApps.Styles.Text}"/>
 
                     <controls:ProgressRing Width="50" Height="50" VerticalAlignment="Center"
                                            HorizontalAlignment="Center">

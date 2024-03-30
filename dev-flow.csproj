@@ -11,8 +11,8 @@
 
   <ItemGroup>
     <Folder Include="Behaviours\" />
-    <Folder Include="Converters\" />
     <Folder Include="Services\" />
+    <Folder Include="Tests\" />
   </ItemGroup>
 
   <ItemGroup>

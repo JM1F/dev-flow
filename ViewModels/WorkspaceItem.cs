@@ -1,5 +1,7 @@
-﻿using System.Windows.Input;
+﻿using System;
+using System.Windows.Input;
 using dev_flow.Commands;
+using dev_flow.Interfaces;
 using dev_flow.Models;
 using dev_flow.ViewModels.Shared;
 
@@ -8,7 +10,8 @@ namespace dev_flow.ViewModels;
 public class WorkspaceItem : ViewModelBase
 {
     private readonly WorkspaceModel _cardModel;
-    
+    private readonly WeakReference _parentViewModelReference;
+
     public string Name
     {
         get => _cardModel.Name;
@@ -28,7 +31,7 @@ public class WorkspaceItem : ViewModelBase
             OnPropertyChanged(nameof(IsFavorite));
         }
     }
-    
+
     public bool IsVisible
     {
         get => _cardModel.IsVisible;
@@ -42,13 +45,55 @@ public class WorkspaceItem : ViewModelBase
         }
     }
 
+    public string FullWorkspacePath
+    {
+        get => _cardModel.FullWorkspacePath;
+        set
+        {
+            if (_cardModel.FullWorkspacePath != value)
+            {
+                _cardModel.FullWorkspacePath = value;
+                OnPropertyChanged(nameof(FullWorkspacePath));
+            }
+        }
+    }
+
+    public string TrimmedWorkspacePath => Constants.TopLevelDirectory + "/" + _cardModel.Name;
+
+    public int ID
+    {
+        get => _cardModel.ID;
+        set
+        {
+            if (_cardModel.ID != value)
+            {
+                _cardModel.ID = value;
+                OnPropertyChanged(nameof(ID));
+            }
+        }
+    }
+
+    public DateTime DateModified
+    {
+        get => _cardModel.DateModified;
+        set
+        {
+            if (_cardModel.DateModified != value)
+            {
+                _cardModel.DateModified = value;
+                OnPropertyChanged(nameof(DateModified));
+            }
+        }
+    }
+
     public ICommand EditNameCommand { get; }
     public ICommand ToggleFavoriteCommand { get; }
     public ICommand DeleteCommand { get; }
 
-    public WorkspaceItem(WorkspaceModel model)
+    public WorkspaceItem(WorkspaceModel model, object parentViewModel)
     {
         _cardModel = model;
+        _parentViewModelReference = new WeakReference(parentViewModel);
         EditNameCommand = new RelayCommand(EditName);
         ToggleFavoriteCommand = new RelayCommand(ToggleFavorite);
         DeleteCommand = new RelayCommand(Delete);
@@ -56,7 +101,14 @@ public class WorkspaceItem : ViewModelBase
 
     private void EditName()
     {
-        // Implement logic for editing the name
+        if (_parentViewModelReference.Target is Home_WorkspacesViewModel parentWorkspaceViewModel)
+        {
+            parentWorkspaceViewModel.EditWorkspaceName(this);
+        }
+        else if (_parentViewModelReference.Target is Home_FavouritesViewModel parentFavouriteViewModel)
+        {
+            parentFavouriteViewModel.EditWorkspaceName(this);
+        }
     }
 
     private void ToggleFavorite()
@@ -66,6 +118,13 @@ public class WorkspaceItem : ViewModelBase
 
     private void Delete()
     {
-        // Implement logic for deleting the card
+        if (_parentViewModelReference.Target is Home_WorkspacesViewModel parentWorkspaceViewModel)
+        {
+            parentWorkspaceViewModel.DeleteWorkspace(this);
+        }
+        else if (_parentViewModelReference.Target is Home_FavouritesViewModel parentFavouriteViewModel)
+        {
+            parentFavouriteViewModel.DeleteWorkspace(this);
+        }
     }
 }

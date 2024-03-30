@@ -51,18 +51,10 @@
                     </ItemsPanelTemplate>
                 </TabControl.ItemsPanel>
                 <mah:MetroTabItem Header="🗎 Workspaces">
-                    <views:Home_WorkspacesView>
-                        <views:Home_WorkspacesView.DataContext>
-                            <viewmodels:Home_WorkspacesViewModel />
-                        </views:Home_WorkspacesView.DataContext>
-                    </views:Home_WorkspacesView>
+                    <views:Home_WorkspacesView />
                 </mah:MetroTabItem>
                 <mah:MetroTabItem Header="★ Favourites">
-                    <views:Home_FavouritesView>
-                        <views:Home_FavouritesView.DataContext>
-                            <viewmodels:Home_FavouritesViewModel />
-                        </views:Home_FavouritesView.DataContext>
-                    </views:Home_FavouritesView>
+                    <views:Home_FavouritesView />
                 </mah:MetroTabItem>
             </TabControl>
         </Grid>

@@ -32,17 +32,17 @@ namespace dev_flow
                 {
                     // If not, create it
                     Directory.CreateDirectory(directoryPath);
-                    Console.WriteLine("Directory created successfully.");
+                    Console.WriteLine("Base directory created successfully.");
                 }
                 catch (Exception ex)
                 {
                     // Handle any exceptions that might occur during directory creation
-                    Console.WriteLine($"Error creating directory: {ex.Message}");
+                    Console.WriteLine($"Error creating base directory: {ex.Message}");
                 }
             }
             else
             {
-                Console.WriteLine("Directory already exists.");
+                Console.WriteLine("Base directory already exists.");
             }
         }
 

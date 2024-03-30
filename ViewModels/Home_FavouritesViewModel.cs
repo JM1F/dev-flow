@@ -2,15 +2,9 @@
 
 namespace dev_flow.ViewModels;
 
-public class Home_FavouritesViewModel
+public class Home_FavouritesViewModel : Home_WorkspacesViewModel
 {
-    public Home_FavouritesViewModel()
+    public Home_FavouritesViewModel() : base()
     {
-        //TODO
-    }
-
-    public void HandleTabClick()
-    {
-        Console.WriteLine("Tab Fav Clicked!!!!");
     }
 }

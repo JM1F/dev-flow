@@ -18,29 +18,28 @@ public partial class HomePageView
 
     private void Selector_OnSelectionChanged(object sender, SelectionChangedEventArgs e)
     {
-        switch (e.Source)
+        if (e.Source is TabControl tabControl)
         {
-            case TabControl
+            if (tabControl.SelectedItem is MetroTabItem tabItem && tabItem.Content is UserControl userControl)
             {
-                SelectedItem: MetroTabItem
+                if (userControl.Name == "HomeWorkspaces")
                 {
-                    Content: UserControl { DataContext: Home_WorkspacesViewModel homeWorkspacesViewModel }
+                    var homeWorkspacesViewModel = new Home_WorkspacesViewModel();
+                    userControl.DataContext = homeWorkspacesViewModel;
+                    homeWorkspacesViewModel.HandleTabClick();
                 }
-            }:
-                homeWorkspacesViewModel.HandleTabClick();
-                break;
-            case TabControl
-            {
-                SelectedItem: MetroTabItem
+                else if (userControl.Name == "HomeFavourites")
                 {
-                    Content: UserControl { DataContext: Home_FavouritesViewModel homeFavouritesViewModel }
+                    var homeFavouritesViewModel = new Home_FavouritesViewModel();
+                    userControl.DataContext = homeFavouritesViewModel;
+                    homeFavouritesViewModel.HandleTabClick();
                 }
-            }:
-                homeFavouritesViewModel.HandleTabClick();
-                break;
-            default:
-                Console.WriteLine("Loading of Tab Content Failed!");
-                throw new Exception("Loading of Tab Content Failed!");
+            }
+        }
+        else
+        {
+            Console.WriteLine("Loading of Tab Content Failed!");
+            throw new Exception("Loading of Tab Content Failed!");
         }
     }
 }

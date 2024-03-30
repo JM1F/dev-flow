@@ -5,7 +5,13 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:local="clr-namespace:dev_flow.Assets.Styles"
              xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+             xmlns:converters="clr-namespace:dev_flow.Converters"
              mc:Ignorable="d">
+
+    <UserControl.Resources>
+        <converters:BoolToBrushFavoriteConverter x:Key="BoolToBrushFavoriteConverter" />
+    </UserControl.Resources>
+
 
     <Border CornerRadius="10" BorderBrush="{DynamicResource MahApps.Brushes.Gray}" Margin="15, 25,15,25"
             BorderThickness="1"
@@ -68,6 +74,8 @@
                     <TextBlock
                         FontWeight="Bold" Text="{Binding Name}" TextTrimming="CharacterEllipsis">
                     </TextBlock>
+                    <TextBlock
+                        Text="{Binding DateModified}" />
                 </StackPanel>
                 <StackPanel
                     Grid.Row="2"
@@ -78,7 +86,8 @@
                         Width="25"
                         Padding="2,0,2,0"
                         materialDesign:RippleAssist.IsCentered="True"
-                        Style="{StaticResource MaterialDesignOutlinedButton}">
+                        Style="{StaticResource MaterialDesignOutlinedButton}"
+                        Command="{ Binding EditNameCommand}">
                         <materialDesign:PackIcon
                             Kind="Edit" />
                     </Button>
@@ -86,16 +95,19 @@
                         Width="25"
                         Padding="2,0,2,0"
                         materialDesign:RippleAssist.IsCentered="True"
-                        Style="{StaticResource MaterialDesignOutlinedButton}">
+                        Style="{StaticResource MaterialDesignOutlinedButton}"
+                        Command="{ Binding ToggleFavoriteCommand}">
                         <materialDesign:PackIcon
-                            Kind="Star" />
+                            Kind="Star"
+                            materialDesign:Foreground="{Binding IsFavorite, Converter={converters:BoolToBrushFavoriteConverter}}"/>
                     </Button>
                     <Button
                         Width="25"
                         Padding="2,0,2,0"
                         materialDesign:RippleAssist.IsCentered="True"
                         Style="{StaticResource MaterialDesignOutlinedButton}"
-                        Foreground="Red">
+                        Foreground="Red"
+                        Command="{ Binding DeleteCommand}">
                         <materialDesign:PackIcon
                             Kind="Bin" />
                     </Button>
