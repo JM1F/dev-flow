@@ -32,7 +32,7 @@ public partial class HomePageView
                 {
                     var homeFavouritesViewModel = new Home_FavouritesViewModel();
                     userControl.DataContext = homeFavouritesViewModel;
-                    homeFavouritesViewModel.HandleTabClick();
+                    homeFavouritesViewModel.HandleTabClick(true);
                 }
             }
         }

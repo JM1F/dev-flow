@@ -5,6 +5,8 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:local="clr-namespace:dev_flow.Views"
              xmlns:iconPacks="http://metro.mahapps.com/winfx/xaml/iconpacks"
+             xmlns:avalonEdit="http://icsharpcode.net/sharpdevelop/avalonedit"
+             xmlns:editor="clr-namespace:RoslynPad.Editor;assembly=RoslynPad.Editor.Windows"
              mc:Ignorable="d"
              Padding="25px">
     <Grid>
@@ -37,7 +39,16 @@
 
         <Grid Grid.Row="1">
             <!-- TODO Content -->
-            <TextBlock Text="COMING SOON" Foreground="Gray" FontSize="40" FontWeight="Heavy"></TextBlock>
+            <editor:RoslynCodeEditor
+                Width="500"
+                Height="500"
+                FontFamily="Consolas"
+                Margin="5"
+                IsReadOnly="{Binding IsReadOnly}"
+                HorizontalScrollBarVisibility="Disabled"
+                VerticalScrollBarVisibility="Disabled"
+                ShowLineNumbers="True"
+                SyntaxHighlighting="Python"/>
         </Grid>
 
     </Grid>

@@ -1,0 +1,43 @@
+﻿<UserControl x:Class="dev_flow.Assets.Styles.WorkspaceEditorRibbon"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:local="clr-namespace:dev_flow.Assets.Styles"
+             xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+             xmlns:mah="http://metro.mahapps.com/winfx/xaml/controls"
+             mc:Ignorable="d">
+    <ToolBarTray>
+        <ToolBar
+            ClipToBounds="False"
+            Style="{StaticResource MaterialDesignToolBar}">
+            <Button
+                Content="{materialDesign:PackIcon Kind=ContentSave}"
+                ToolTip="Save" />
+            <Separator />
+            <Button
+                Command="Cut"
+                Content="{materialDesign:PackIcon Kind=ContentCut}"
+                ToolBar.OverflowMode="AsNeeded"
+                ToolTip="Cut" />
+            <Button
+                Command="Copy"
+                Content="{materialDesign:PackIcon Kind=ContentCopy}"
+                ToolBar.OverflowMode="AsNeeded"
+                ToolTip="Copy that stuff" />
+            <Button
+                Command="Paste"
+                Content="{materialDesign:PackIcon Kind=ContentPaste}"
+                ToolBar.OverflowMode="AsNeeded"
+                ToolTip="Paste some stuff" />
+            
+            <Separator />
+            
+            <mah:ToggleSwitch
+                OffContent="Edit View"
+                OnContent="Preview"/>
+            
+            <Separator />
+        </ToolBar>
+    </ToolBarTray>
+</UserControl>

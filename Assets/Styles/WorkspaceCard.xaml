@@ -64,7 +64,8 @@
                     Background="{DynamicResource MahApps.Brushes.Accent}"
                     Style="{StaticResource MaterialDesignFloatingActionMiniButton}"
                     materialDesign:ElevationAssist.Elevation="Dp2"
-                    BorderBrush="{DynamicResource MahApps.Brushes.Gray}">
+                    BorderBrush="{DynamicResource MahApps.Brushes.Gray}"
+                    Command="{Binding WorkspaceEnteredCommand }">
                     <materialDesign:PackIcon
                         Kind="ArrowRight" />
                 </Button>
@@ -96,7 +97,7 @@
                         Padding="2,0,2,0"
                         materialDesign:RippleAssist.IsCentered="True"
                         Style="{StaticResource MaterialDesignOutlinedButton}"
-                        Command="{ Binding ToggleFavoriteCommand}">
+                        Command="{Binding ToggleFavoriteCommand}">
                         <materialDesign:PackIcon
                             Kind="Star"
                             materialDesign:Foreground="{Binding IsFavorite, Converter={converters:BoolToBrushFavoriteConverter}}"/>

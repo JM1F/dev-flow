@@ -7,9 +7,8 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-using System.Collections.ObjectModel;
+using System.Collections.Specialized;
 using dev_flow.Enums;
-using dev_flow.ViewModels;
 
 namespace dev_flow.Properties {
     
@@ -49,12 +48,13 @@ namespace dev_flow.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        public ObservableCollection<WorkspaceItem> Setting {
+        [global::System.Configuration.DefaultSettingValueAttribute("")]
+        public StringCollection Favourites {
             get {
-                return ((ObservableCollection<WorkspaceItem>)(this["Setting"]));
+                return ((StringCollection)(this["Favourites"]));
             }
             set {
-                this["Setting"] = value;
+                this["Favourites"] = value;
             }
         }
     }

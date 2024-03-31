@@ -1,0 +1,105 @@
+﻿<UserControl x:Class="dev_flow.Views.WorkspaceEditorView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:styles="clr-namespace:dev_flow.Assets.Styles"
+             xmlns:converters="clr-namespace:dev_flow.Converters"
+             xmlns:iconPacks="http://metro.mahapps.com/winfx/xaml/iconpacks"
+             xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+             xmlns:wv2="clr-namespace:Microsoft.Web.WebView2.Wpf;assembly=Microsoft.Web.WebView2.Wpf"
+             mc:Ignorable="d"
+             Padding="25px"
+             Width="Auto"
+             Height="Auto">
+    <UserControl.Resources>
+        <converters:InverseBooleanConverter x:Key="InverseBooleanConverter" />
+    </UserControl.Resources>
+
+    <Grid>
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="50" />
+                <RowDefinition Height="50" />
+                <RowDefinition Height="*" />
+            </Grid.RowDefinitions>
+
+            <Grid Grid.Row="0" Margin="0,0,0,10">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto" />
+                    <ColumnDefinition Width="Auto" />
+                </Grid.ColumnDefinitions>
+
+                <iconPacks:PackIconFontAwesome Grid.Column="0" VerticalAlignment="Center"
+                                               Width="40"
+                                               Height="40"
+                                               Foreground="{DynamicResource MahApps.Brushes.Accent}"
+                                               Margin="0,0,20,0"
+                                               Kind="FileSolid" />
+
+                <TextBlock Grid.Column="1" FontSize="30" FontWeight="Medium" VerticalAlignment="Center"
+                           Foreground="{DynamicResource MahApps.Brushes.Text}"
+                           Text="{Binding WorkspaceTitleName}"
+                           TextTrimming="WordEllipsis" />
+
+                <iconPacks:PackIconFontAwesome Grid.Column="0" VerticalAlignment="Center"
+                                               HorizontalAlignment="Right"
+                                               Width="40"
+                                               Height="40"
+                                               Foreground="Yellow"
+                                               Kind="StarSolid" />
+
+            </Grid>
+
+            <Border Grid.Row="0" BorderThickness="0,0,0,2" BorderBrush="Gray" />
+
+            <Grid Row="1">
+                <styles:WorkspaceEditorRibbon />
+            </Grid>
+
+            <Grid Row="2">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="4*" />
+                    <ColumnDefinition Width="5" />
+                    <ColumnDefinition Width="*" />
+                </Grid.ColumnDefinitions>
+
+                <Grid>
+                    <DockPanel>
+                        <ToolBar DockPanel.Dock="Top">
+                            <Button Command="{Binding EditCommand}">Edit</Button>
+                            <Button Command="{Binding SaveCommand}">Save</Button>
+                            <Button Command="{Binding PreviewCommand}">Preview</Button>
+                        </ToolBar>
+                        
+                        <Grid>
+                            <TextBox
+                                x:Name="MarkdownEditor"
+                                Grid.Column="0"
+                                VerticalAlignment="Stretch"
+                                materialDesign:HintAssist.Hint="Add Workspace Content..."
+                                AcceptsReturn="True"
+                                SpellCheck.IsEnabled="True"
+                                Text="{Binding MarkdownContent, UpdateSourceTrigger=PropertyChanged}"
+                                TextWrapping="Wrap"
+                                VerticalScrollBarVisibility="Auto"
+                                IsReadOnly="{Binding IsPreviewMode}" />
+
+                            <wv2:WebView2 x:Name="MarkdownViewer" Grid.Column="0" Visibility="Collapsed" />
+                        </Grid>
+                    </DockPanel>
+                </Grid>
+
+                <GridSplitter Grid.Column="1" Width="5" HorizontalAlignment="Stretch" />
+
+                <Grid Column="2" Background="red">
+
+                </Grid>
+
+            </Grid>
+
+        </Grid>
+
+
+    </Grid>
+</UserControl>

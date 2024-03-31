@@ -1,8 +1,10 @@
 ﻿using System;
 using System.Windows.Input;
 using dev_flow.Commands;
+using dev_flow.Helpers;
 using dev_flow.Interfaces;
 using dev_flow.Models;
+using dev_flow.Properties;
 using dev_flow.ViewModels.Shared;
 
 namespace dev_flow.ViewModels;
@@ -59,6 +61,7 @@ public class WorkspaceItem : ViewModelBase
     }
 
     public string TrimmedWorkspacePath => Constants.TopLevelDirectory + "/" + _cardModel.Name;
+    public string LowerCaseName => _cardModel.Name.ToLower();
 
     public int ID
     {
@@ -89,6 +92,9 @@ public class WorkspaceItem : ViewModelBase
     public ICommand EditNameCommand { get; }
     public ICommand ToggleFavoriteCommand { get; }
     public ICommand DeleteCommand { get; }
+    public ICommand WorkspaceEnteredCommand { get; }
+
+    public static event EventHandler<WorkspaceItemEventArgs> WorkspaceItemSelected;
 
     public WorkspaceItem(WorkspaceModel model, object parentViewModel)
     {
@@ -97,6 +103,7 @@ public class WorkspaceItem : ViewModelBase
         EditNameCommand = new RelayCommand(EditName);
         ToggleFavoriteCommand = new RelayCommand(ToggleFavorite);
         DeleteCommand = new RelayCommand(Delete);
+        WorkspaceEnteredCommand = new RelayCommand(OnWorkspaceItemSelected);
     }
 
     private void EditName()
@@ -105,15 +112,14 @@ public class WorkspaceItem : ViewModelBase
         {
             parentWorkspaceViewModel.EditWorkspaceName(this);
         }
-        else if (_parentViewModelReference.Target is Home_FavouritesViewModel parentFavouriteViewModel)
-        {
-            parentFavouriteViewModel.EditWorkspaceName(this);
-        }
     }
 
     private void ToggleFavorite()
     {
-        IsFavorite = !IsFavorite;
+        if (_parentViewModelReference.Target is Home_WorkspacesViewModel parentWorkspaceViewModel)
+        {
+            parentWorkspaceViewModel.FavouriteToggled(this);
+        }
     }
 
     private void Delete()
@@ -122,9 +128,10 @@ public class WorkspaceItem : ViewModelBase
         {
             parentWorkspaceViewModel.DeleteWorkspace(this);
         }
-        else if (_parentViewModelReference.Target is Home_FavouritesViewModel parentFavouriteViewModel)
-        {
-            parentFavouriteViewModel.DeleteWorkspace(this);
-        }
+    }
+
+    protected virtual void OnWorkspaceItemSelected()
+    {
+        WorkspaceItemSelected?.Invoke(this, new WorkspaceItemEventArgs(this));
     }
 }

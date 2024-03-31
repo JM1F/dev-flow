@@ -49,7 +49,7 @@
                         MinWidth="200"
                         Margin="8,0,0,0"
                         VerticalAlignment="Center"
-                        materialDesign:HintAssist.Hint="Search for a workspace"
+                        materialDesign:HintAssist.Hint="Search for a favourite workspace"
                         materialDesign:TextFieldAssist.DecorationVisibility="Hidden"
                         BorderThickness="0"
                         Text="{Binding WorkspaceSearchTerm, UpdateSourceTrigger=PropertyChanged}" />
@@ -86,7 +86,7 @@
                         </ItemsControl.ItemTemplate>
                     </ItemsControl>
 
-                    <TextBlock Text="No workspaces present, create one to get started."
+                    <TextBlock Text="No favourite workspaces present, create one to get started."
                                Visibility="{Binding IsMainCollectionEmpty, Converter={StaticResource BooleanToVisibilityConverter}}"
                                VerticalAlignment="Center"
                                FontSize="20"

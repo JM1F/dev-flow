@@ -2,12 +2,16 @@
 using System.Linq;
 using System.Runtime.InteropServices;
 using System.Windows;
+using System.Windows.Controls;
 using System.Windows.Interop;
 using System.Windows.Navigation;
+using dev_flow.Assets.Styles;
 using dev_flow.Enums;
+using dev_flow.Helpers;
 using dev_flow.Managers.Navigation;
-using dev_flow.ViewModels.Shared;
+using dev_flow.ViewModels;
 using MahApps.Metro.Controls;
+using MenuItem = dev_flow.ViewModels.Shared.MenuItem;
 
 namespace dev_flow.Views.Shared
 {
@@ -19,6 +23,8 @@ namespace dev_flow.Views.Shared
         {
             InitializeComponent();
 
+            WorkspaceItem.WorkspaceItemSelected += WorkspaceCard_OnWorkspaceEntered;
+
             IntPtr hWnd =
                 new WindowInteropHelper(GetWindow(this) ?? throw new InvalidOperationException()).EnsureHandle();
             var attribute = Dwmwindowattribute.DwmwaWindowCornerPreference;
@@ -26,15 +32,22 @@ namespace dev_flow.Views.Shared
             DwmSetWindowAttribute(hWnd, attribute, ref preference, sizeof(uint));
 
             _navigationManager = new NavigationManager();
-            _navigationManager.Navigated += NavigationServiceEx_OnNavigated;
+            NavigationManager.Navigated += NavigationServiceEx_OnNavigated;
             HamburgerMenuControl.Content = _navigationManager.Frame;
 
-            // Navigate to the home page by default.
+            // Navigate to the home page by default
             Loaded += (sender, args) =>
                 _navigationManager.Navigate(new Uri("Views/HomePageView.xaml", UriKind.RelativeOrAbsolute));
         }
 
-        // Import dwmapi.dll and define DwmSetWindowAttribute in C# corresponding to the native function.
+        private void WorkspaceCard_OnWorkspaceEntered(object? sender, WorkspaceItemEventArgs e)
+        {
+            var workspaceItemObject = e.WorkspaceItem;
+            _navigationManager.Navigate(new Uri("Views/WorkspaceEditorView.xaml", UriKind.RelativeOrAbsolute),
+                workspaceItemObject);
+        }
+
+        // Import dwmapi.dll and define DwmSetWindowAttribute in C# corresponding to the native function
         [DllImport("dwmapi.dll", CharSet = CharSet.Unicode, PreserveSig = false)]
         internal static extern void DwmSetWindowAttribute(IntPtr hwnd,
             Dwmwindowattribute attribute,

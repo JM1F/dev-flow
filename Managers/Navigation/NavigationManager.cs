@@ -1,12 +1,13 @@
 ﻿using System;
 using System.Windows.Controls;
 using System.Windows.Navigation;
+using dev_flow.Interfaces;
 
 namespace dev_flow.Managers.Navigation;
 
-public class NavigationManager
+public class NavigationManager : INavigationManager
 {
-    public event NavigatedEventHandler Navigated;
+    public static event NavigatedEventHandler Navigated;
 
     public event NavigationFailedEventHandler NavigationFailed;
 
@@ -33,9 +34,7 @@ public class NavigationManager
     public void GoForward() => Frame.GoForward();
     public void GoBack() => Frame.GoBack();
     public bool CanGoBack => Frame.CanGoBack;
-
-    public bool CanGoForward => Frame.CanGoForward;
-
+    
 
     public bool Navigate(Uri sourcePageUri, object extraData = null)
     {

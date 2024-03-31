@@ -37,7 +37,10 @@
   <ItemGroup>
     <PackageReference Include="MahApps.Metro" Version="2.4.10" />
     <PackageReference Include="MahApps.Metro.IconPacks" Version="4.11.0" />
+    <PackageReference Include="Markdig" Version="0.36.2" />
     <PackageReference Include="MaterialDesignThemes.MahApps" Version="1.0.0" />
+    <PackageReference Include="Microsoft.Web.WebView2" Version="1.0.2420.47" />
+    <PackageReference Include="RoslynPad.Editor.Windows" Version="4.4.0" />
   </ItemGroup>
 
   <ItemGroup>

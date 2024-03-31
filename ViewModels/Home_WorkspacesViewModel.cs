@@ -8,6 +8,7 @@ using System.Windows;
 using System.Windows.Input;
 using dev_flow.Commands;
 using dev_flow.Helpers;
+using dev_flow.Interfaces;
 using dev_flow.Models;
 using dev_flow.Properties;
 using dev_flow.ViewModels.Shared;
@@ -21,7 +22,7 @@ public class Home_WorkspacesViewModel : ViewModelBase
 {
     private IDialogCoordinator? _dialogCoordinator;
 
-    private int _workspaceIDIncrement = 0;
+    private int _workspaceIDIncrement;
 
     private RangedObservableCollection<WorkspaceItem> _workspaceCards =
         new RangedObservableCollection<WorkspaceItem>();
@@ -33,6 +34,8 @@ public class Home_WorkspacesViewModel : ViewModelBase
         new RangedObservableCollection<WorkspaceItem>();
 
     public ICommand AddWorkspaceCommand { get; }
+    public RelayCommand WorkspaceEntryButtonClicked { get; private set; }
+
 
     public RangedObservableCollection<WorkspaceItem> WorkspaceCards
     {
@@ -113,6 +116,8 @@ public class Home_WorkspacesViewModel : ViewModelBase
         }
     }
 
+    private bool _isFavouritesPage;
+
     private void UpdateDisplayedCards()
     {
         IsLoading = true;
@@ -120,11 +125,21 @@ public class Home_WorkspacesViewModel : ViewModelBase
 
         var filteredCards = string.IsNullOrEmpty(WorkspaceSearchTerm)
             ? WorkspaceCards
-            : WorkspaceCards.Where(card => card.Name.ToLower().Contains(WorkspaceSearchTerm.ToLower()));
+            : WorkspaceCards.Where(card => card.LowerCaseName.ToLower().Contains(WorkspaceSearchTerm.ToLower()));
 
-        _newDisplayCards.AddRange(string.IsNullOrEmpty(WorkspaceSearchTerm)
-            ? filteredCards.OrderByDescending(workspace => workspace.DateModified).Take(5)
-            : filteredCards.Take(20));
+        if (_isFavouritesPage)
+        {
+            _newDisplayCards.AddRange(string.IsNullOrEmpty(WorkspaceSearchTerm)
+                ? filteredCards.OrderByDescending(workspace => workspace.DateModified).Take(20)
+                    .Where(workspace => workspace.IsFavorite)
+                : filteredCards.Take(20).Where(workspace => workspace.IsFavorite));
+        }
+        else
+        {
+            _newDisplayCards.AddRange(string.IsNullOrEmpty(WorkspaceSearchTerm)
+                ? filteredCards.OrderByDescending(workspace => workspace.DateModified).Take(5)
+                : filteredCards.Take(20));
+        }
 
         DisplayedWorkspaceCards = _newDisplayCards;
 
@@ -235,15 +250,19 @@ public class Home_WorkspacesViewModel : ViewModelBase
 
                 foreach (var subDirectory in subDirectories)
                 {
+                    var workspaceName = Path.GetFileName(subDirectory);
+                    var workspaceFullPath = Path.GetFullPath(subDirectory);
+                    var workspaceLastWriteTime = File.GetLastWriteTime(subDirectory);
+
                     await Application.Current.Dispatcher.InvokeAsync(() =>
                     {
                         WorkspaceCards.Add(new WorkspaceItem(new WorkspaceModel()
                         {
-                            Name = Path.GetFileName(subDirectory),
-                            IsFavorite = true,
-                            FullWorkspacePath = Path.GetFullPath(subDirectory),
+                            Name = workspaceName,
+                            IsFavorite = GetFavourites(workspaceName),
+                            FullWorkspacePath = workspaceFullPath,
                             IsVisible = false,
-                            DateModified = File.GetLastWriteTime(subDirectory),
+                            DateModified = workspaceLastWriteTime,
                             ID = _workspaceIDIncrement
                         }, this));
                     });
@@ -258,10 +277,16 @@ public class Home_WorkspacesViewModel : ViewModelBase
         }
     }
 
+    private bool GetFavourites(string workspaceName)
+    {
+        return Settings.Default.Favourites.Contains(workspaceName);
+    }
 
-    public async void HandleTabClick()
+    public async void HandleTabClick(bool isFavouritesPage = false)
     {
         IsLoading = true;
+        _isFavouritesPage = isFavouritesPage;
+
         if (WorkspaceCards.Count == 0)
         {
             await Task.Run(GetWorkspacesFromDirectoryAsync);
@@ -271,7 +296,11 @@ public class Home_WorkspacesViewModel : ViewModelBase
         {
             DisplayedWorkspaceCards.Clear();
             var sortedWorkspaces = WorkspaceCards.OrderByDescending(workspace => workspace.DateModified);
-            DisplayedWorkspaceCards.AddRange(sortedWorkspaces.Take(5));
+
+            DisplayedWorkspaceCards.AddRange(_isFavouritesPage
+                ? sortedWorkspaces.Take(20).Where(workspace => workspace.IsFavorite)
+                : sortedWorkspaces.Take(5));
+
             CheckMainCollectionBodyTextVisibility();
         }
         else
@@ -299,6 +328,9 @@ public class Home_WorkspacesViewModel : ViewModelBase
                     await Task.Run(() => Directory.Delete(workspaceItem.FullWorkspacePath, true));
                     WorkspaceCards.Remove(workspaceItem);
 
+                    Settings.Default.Favourites.Remove(workspaceItem.Name);
+                    Settings.Default.Save();
+
                     UpdateDisplayedCards();
                     CheckMainCollectionBodyTextVisibility();
                 }
@@ -325,16 +357,29 @@ public class Home_WorkspacesViewModel : ViewModelBase
                 if (!(string.IsNullOrEmpty(previousDirectoryPath) || string.IsNullOrEmpty(newDirectoryPath)))
                 {
                     var isDuplicateWorkspaceName = CheckForDuplicateWorkspaceName(dialogResult);
+
                     if ((previousDirectoryPath != newDirectoryPath) && !isDuplicateWorkspaceName)
                     {
                         if (Directory.Exists(previousDirectoryPath))
                         {
+                            var isPreviousWorkspaceFavourite = workspaceItem.IsFavorite;
+                            // Remove
+                            Settings.Default.Favourites.Remove(workspaceItem.Name);
+
+                            // Add
                             Directory.Move(previousDirectoryPath, newDirectoryPath);
                             workspaceItem.Name = dialogResult;
                             workspaceItem.FullWorkspacePath = Path.GetFullPath(newDirectoryPath);
+
+                            workspaceItem.IsFavorite = isPreviousWorkspaceFavourite;
+                            Settings.Default.Favourites.Add(workspaceItem.Name);
+
                             workspaceItem.DateModified = DateTime.Now;
                             Directory.SetLastWriteTime(newDirectoryPath, DateTime.Now);
+
+                            // Update & Save
                             UpdateDisplayedCards();
+                            Settings.Default.Save();
                         }
                     }
                     else
@@ -348,6 +393,27 @@ public class Home_WorkspacesViewModel : ViewModelBase
             {
                 Console.WriteLine($"Error renaming directory: {ex.Message}");
             }
+        }
+    }
+
+    public void FavouriteToggled(WorkspaceItem workspaceItem)
+    {
+        if (workspaceItem.IsFavorite)
+        {
+            Settings.Default.Favourites.Remove(workspaceItem.Name);
+            workspaceItem.IsFavorite = false;
+        }
+        else
+        {
+            Settings.Default.Favourites.Add(workspaceItem.Name);
+            workspaceItem.IsFavorite = true;
+        }
+
+        Settings.Default.Save();
+
+        if (_isFavouritesPage)
+        {
+            UpdateDisplayedCards();
         }
     }
 }

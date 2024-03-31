@@ -3,7 +3,7 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-             xmlns:local="clr-namespace:dev_flow.Views"
+             xmlns:styles="clr-namespace:dev_flow.Assets.Styles"
              xmlns:iconPacks="http://metro.mahapps.com/winfx/xaml/iconpacks"
              mc:Ignorable="d"
              Padding="25px">
@@ -36,8 +36,15 @@
         <Border Grid.Row="0" BorderThickness="0,0,0,2" BorderBrush="Gray" />
 
         <Grid Grid.Row="1">
-            <!-- TODO Content -->
-            <TextBlock Text="COMING SOON" Foreground="Gray" FontSize="40" FontWeight="Heavy"></TextBlock>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="150" />
+                <ColumnDefinition Width="150" />
+                <ColumnDefinition Width="150" />
+            </Grid.ColumnDefinitions>
+            
+            <styles:KanbanBoard Grid.Column="0"/>
+            <styles:KanbanBoard Grid.Column="1"/>
+            <styles:KanbanBoard Grid.Column="2"/>
         </Grid>
 
     </Grid>

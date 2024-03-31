@@ -8,9 +8,7 @@
              xmlns:controls="http://metro.mahapps.com/winfx/xaml/controls"
              xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml"
              mc:Ignorable="d"
-             Padding="25px"
-             Style="{DynamicResource MetroPage}">
-
+             Padding="25px">
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="50" />
