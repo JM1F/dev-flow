@@ -7,12 +7,14 @@
              xmlns:iconPacks="http://metro.mahapps.com/winfx/xaml/iconpacks"
              xmlns:avalonEdit="http://icsharpcode.net/sharpdevelop/avalonedit"
              xmlns:editor="clr-namespace:RoslynPad.Editor;assembly=RoslynPad.Editor.Windows"
+             xmlns:wpf="clr-namespace:Microsoft.Web.WebView2.Wpf;assembly=Microsoft.Web.WebView2.Wpf"
              mc:Ignorable="d"
-             Padding="25px">
+             Padding="25px"
+             Loaded="CodeSandboxPageView_OnLoaded">
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="50" />
-            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
         </Grid.RowDefinitions>
 
         <!-- Title -->
@@ -40,7 +42,7 @@
 
         <!-- Page Content -->
         <Grid Grid.Row="1">
-            <TextBlock FontSize="35" Foreground="{DynamicResource MahApps.Brushes.Text}">Coming Soon...</TextBlock>
+            <wpf:WebView2 Visibility="Visible" x:Name="CodeEditorWebView" />
         </Grid>
 
     </Grid>
