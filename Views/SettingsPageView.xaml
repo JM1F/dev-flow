@@ -7,14 +7,22 @@
              xmlns:iconPacks="http://metro.mahapps.com/winfx/xaml/iconpacks"
              xmlns:controls="http://metro.mahapps.com/winfx/xaml/controls"
              xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml"
+             xmlns:wpf="http://materialdesigninxaml.net/winfx/xaml/themes"
              mc:Ignorable="d"
-             Padding="25px">
+             Padding="25px"
+             Loaded="SettingsPageView_OnLoaded"
+             Unloaded="SettingsPageView_OnUnloaded">
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="50" />
             <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
         </Grid.RowDefinitions>
 
+        <!-- Title -->
         <Grid Grid.Row="0" Margin="0,0,0,10">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="Auto" />
@@ -35,18 +43,125 @@
 
         </Grid>
 
-        <Border Grid.Row="0" BorderThickness="0,0,0,2" BorderBrush="Gray" />
-
+        <!-- Page Content -->
         <Grid Grid.Row="1">
-            <views:GeneralDisplayBoxControl Title="Theme" Margin="20">
-                    <controls:ToggleSwitch Header="Change Application Theme"
-                                           OffContent="Light"
-                                           OnContent="Dark"
-                                           IsOn="{Binding IsDarkTheme, Mode=OneWay}"
-                                           Command="{Binding ThemeChangedCommand}" />
+
+            <!-- Change Theme Setting -->
+            <views:GeneralDisplayBoxControl IconKind="ThemeLightDark"
+                                            Header="Application Theme"
+                                            Description="Change application theme to either light or dark mode.">
+                <views:GeneralDisplayBoxControl.Content>
+                    <controls:ToggleSwitch
+                        VerticalContentAlignment="Center"
+                        Margin="0,0,-65,0"
+                        OffContent="Light"
+                        OnContent="Dark"
+                        controls:ToggleButtonHelper.ContentDirection="LeftToRight"
+                        IsOn="{Binding IsDarkTheme, Mode=OneWay}"
+                        Command="{Binding ThemeChangedCommand}" />
+                </views:GeneralDisplayBoxControl.Content>
             </views:GeneralDisplayBoxControl>
 
         </Grid>
 
+        <Grid Grid.Row="2">
+            <!-- Change Default Export Location -->
+            <views:GeneralDisplayBoxControl IconKind="FileLocation"
+                                            Header="Default Export Location"
+                                            Description="Change the default location that workspaces are exported to.">
+                <views:GeneralDisplayBoxControl.Content>
+                    <Border Grid.Row="0" BorderBrush="{DynamicResource MahApps.Brushes.Gray}"
+                            BorderThickness="1"
+                            CornerRadius="5">
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition
+                                    Width="*" />
+                                <ColumnDefinition
+                                    Width="Auto" />
+                            </Grid.ColumnDefinitions>
+
+                            <TextBox
+                                Grid.Column="0"
+                                Width="175"
+                                Margin="8,0,0,0"
+                                VerticalAlignment="Center"
+                                VerticalContentAlignment="Center"
+                                wpf:HintAssist.Hint="Enter default export location"
+                                wpf:TextFieldAssist.DecorationVisibility="Hidden"
+                                BorderThickness="0"
+                                Text="{Binding DefaultExportLocation, UpdateSourceTrigger=PropertyChanged}"
+                                Foreground="{DynamicResource MahApps.Brushes.Text}"
+                                IsReadOnly="True">
+                                <TextBox.InputBindings>
+                                    <KeyBinding Key="Enter" Command="{Binding OpenExportLocation}" />
+                                </TextBox.InputBindings>
+                            </TextBox>
+
+                            <Button Grid.Column="1"
+                                    Style="{StaticResource MaterialDesignToolButton}"
+                                    Command="{Binding OpenExportLocation}">
+                                <wpf:PackIcon
+                                    Kind="File"
+                                    Opacity=".56"
+                                    Foreground="{DynamicResource MahApps.Brushes.AccentBase}" />
+                            </Button>
+                        </Grid>
+                    </Border>
+
+                </views:GeneralDisplayBoxControl.Content>
+            </views:GeneralDisplayBoxControl>
+
+        </Grid>
+
+        <Grid Grid.Row="3">
+            <!-- Export All Workspaces -->
+            <views:GeneralDisplayBoxControl IconKind="Export"
+                                            Header="Export All Workspaces"
+                                            Description="Export all workspaces to a desired location on your device.">
+                <Button
+                    Width="100"
+                    Content="Export"
+                    Style="{StaticResource MaterialDesignRaisedButton}"
+                    ToolTip="Export All Workspaces"
+                    BorderThickness="0"
+                    Command="{Binding ExportAllCommand}"
+                    Background="{DynamicResource MahApps.Brushes.Accent}"
+                    Foreground="{DynamicResource MahApps.Brushes.Text}"
+                    wpf:ElevationAssist.Elevation="Dp0" />
+
+            </views:GeneralDisplayBoxControl>
+
+        </Grid>
+
+        <Grid Grid.Row="4">
+            <!-- Start Application on Windows Startup -->
+            <views:GeneralDisplayBoxControl IconKind="MicrosoftWindows"
+                                            Header="Start Application on Windows Startup"
+                                            Description="Set this application to startup when windows starts.">
+                <views:GeneralDisplayBoxControl.Content>
+                    <TextBlock Foreground="{DynamicResource MahApps.Brushes.Text}">Coming Soon</TextBlock>
+                </views:GeneralDisplayBoxControl.Content>
+            </views:GeneralDisplayBoxControl>
+
+        </Grid>
+
+        <Grid Grid.Row="5">
+            <!-- Erase All Workspaces -->
+            <views:GeneralDisplayBoxControl IconKind="Delete"
+                                            Header="Erase All Workspaces"
+                                            Description="Permanently delete all workspaces and attached documents.">
+                <Button
+                    Width="100"
+                    Content="Delete"
+                    Style="{StaticResource MaterialDesignRaisedButton}"
+                    ToolTip="Delete All Workspaces"
+                    BorderThickness="0"
+                    Command="{Binding DeleteAllCommand}"
+                    Background="DarkRed"
+                    Foreground="#FFFFFF"
+                    wpf:ElevationAssist.Elevation="Dp0" />
+            </views:GeneralDisplayBoxControl>
+        </Grid>
     </Grid>
 </UserControl>

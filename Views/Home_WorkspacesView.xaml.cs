@@ -5,6 +5,9 @@ using MahApps.Metro.Controls.Dialogs;
 
 namespace dev_flow.Views;
 
+/// <summary>
+/// Code-behind for the Home_WorkspacesView.xaml file.
+/// </summary>
 public partial class Home_WorkspacesView
 {
     public Home_WorkspacesView()

@@ -5,6 +5,8 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:styles="clr-namespace:dev_flow.Assets.Styles"
              xmlns:iconPacks="http://metro.mahapps.com/winfx/xaml/iconpacks"
+             xmlns:mah="http://metro.mahapps.com/winfx/xaml/controls"
+             xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
              mc:Ignorable="d"
              Padding="25px">
     <Grid>
@@ -13,6 +15,7 @@
             <RowDefinition Height="Auto" />
         </Grid.RowDefinitions>
 
+        <!-- Title -->
         <Grid Grid.Row="0" Margin="0,0,0,10">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="Auto" />
@@ -33,18 +36,11 @@
 
         </Grid>
 
-        <Border Grid.Row="0" BorderThickness="0,0,0,2" BorderBrush="Gray" />
+        <Border Grid.Row="0" BorderThickness="0,0,0,2" BorderBrush="{DynamicResource MahApps.Brushes.Gray}" />
 
+        <!-- Page Content -->
         <Grid Grid.Row="1">
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="150" />
-                <ColumnDefinition Width="150" />
-                <ColumnDefinition Width="150" />
-            </Grid.ColumnDefinitions>
-            
-            <styles:KanbanBoard Grid.Column="0"/>
-            <styles:KanbanBoard Grid.Column="1"/>
-            <styles:KanbanBoard Grid.Column="2"/>
+            <TextBlock FontSize="35" Foreground="{DynamicResource MahApps.Brushes.Text}">Coming Soon...</TextBlock>
         </Grid>
 
     </Grid>

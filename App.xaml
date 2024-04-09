@@ -2,28 +2,36 @@
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:local="clr-namespace:dev_flow"
+             xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
              StartupUri="/Views/Shared/MainWindow.xaml">
     <Application.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
+
                 <!-- Object Styles -->
 
                 <!-- MahApps -->
                 <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/Controls.xaml" />
                 <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/fonts.xaml" />
-                
+
                 <!-- Material Design -->
                 <ResourceDictionary
                     Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/materialdesign3.defaults.xaml" />
                 <ResourceDictionary
-                    Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/materialdesign2.defaults.xaml" />
-                <ResourceDictionary
                     Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/generic.xaml" />
+
                 <ResourceDictionary
-                    Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/materialdesign3.defaults.xaml" />
-                <ResourceDictionary
-                    Source="pack://application:,,,/MaterialDesignThemes.MahApps;component/Themes/MaterialDesignTheme.MahApps.Fonts.xaml" />
+                    Source="pack://application:,,,/MaterialDesignThemes.MahApps;component/Themes/materialdesigntheme.mahapps.defaults.xaml" />
             </ResourceDictionary.MergedDictionaries>
+
+            <!-- Override Default Styles -->
+            <Style TargetType="ScrollViewer" BasedOn="{x:Null}" />
+            <Style TargetType="ScrollBar" BasedOn="{x:Null}" />
+
+            <Style TargetType="{x:Type ContextMenu}" BasedOn="{StaticResource MaterialDesignContextMenu}">
+                <Setter Property="Background" Value="#222222" />
+                <Setter Property="Foreground" Value="#FFFFFF" />
+            </Style>
 
         </ResourceDictionary>
     </Application.Resources>

@@ -8,21 +8,19 @@
              xmlns:converters="clr-namespace:dev_flow.Converters"
              mc:Ignorable="d">
 
-    <UserControl.Resources>
-        <converters:BoolToBrushFavoriteConverter x:Key="BoolToBrushFavoriteConverter" />
-    </UserControl.Resources>
-
-
     <Border CornerRadius="10" BorderBrush="{DynamicResource MahApps.Brushes.Gray}" Margin="15, 25,15,25"
             BorderThickness="1"
             RenderTransformOrigin="0.5,0.5" MaxWidth="196">
         <Border.RenderTransform>
             <ScaleTransform x:Name="scaleTransform" ScaleX="1" ScaleY="1" />
         </Border.RenderTransform>
+
+        <!-- Triggers for mouse enter and leave events -->
         <Border.Triggers>
             <EventTrigger RoutedEvent="MouseEnter">
                 <BeginStoryboard>
                     <Storyboard>
+                        <!-- Scale animation on mouse enter -->
                         <DoubleAnimation Storyboard.TargetName="scaleTransform" Storyboard.TargetProperty="ScaleX"
                                          To="1.1" Duration="0:0:0.3" />
                         <DoubleAnimation Storyboard.TargetName="scaleTransform" Storyboard.TargetProperty="ScaleY"
@@ -33,6 +31,7 @@
             <EventTrigger RoutedEvent="MouseLeave">
                 <BeginStoryboard>
                     <Storyboard>
+                        <!-- Scale animation on mouse leave -->
                         <DoubleAnimation Storyboard.TargetName="scaleTransform" Storyboard.TargetProperty="ScaleX"
                                          To="1" Duration="0:0:0.3" />
                         <DoubleAnimation Storyboard.TargetName="scaleTransform" Storyboard.TargetProperty="ScaleY"
@@ -41,6 +40,7 @@
                 </BeginStoryboard>
             </EventTrigger>
         </Border.Triggers>
+
         <materialDesign:Card UniformCornerRadius="9" materialDesign:ElevationAssist.Elevation="Dp0">
             <Grid>
                 <Grid.RowDefinitions>
@@ -56,6 +56,7 @@
                     Width="196"
                     Height="40"
                     Background="{DynamicResource MahApps.Brushes.Accent}" />
+                <!-- Button for workspace entry -->
                 <Button
                     Grid.Row="0"
                     Margin="0,0,16,-20"
@@ -69,6 +70,7 @@
                     <materialDesign:PackIcon
                         Kind="ArrowRight" />
                 </Button>
+                <!-- Workspace name and date modified -->
                 <StackPanel
                     Grid.Row="1"
                     Margin="8,24,8,0">
@@ -78,33 +80,51 @@
                     <TextBlock
                         Text="{Binding DateModified}" />
                 </StackPanel>
+                <!-- Buttons for workspace actions -->
                 <StackPanel
                     Grid.Row="2"
                     Margin="8"
                     HorizontalAlignment="Right"
                     Orientation="Horizontal">
+                    <!-- Button to export workspace -->
                     <Button
                         Width="25"
                         Padding="2,0,2,0"
+                        ToolTip="Export Workspace"
+                        materialDesign:RippleAssist.IsCentered="True"
+                        Style="{StaticResource MaterialDesignOutlinedButton}"
+                        Command="{ Binding ExportWorkspaceCommand}">
+                        <materialDesign:PackIcon
+                            Kind="ExportVariant" />
+                    </Button>
+                    <!-- Button to edit workspace name -->
+                    <Button
+                        Width="25"
+                        Padding="2,0,2,0"
+                        ToolTip="Edit Name"
                         materialDesign:RippleAssist.IsCentered="True"
                         Style="{StaticResource MaterialDesignOutlinedButton}"
                         Command="{ Binding EditNameCommand}">
                         <materialDesign:PackIcon
                             Kind="Edit" />
                     </Button>
+                    <!-- Button to toggle workspace favourite status -->
                     <Button
                         Width="25"
                         Padding="2,0,2,0"
+                        ToolTip="Favourite Workspace"
                         materialDesign:RippleAssist.IsCentered="True"
                         Style="{StaticResource MaterialDesignOutlinedButton}"
-                        Command="{Binding ToggleFavoriteCommand}">
+                        Command="{Binding ToggleFavouriteCommand}">
                         <materialDesign:PackIcon
                             Kind="Star"
-                            materialDesign:Foreground="{Binding IsFavorite, Converter={converters:BoolToBrushFavoriteConverter}}"/>
+                            materialDesign:Foreground="{Binding IsFavourite, Converter={converters:BoolToBrushFavouriteConverter}}" />
                     </Button>
+                    <!-- Button to delete workspace -->
                     <Button
                         Width="25"
                         Padding="2,0,2,0"
+                        ToolTip="Delete Workspace"
                         materialDesign:RippleAssist.IsCentered="True"
                         Style="{StaticResource MaterialDesignOutlinedButton}"
                         Foreground="Red"

@@ -3,17 +3,21 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-             xmlns:local="clr-namespace:dev_flow.Views"
+             xmlns:views="clr-namespace:dev_flow.Views"
              xmlns:iconPacks="http://metro.mahapps.com/winfx/xaml/iconpacks"
              xmlns:mah="http://metro.mahapps.com/winfx/xaml/controls"
+             xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
              mc:Ignorable="d"
              Padding="25px">
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="50" />
             <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
         </Grid.RowDefinitions>
 
+        <!-- Title -->
         <Grid Grid.Row="0" Margin="0,0,0,10">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="Auto" />
@@ -34,10 +38,51 @@
 
         </Grid>
 
-        <Border Grid.Row="0" BorderThickness="0,0,0,2" BorderBrush="Gray" />
-
+        <!-- Page Content -->
         <Grid Grid.Row="1">
-            <!-- TODO Content -->
+            <!-- GitHub Repository -->
+            <views:GeneralDisplayBoxControl IconKind="Github"
+                                            Header="GitHub Repository"
+                                            Description="Visit the open source GitHub repository for DevFlow.">
+                <Button
+                    Width="100"
+                    Content="Open"
+                    Style="{StaticResource MaterialDesignRaisedButton}"
+                    ToolTip="Open the GitHub repository"
+                    BorderThickness="0"
+                    Command="{Binding OpenGitHubRepoCommand}"
+                    Background="{DynamicResource MahApps.Brushes.Accent}"
+                    Foreground="{DynamicResource MahApps.Brushes.Text}"
+                    materialDesign:ElevationAssist.Elevation="Dp0" />
+
+            </views:GeneralDisplayBoxControl>
+        </Grid>
+
+        <Grid Grid.Row="2">
+            <!-- Report an Issue -->
+            <views:GeneralDisplayBoxControl IconKind="GitIssue"
+                                            Header="Report an Issue"
+                                            Description="Help improve the application by submitting a bug/issue on the GitHub page.">
+                <Button
+                    Width="100"
+                    Content="Report"
+                    Style="{StaticResource MaterialDesignRaisedButton}"
+                    ToolTip="Report an Issue"
+                    BorderThickness="0"
+                    Command="{Binding OpenGitHubIssuesCommand}"
+                    Background="{DynamicResource MahApps.Brushes.Accent}"
+                    Foreground="{DynamicResource MahApps.Brushes.Text}"
+                    materialDesign:ElevationAssist.Elevation="Dp0" />
+
+            </views:GeneralDisplayBoxControl>
+        </Grid>
+
+        <Grid Grid.Row="3" VerticalAlignment="Bottom">
+            <!-- Version -->
+            <views:GeneralDisplayBoxControl IconKind="GetApp"
+                                            Header="Version"
+                                            Description="0.6">
+            </views:GeneralDisplayBoxControl>
         </Grid>
 
     </Grid>

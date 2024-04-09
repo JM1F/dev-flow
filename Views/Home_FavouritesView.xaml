@@ -26,6 +26,7 @@
                     Height="30" />
             </Grid.RowDefinitions>
 
+            <!-- Search bar -->
             <Border Grid.Row="0" BorderBrush="{DynamicResource MahApps.Brushes.Gray}"
                     BorderThickness="1,0,1,1"
                     Margin="10,0, 10,0"
@@ -39,7 +40,8 @@
                     </Grid.ColumnDefinitions>
 
                     <Button
-                        Style="{StaticResource MaterialDesignToolButton}">
+                        Style="{StaticResource MaterialDesignToolButton}"
+                        Command="{Binding SearchCommand}">
                         <materialDesign:PackIcon
                             Kind="Search"
                             Opacity=".56" />
@@ -49,13 +51,19 @@
                         MinWidth="200"
                         Margin="8,0,0,0"
                         VerticalAlignment="Center"
+                        VerticalContentAlignment="Center"
                         materialDesign:HintAssist.Hint="Search for a favourite workspace"
                         materialDesign:TextFieldAssist.DecorationVisibility="Hidden"
                         BorderThickness="0"
-                        Text="{Binding WorkspaceSearchTerm, UpdateSourceTrigger=PropertyChanged}" />
+                        Text="{Binding WorkspaceSearchTerm, UpdateSourceTrigger=PropertyChanged}">
+                        <TextBox.InputBindings>
+                            <KeyBinding Key="Enter" Command="{Binding SearchCommand}" />
+                        </TextBox.InputBindings>
+                    </TextBox>
                 </Grid>
             </Border>
 
+            <!-- Workspace Cards -->
             <ScrollViewer VerticalScrollBarVisibility="Auto" Grid.Row="1">
 
                 <ScrollViewer.Resources>
@@ -86,6 +94,7 @@
                         </ItemsControl.ItemTemplate>
                     </ItemsControl>
 
+                    <!-- Empty Text-->
                     <TextBlock Text="No favourite workspaces present, create one to get started."
                                Visibility="{Binding IsMainCollectionEmpty, Converter={StaticResource BooleanToVisibilityConverter}}"
                                VerticalAlignment="Center"
@@ -93,6 +102,7 @@
                                FontWeight="Medium"
                                Style="{DynamicResource MahApps.Styles.Text}" />
 
+                    <!-- Empty Search Text-->
                     <TextBlock Text="No search results found"
                                Visibility="{Binding IsDisplayCollectionEmpty, Converter={StaticResource BooleanToVisibilityConverter}}"
                                VerticalAlignment="Center"
@@ -100,6 +110,7 @@
                                FontWeight="Medium"
                                Style="{DynamicResource MahApps.Styles.Text}" />
 
+                    <!-- Loading spinner -->
                     <controls:ProgressRing Width="50" Height="50" VerticalAlignment="Center"
                                            HorizontalAlignment="Center">
                         <controls:ProgressRing.Style>

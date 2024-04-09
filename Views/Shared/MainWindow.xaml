@@ -45,6 +45,7 @@
         </ResourceDictionary>
     </controls:MetroWindow.Resources>
 
+    <!-- Hamburger Menu -->
     <controls:HamburgerMenu x:Name="HamburgerMenuControl"
                             DisplayMode="CompactInline"
                             IsPaneOpen="False"

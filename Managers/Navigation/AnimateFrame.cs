@@ -5,6 +5,9 @@ using MahApps.Metro.Controls;
 
 namespace dev_flow.Managers.Navigation;
 
+/// <summary>
+/// Provides functionality for animating a Frame during navigation.
+/// </summary>
 public class AnimateFrame
 {
     public static readonly DependencyProperty FrameNavigationStoryboardProperty
@@ -14,6 +17,9 @@ public class AnimateFrame
             typeof(AnimateFrame),
             new FrameworkPropertyMetadata(null, OnFrameNavigationStoryboardChanged));
 
+    /// <summary>
+    /// Handles changes to the FrameNavigationStoryboard attached property.
+    /// </summary>
     private static void OnFrameNavigationStoryboardChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
     {
         if (d is Frame frame && e.OldValue != e.NewValue)
@@ -26,6 +32,9 @@ public class AnimateFrame
         }
     }
 
+    /// <summary>
+    /// Handles the Navigating event of a Frame.
+    /// </summary>
     private static void Frame_Navigating(object sender, System.Windows.Navigation.NavigatingCancelEventArgs e)
     {
         if (sender is Frame frame)
@@ -39,11 +48,18 @@ public class AnimateFrame
         }
     }
 
+    /// <summary>
+    /// Sets the value of the FrameNavigationStoryboard attached property for a specified DependencyObject.
+    /// </summary>
     public static void SetFrameNavigationStoryboard(DependencyObject control, Storyboard storyboard)
     {
         control.SetValue(FrameNavigationStoryboardProperty, storyboard);
     }
 
+
+    /// <summary>
+    /// Gets the value of the FrameNavigationStoryboard attached property for a specified DependencyObject.
+    /// </summary>
     [AttachedPropertyBrowsableForType(typeof(DependencyObject))]
     public static Storyboard GetFrameNavigationStoryboard(DependencyObject control)
     {

@@ -5,14 +5,20 @@ using MahApps.Metro.IconPacks;
 
 namespace dev_flow.ViewModels.Shared;
 
+/// <summary>
+/// View model for the side menu bar.
+/// </summary>
 public class SideMenuBarViewModel : ViewModelBase
 {
+    // Collection of the main menu items.
     public ObservableCollection<MenuItem> Menu { get; } = new();
 
+    // Collection of the option menu items.
     public ObservableCollection<MenuItem> OptionsMenu { get; } = new();
 
     public SideMenuBarViewModel()
     {
+        // Add menu items to the Menu collection
         Menu.Add(new MenuItem()
         {
             Icon = new PackIconFontAwesome() { Kind = PackIconFontAwesomeKind.HomeSolid },
@@ -31,18 +37,12 @@ public class SideMenuBarViewModel : ViewModelBase
         {
             Icon = new PackIconFontAwesome() { Kind = PackIconFontAwesomeKind.CodeSolid },
             Label = "Code Sandbox",
-            NavigationType = typeof(SourceControlPageView),
+            NavigationType = typeof(CodeSandboxPageView),
             NavigationDestination = new Uri("Views/CodeSandboxPageView.xaml", UriKind.RelativeOrAbsolute)
         });
-        Menu.Add(new MenuItem()
-        {
-            Icon = new PackIconFontAwesome() { Kind = PackIconFontAwesomeKind.CodeBranchSolid },
-            Label = "Source Control",
-            NavigationType = typeof(SourceControlPageView),
-            NavigationDestination = new Uri("Views/SourceControlPageView.xaml", UriKind.RelativeOrAbsolute)
-        });
 
 
+        // Add menu items to the OptionsMenu collection
         OptionsMenu.Add(new MenuItem()
         {
             Icon = new PackIconFontAwesome() { Kind = PackIconFontAwesomeKind.CogsSolid },

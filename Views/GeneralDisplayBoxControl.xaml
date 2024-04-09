@@ -3,18 +3,37 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
              mc:Ignorable="d">
-    
-    <Border CornerRadius="15" Background="Red" BorderThickness="1">
-        <StackPanel Orientation="Horizontal">
-            <!-- Icon -->
-            <TextBlock x:Name="IconTextBlock" Margin="10,0,0,0" FontSize="16" FontWeight="Bold" />
+    <!-- This control is used to display a box with an icon, header, description and content. -->
+    <Border Background="Transparent" BorderThickness="1" BorderBrush="{DynamicResource MahApps.Brushes.Gray}"
+            CornerRadius="5" Padding="12" Margin="0,25,0,0">
+        <Grid VerticalAlignment="Center">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto" />
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="Auto" />
+            </Grid.ColumnDefinitions>
 
-            <!-- Title -->
-            <TextBlock x:Name="TitleTextBlock" Margin="10,0,0,0" FontSize="16" FontWeight="Bold" />
+            <materialDesign:PackIcon x:Name="IconPackIcon" Grid.Column="0" Width="30" Height="30" Margin="0,0,12,0"
+                                     Kind="{Binding IconKind, RelativeSource={RelativeSource AncestorType=UserControl}}"
+                                     Foreground="{DynamicResource MahApps.Brushes.AccentBase}"
+                                     VerticalAlignment="Center"
+                                     HorizontalAlignment="Center" />
 
-            <!-- Additional content placeholder -->
-            <ContentPresenter />
-        </StackPanel>
+            <StackPanel Grid.Column="1" Margin="0,0,12,0" VerticalAlignment="Center">
+                <TextBlock x:Name="HeaderTextBlock"
+                           Text="{Binding Header, RelativeSource={RelativeSource AncestorType=UserControl}}"
+                           FontSize="16" FontWeight="Bold" Foreground="{DynamicResource MahApps.Brushes.Text}"
+                           TextWrapping="Wrap" />
+                <TextBlock x:Name="DescriptionTextBlock"
+                           Text="{Binding Description, RelativeSource={RelativeSource AncestorType=UserControl}}"
+                           Margin="0,4,0,0" Foreground="{DynamicResource MahApps.Brushes.Text}"
+                           TextWrapping="Wrap" />
+            </StackPanel>
+
+            <ContentPresenter Grid.Column="2" x:Name="ContentPresenter" VerticalAlignment="Center"
+                              Content="{Binding Content, RelativeSource={RelativeSource AncestorType=UserControl}}" />
+        </Grid>
     </Border>
 </UserControl>

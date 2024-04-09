@@ -7,7 +7,6 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-using System.Collections.Specialized;
 using dev_flow.Enums;
 
 namespace dev_flow.Properties {
@@ -49,12 +48,24 @@ namespace dev_flow.Properties {
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("")]
-        public StringCollection Favourites {
+        public global::System.Collections.Specialized.StringCollection Favourites {
             get {
-                return ((StringCollection)(this["Favourites"]));
+                return ((global::System.Collections.Specialized.StringCollection)(this["Favourites"]));
             }
             set {
                 this["Favourites"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("")]
+        public string DefaultExportLocation {
+            get {
+                return ((string)(this["DefaultExportLocation"]));
+            }
+            set {
+                this["DefaultExportLocation"] = value;
             }
         }
     }

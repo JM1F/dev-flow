@@ -15,6 +15,7 @@
             <RowDefinition Height="Auto" />
         </Grid.RowDefinitions>
 
+        <!-- Title -->
         <Grid Grid.Row="0" Margin="0,0,0,10">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="Auto" />
@@ -35,20 +36,11 @@
 
         </Grid>
 
-        <Border Grid.Row="0" BorderThickness="0,0,0,2" BorderBrush="Gray" />
+        <Border Grid.Row="0" BorderThickness="0,0,0,2" BorderBrush="{DynamicResource MahApps.Brushes.Gray}" />
 
+        <!-- Page Content -->
         <Grid Grid.Row="1">
-            <!-- TODO Content -->
-            <editor:RoslynCodeEditor
-                Width="500"
-                Height="500"
-                FontFamily="Consolas"
-                Margin="5"
-                IsReadOnly="{Binding IsReadOnly}"
-                HorizontalScrollBarVisibility="Disabled"
-                VerticalScrollBarVisibility="Disabled"
-                ShowLineNumbers="True"
-                SyntaxHighlighting="Python"/>
+            <TextBlock FontSize="35" Foreground="{DynamicResource MahApps.Brushes.Text}">Coming Soon...</TextBlock>
         </Grid>
 
     </Grid>

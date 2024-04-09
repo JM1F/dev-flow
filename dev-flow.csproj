@@ -9,10 +9,17 @@
     <ApplicationIcon>Assets\dev-flow-icon.ico</ApplicationIcon>
   </PropertyGroup>
 
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+    <DefineConstants>$(DefineConstants);WINDOWS11_OR_LATER</DefineConstants>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
+    <DefineConstants>$(DefineConstants);WINDOWS11_OR_LATER</DefineConstants>
+  </PropertyGroup>
+
   <ItemGroup>
     <Folder Include="Behaviours\" />
     <Folder Include="Services\" />
-    <Folder Include="Tests\" />
   </ItemGroup>
 
   <ItemGroup>

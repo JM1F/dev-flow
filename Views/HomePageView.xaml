@@ -16,6 +16,7 @@
             <RowDefinition Height="*" />
         </Grid.RowDefinitions>
 
+        <!-- Title -->
         <Grid HorizontalAlignment="Right" Margin="0,0,20,-40" Grid.Row="0">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="Auto" />
@@ -37,11 +38,13 @@
 
         </Grid>
 
+        <!-- Page Content -->
         <Grid Row="1">
+            <!-- Tab Control for workspaces and favourites -->
             <TabControl Grid.Column="0" TabStripPlacement="Top" Background="Transparent"
                         mah:TabControlHelper.UnderlinePlacement="Bottom"
                         mah:TabControlHelper.UnderlineSelectedBrush="{DynamicResource MahApps.Brushes.Accent}"
-                        mah:TabControlHelper.UnderlineMouseOverBrush="Gray"
+                        mah:TabControlHelper.UnderlineMouseOverBrush="{DynamicResource MahApps.Brushes.Gray}"
                         mah:TabControlHelper.Underlined="TabPanel"
                         Style="{DynamicResource MahApps.Styles.TabControl.Animated}"
                         SelectionChanged="Selector_OnSelectionChanged">
@@ -50,12 +53,15 @@
                         <VirtualizingStackPanel IsVirtualizing="True" />
                     </ItemsPanelTemplate>
                 </TabControl.ItemsPanel>
+
                 <mah:MetroTabItem Header="🗎 Workspaces">
                     <views:Home_WorkspacesView />
                 </mah:MetroTabItem>
+
                 <mah:MetroTabItem Header="★ Favourites">
                     <views:Home_FavouritesView />
                 </mah:MetroTabItem>
+
             </TabControl>
         </Grid>
     </Grid>

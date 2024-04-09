@@ -3,41 +3,123 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-             xmlns:local="clr-namespace:dev_flow.Assets.Styles"
+             xmlns:styles="clr-namespace:dev_flow.Assets.Styles"
              xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
              xmlns:mah="http://metro.mahapps.com/winfx/xaml/controls"
              mc:Ignorable="d">
-    <ToolBarTray>
+
+    <ToolBarTray VerticalAlignment="Center" Background="{DynamicResource MahApps.Brushes.Accent}" IsLocked="True">
         <ToolBar
-            ClipToBounds="False"
-            Style="{StaticResource MaterialDesignToolBar}">
+            Style="{StaticResource MahApps.Styles.ToolBar}"
+            Background="Transparent"
+            OverflowMode="Never">
+            <!-- Save toolbar button -->
             <Button
-                Content="{materialDesign:PackIcon Kind=ContentSave}"
-                ToolTip="Save" />
-            <Separator />
+                ToolTip="Save"
+                Command="{Binding SaveCommand}"
+                Width="80">
+                <StackPanel>
+                    <materialDesign:PackIcon
+                        HorizontalAlignment="Center"
+                        Kind="ContentSave" />
+                    <TextBlock
+                        Margin="0,4,0,0"
+                        Text="Save"
+                        FontWeight="Normal" />
+                </StackPanel>
+            </Button>
+            <Border BorderBrush="{DynamicResource MahApps.Brushes.Gray}" BorderThickness="2">
+                <StackPanel
+                    Orientation="Horizontal"
+                    VerticalAlignment="Center">
+                    <!-- Edit and Preview radio buttons -->
+                    <RadioButton
+                        x:Name="EditViewRadioButton"
+                        IsChecked="True"
+                        Style="{StaticResource MaterialDesignToolRadioButton}"
+                        Command="{Binding EditCommand}"
+                        Foreground="{DynamicResource MahApps.Brushes.Text}"
+                        VerticalAlignment="Center"
+                        HorizontalContentAlignment="Center"
+                        Width="80">
+                        <StackPanel>
+                            <materialDesign:PackIcon
+                                HorizontalAlignment="Center"
+                                Kind="Edit" />
+                            <TextBlock
+                                Margin="0,4,0,0"
+                                Text="Edit View" />
+                        </StackPanel>
+                    </RadioButton>
+                    <RadioButton
+                        x:Name="PreviewViewRadioButton"
+                        IsChecked="False"
+                        Style="{StaticResource MaterialDesignToolRadioButton}"
+                        Command="{Binding PreviewCommand}"
+                        Foreground="{DynamicResource MahApps.Brushes.Text}"
+                        VerticalAlignment="Center"
+                        HorizontalContentAlignment="Center"
+                        Width="80">
+                        <StackPanel>
+                            <materialDesign:PackIcon
+                                HorizontalAlignment="Center"
+                                Kind="Eye" />
+                            <TextBlock
+                                Margin="0,4,0,0"
+                                Text="Preview" />
+                        </StackPanel>
+                    </RadioButton>
+                </StackPanel>
+            </Border>
+
+            <!-- Cut, Copy, Paste toolbar buttons -->
             <Button
                 Command="Cut"
-                Content="{materialDesign:PackIcon Kind=ContentCut}"
                 ToolBar.OverflowMode="AsNeeded"
-                ToolTip="Cut" />
+                ToolTip="Cut"
+                Width="80">
+                <StackPanel>
+                    <materialDesign:PackIcon
+                        HorizontalAlignment="Center"
+                        Kind="Scissors" />
+                    <TextBlock
+                        Margin="0,4,0,0"
+                        Text="Cut"
+                        FontWeight="Normal" />
+                </StackPanel>
+            </Button>
+
             <Button
                 Command="Copy"
-                Content="{materialDesign:PackIcon Kind=ContentCopy}"
                 ToolBar.OverflowMode="AsNeeded"
-                ToolTip="Copy that stuff" />
+                ToolTip="Copy"
+                Width="80">
+                <StackPanel>
+                    <materialDesign:PackIcon
+                        HorizontalAlignment="Center"
+                        Kind="ContentCopy" />
+                    <TextBlock
+                        Margin="0,4,0,0"
+                        Text="Copy"
+                        FontWeight="Normal" />
+                </StackPanel>
+            </Button>
+
             <Button
                 Command="Paste"
-                Content="{materialDesign:PackIcon Kind=ContentPaste}"
                 ToolBar.OverflowMode="AsNeeded"
-                ToolTip="Paste some stuff" />
-            
-            <Separator />
-            
-            <mah:ToggleSwitch
-                OffContent="Edit View"
-                OnContent="Preview"/>
-            
-            <Separator />
+                ToolTip="Paste"
+                Width="80">
+                <StackPanel>
+                    <materialDesign:PackIcon
+                        HorizontalAlignment="Center"
+                        Kind="ContentPaste" />
+                    <TextBlock
+                        Margin="0,4,0,0"
+                        Text="Paste"
+                        FontWeight="Normal" />
+                </StackPanel>
+            </Button>
         </ToolBar>
     </ToolBarTray>
 </UserControl>
