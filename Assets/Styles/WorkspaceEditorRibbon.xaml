@@ -17,7 +17,8 @@
             <Button
                 ToolTip="Save"
                 Command="{Binding SaveCommand}"
-                Width="80">
+                Width="80"
+                Click="ButtonBase_OnClick">
                 <StackPanel>
                     <materialDesign:PackIcon
                         HorizontalAlignment="Center"

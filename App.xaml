@@ -8,8 +8,6 @@
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
 
-                <!-- Object Styles -->
-
                 <!-- MahApps -->
                 <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/Controls.xaml" />
                 <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/fonts.xaml" />
@@ -22,6 +20,12 @@
 
                 <ResourceDictionary
                     Source="pack://application:,,,/MaterialDesignThemes.MahApps;component/Themes/materialdesigntheme.mahapps.defaults.xaml" />
+
+
+                <!-- Object Styles -->
+                <ResourceDictionary Source="Assets/Styles/TaskItem.xaml" />
+                <ResourceDictionary Source="Assets/Styles/DropAdornerTemplate.xaml" />
+
             </ResourceDictionary.MergedDictionaries>
 
             <!-- Override Default Styles -->
@@ -31,6 +35,10 @@
             <Style TargetType="{x:Type ContextMenu}" BasedOn="{StaticResource MaterialDesignContextMenu}">
                 <Setter Property="Background" Value="#222222" />
                 <Setter Property="Foreground" Value="#FFFFFF" />
+            </Style>
+
+            <Style TargetType="{x:Type TextBox}" BasedOn="{StaticResource MaterialDesignTextBox}">
+                <Setter Property="CaretBrush" Value="{DynamicResource MahApps.Brushes.Text}" />
             </Style>
 
         </ResourceDictionary>

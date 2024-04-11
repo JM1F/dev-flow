@@ -3,6 +3,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Input;
 using System.Windows.Navigation;
 using ControlzEx.Theming;
 using dev_flow.Managers.Navigation;
@@ -55,6 +56,15 @@ public partial class WorkspaceEditorView : IDisposable
         // Subscribe to the NewWindowRequested and NavigationStarting events of the CoreWebView2 control
         _coreWebView2.NewWindowRequested += CoreWebView2_NewWindowRequested;
         _coreWebView2.NavigationStarting += CoreWebView2_NavigationStarting;
+
+        _coreWebView2.ContextMenuRequested += WebView_ContextMenuRequested;
+
+        _coreWebView2.Settings.AreDevToolsEnabled = false;
+        _coreWebView2.Settings.IsStatusBarEnabled = false;
+        _coreWebView2.Settings.IsSwipeNavigationEnabled = false;
+        _coreWebView2.Settings.AreHostObjectsAllowed = false;
+        _coreWebView2.Settings.IsPasswordAutosaveEnabled = false;
+        _coreWebView2.Settings.IsWebMessageEnabled = false;
     }
 
     /// <summary>
@@ -108,15 +118,17 @@ public partial class WorkspaceEditorView : IDisposable
                 UseShellExecute = true
             });
         }
-        else
+        else if (e.Uri.StartsWith("file://"))
         {
-            if (_coreWebView2 != null)
+            // Cancel the navigation within the WebView2 control
+            e.Cancel = true;
+
+            // Open the file in the default application
+            System.Diagnostics.Process.Start(new System.Diagnostics.ProcessStartInfo
             {
-                _coreWebView2.Settings.AreDevToolsEnabled = false;
-                _coreWebView2.Settings.IsStatusBarEnabled = false;
-                _coreWebView2.Settings.IsSwipeNavigationEnabled = false;
-                _coreWebView2.ContextMenuRequested += WebView_ContextMenuRequested;
-            }
+                FileName = e.Uri,
+                UseShellExecute = true
+            });
         }
     }
 
@@ -186,5 +198,13 @@ public partial class WorkspaceEditorView : IDisposable
     public void Dispose()
     {
         NavigationManager.Navigated -= NavigationManager_Navigated;
+    }
+
+    private void MarkdownViewer_OnKeyDown(object sender, KeyEventArgs e)
+    {
+        if (e.Key == Key.F5)
+        {
+            e.Handled = true;
+        }
     }
 }

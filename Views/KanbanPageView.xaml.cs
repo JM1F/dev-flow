@@ -5,6 +5,7 @@ using System.Windows.Controls;
 using System.Windows.Input;
 using dev_flow.Models;
 using dev_flow.ViewModels;
+using MahApps.Metro.Controls.Dialogs;
 
 namespace dev_flow.Views;
 
@@ -17,5 +18,17 @@ public partial class KanbanPageView : UserControl
     {
         InitializeComponent();
         DataContext = new KanbanPageViewModel();
+    }
+
+    private void KanbanPageView_OnLoaded(object sender, RoutedEventArgs e)
+    {
+        // Register the dialog coordinator on load
+        DialogParticipation.SetRegister(this, DataContext);
+    }
+
+    private void KanbanPageView_OnUnloaded(object sender, RoutedEventArgs e)
+    {
+        // Unregister the dialog coordinator as memory leak prevention on unload
+        DialogParticipation.SetRegister(this, null);
     }
 }

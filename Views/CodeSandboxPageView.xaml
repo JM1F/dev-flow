@@ -8,9 +8,9 @@
              xmlns:avalonEdit="http://icsharpcode.net/sharpdevelop/avalonedit"
              xmlns:editor="clr-namespace:RoslynPad.Editor;assembly=RoslynPad.Editor.Windows"
              xmlns:wpf="clr-namespace:Microsoft.Web.WebView2.Wpf;assembly=Microsoft.Web.WebView2.Wpf"
+             xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
              mc:Ignorable="d"
-             Padding="25px"
-             Loaded="CodeSandboxPageView_OnLoaded">
+             Padding="25px">
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="50" />
@@ -41,9 +41,13 @@
         <Border Grid.Row="0" BorderThickness="0,0,0,2" BorderBrush="{DynamicResource MahApps.Brushes.Gray}" />
 
         <!-- Page Content -->
-        <Grid Grid.Row="1">
-            <wpf:WebView2 Visibility="Visible" x:Name="CodeEditorWebView" />
-        </Grid>
+            <wpf:WebView2 Grid.Row="1" x:Name="CodeEditorWebView"
+                          DefaultBackgroundColor="Transparent"
+                          DesignModeForegroundColor="Transparent"
+                          NavigationStarting="CodeEditorWebView_OnNavigationStarting"
+                          KeyDown="CodeEditorWebView_OnKeyDown"
+                          NavigationCompleted="CodeEditorWebView_OnNavigationCompleted"
+                          Visibility="Collapsed"/>
 
     </Grid>
 </UserControl>

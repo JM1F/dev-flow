@@ -7,8 +7,11 @@
              xmlns:iconPacks="http://metro.mahapps.com/winfx/xaml/iconpacks"
              xmlns:mah="http://metro.mahapps.com/winfx/xaml/controls"
              xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+             xmlns:dd="urn:gong-wpf-dragdrop"
              mc:Ignorable="d"
-             Padding="25px">
+             Padding="25px"
+             Loaded="KanbanPageView_OnLoaded"
+             Unloaded="KanbanPageView_OnUnloaded">
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="50" />
@@ -40,7 +43,37 @@
 
         <!-- Page Content -->
         <Grid Grid.Row="1">
-            <TextBlock FontSize="35" Foreground="{DynamicResource MahApps.Brushes.Text}">Coming Soon...</TextBlock>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition />
+                <ColumnDefinition />
+                <ColumnDefinition />
+            </Grid.ColumnDefinitions>
+
+            <!-- To-do Tasks -->
+            <ListBox Grid.Column="0" ItemsSource="{Binding TodoTasks}"
+                     ItemTemplate="{StaticResource TaskItemTemplate}"
+                     dd:DragDrop.IsDragSource="True" dd:DragDrop.IsDropTarget="True"
+                     dd:DragDrop.DropHandler="{Binding}"
+                     dd:DragDrop.DragAdornerTemplate="{StaticResource TaskItemTemplate}"
+                     dd:DragDrop.EffectMoveAdornerTemplate="{StaticResource DropAdornerTemplate}">
+            </ListBox>
+
+            <!-- In Progress -->
+            <ListBox Grid.Column="1" ItemsSource="{Binding DoingTasks}"
+                     ItemTemplate="{StaticResource TaskItemTemplate}"
+                     dd:DragDrop.IsDragSource="True" dd:DragDrop.IsDropTarget="True"
+                     dd:DragDrop.DropHandler="{Binding}"
+                     dd:DragDrop.DragAdornerTemplate="{StaticResource TaskItemTemplate}">
+
+            </ListBox>
+
+            <!-- Done Tasks -->
+            <ListBox Grid.Column="2" ItemsSource="{Binding DoneTasks}"
+                     ItemTemplate="{StaticResource TaskItemTemplate}"
+                     dd:DragDrop.IsDragSource="True" dd:DragDrop.IsDropTarget="True"
+                     dd:DragDrop.DropHandler="{Binding}"
+                     dd:DragDrop.DragAdornerTemplate="{StaticResource TaskItemTemplate}">
+            </ListBox>
         </Grid>
 
     </Grid>

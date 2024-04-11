@@ -100,7 +100,7 @@
 
                             <Border Grid.Column="0" BorderThickness="1,0,0,1"
                                     BorderBrush="{DynamicResource MahApps.Brushes.Accent}">
-                                <wv2:WebView2 x:Name="MarkdownViewer" />
+                                <wv2:WebView2 DefaultBackgroundColor="Transparent" x:Name="MarkdownViewer" KeyDown="MarkdownViewer_OnKeyDown"/>
                             </Border>
                         </Grid>
                     </DockPanel>

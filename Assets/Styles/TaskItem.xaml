@@ -1,0 +1,109 @@
+﻿<ResourceDictionary x:Class="dev_flow.Assets.Styles.TaskItem"
+                    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+                    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+                    xmlns:local="clr-namespace:dev_flow.Assets.Styles"
+                    xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+                    mc:Ignorable="d">
+
+    <DataTemplate x:Key="TaskItemTemplate">
+        <materialDesign:FlipperClassic
+            materialDesign:ElevationAssist.Elevation="Dp0"
+            Background="Aqua"
+            Style="{StaticResource MaterialDesignCardFlipperClassic}">
+            <materialDesign:FlipperClassic.FrontContent>
+                <Grid>
+                    <StackPanel
+                        HorizontalAlignment="Center"
+                        VerticalAlignment="Center">
+                        <TextBlock
+                            Text="{Binding Title}" />
+                        <Button
+                            Margin="0,4,0,0"
+                            Command="{x:Static materialDesign:FlipperClassic.FlipCommand}"
+                            Content="EDIT"
+                            Style="{StaticResource MaterialDesignFlatButton}" />
+                    </StackPanel>
+                </Grid>
+            </materialDesign:FlipperClassic.FrontContent>
+            <materialDesign:FlipperClassic.BackContent>
+                <Grid
+                    Width="200"
+                    Height="256">
+                    <Grid.RowDefinitions>
+                        <RowDefinition
+                            Height="Auto" />
+                        <RowDefinition
+                            Height="*" />
+                    </Grid.RowDefinitions>
+                    <materialDesign:ColorZone
+                        Padding="6"
+                        Mode="SecondaryMid">
+                        <StackPanel
+                            Orientation="Horizontal">
+                            <Button
+                                HorizontalAlignment="Left"
+                                Command="{x:Static materialDesign:FlipperClassic.FlipCommand}"
+                                Style="{StaticResource MaterialDesignToolForegroundButton}">
+                                <materialDesign:PackIcon
+                                    HorizontalAlignment="Right"
+                                    Kind="ArrowLeft" />
+                            </Button>
+                            <TextBlock
+                                Margin="8,0,0,0"
+                                VerticalAlignment="Center"
+                                Text="EDIT USER" />
+                        </StackPanel>
+                    </materialDesign:ColorZone>
+                    <Grid
+                        Grid.Row="1"
+                        Width="172"
+                        Margin="0,6,0,0"
+                        HorizontalAlignment="Center"
+                        VerticalAlignment="Top">
+                        <Grid.RowDefinitions>
+                            <RowDefinition />
+                            <RowDefinition />
+                            <RowDefinition />
+                            <RowDefinition />
+                        </Grid.RowDefinitions>
+                        <TextBox
+                            Margin="0,12,0,0"
+                            materialDesign:HintAssist.Hint="First name"
+                            materialDesign:HintAssist.IsFloating="True"
+                            Text="James" />
+                        <TextBox
+                            Grid.Row="1"
+                            Margin="0,12,0,0"
+                            materialDesign:HintAssist.Hint="Last name"
+                            materialDesign:HintAssist.IsFloating="True"
+                            Text="Willock" />
+                        <StackPanel
+                            Grid.Row="2"
+                            Margin="0,12,0,0"
+                            HorizontalAlignment="Right"
+                            Orientation="Horizontal">
+                            <TextBlock
+                                VerticalAlignment="Center"
+                                Text="Email Contact" />
+                            <ToggleButton
+                                Margin="8,0,0,0" />
+                        </StackPanel>
+                        <StackPanel
+                            Grid.Row="3"
+                            Margin="0,12,0,0"
+                            HorizontalAlignment="Right"
+                            Orientation="Horizontal">
+                            <TextBlock
+                                VerticalAlignment="Center"
+                                Text="Telephone Contact" />
+                            <ToggleButton
+                                Margin="8,0,0,0" />
+                        </StackPanel>
+                    </Grid>
+                </Grid>
+            </materialDesign:FlipperClassic.BackContent>
+        </materialDesign:FlipperClassic>
+    </DataTemplate>
+</ResourceDictionary>
