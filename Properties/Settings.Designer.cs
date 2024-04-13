@@ -47,7 +47,6 @@ namespace dev_flow.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("")]
         public global::System.Collections.Specialized.StringCollection Favourites {
             get {
                 return ((global::System.Collections.Specialized.StringCollection)(this["Favourites"]));
@@ -66,6 +65,30 @@ namespace dev_flow.Properties {
             }
             set {
                 this["DefaultExportLocation"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("")]
+        public string CodeEditorValue {
+            get {
+                return ((string)(this["CodeEditorValue"]));
+            }
+            set {
+                this["CodeEditorValue"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("")]
+        public string CodeEditorLanguage {
+            get {
+                return ((string)(this["CodeEditorLanguage"]));
+            }
+            set {
+                this["CodeEditorLanguage"] = value;
             }
         }
     }

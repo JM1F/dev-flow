@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Xml.Serialization;
+using dev_flow.Enums;
 
 namespace dev_flow.Models;
 
@@ -7,9 +9,18 @@ namespace dev_flow.Models;
 /// </summary>
 public class KanbanTask
 {
+    [XmlElement("Title")]
     public string Title { get; set; }
+
+    [XmlElement("Description")]
     public string Description { get; set; }
+
+    [XmlElement("Severity")]
+    public string Severity { get; set; }
+
+    [XmlElement("DueDate")]
     public DateTime DueDate { get; set; }
-    public int Criticality { get; set; }
-    public string Status { get; set; }
+    
+    [XmlElement("Status")]
+    public KanbanStatusEnum Status { get; set; }
 }
