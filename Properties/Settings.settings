@@ -15,10 +15,10 @@
       <Value Profile="(Default)" />
     </Setting>
     <Setting Name="CodeEditorValue" Type="System.String" Scope="User">
-      <Value Profile="(Default)" />
+      <Value Profile="(Default)">██████  ███████ ██    ██ ███████ ██       ██████  ██     ██\n██   ██ ██      ██    ██ ██      ██      ██    ██ ██     ██\n██   ██ █████   ██    ██ █████   ██      ██    ██ ██  █  ██\n██   ██ ██       ██  ██  ██      ██      ██    ██ ██ ███ ██\n██████  ███████   ████   ██      ███████  ██████   ███ ███  \n                                                             \n\nBegin Coding Here!\n\n - Change language syntax in the top right.\n\n - Open files within the editor. \n\n - Save files locally or save to your device.</Value>
     </Setting>
     <Setting Name="CodeEditorLanguage" Type="System.String" Scope="User">
-      <Value Profile="(Default)" />
+      <Value Profile="(Default)">csharp</Value>
     </Setting>
   </Settings>
 </SettingsFile>

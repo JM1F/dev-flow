@@ -18,7 +18,7 @@
         </Grid.RowDefinitions>
 
         <Grid Grid.Row="0"
-              
+
               Background="{DynamicResource MahApps.Brushes.Accent}">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="400" />
@@ -31,8 +31,8 @@
             <Border Grid.Row="0"
                     CornerRadius="0,0,100,0"
                     Background="{DynamicResource MahApps.Brushes.Accent}">
-                <Grid 
-                      Margin="25,25,5,25">
+                <Grid
+                    Margin="25,25,5,25">
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="Auto" />
                         <ColumnDefinition Width="Auto" />
@@ -51,27 +51,24 @@
                     </TextBlock>
                 </Grid>
             </Border>
-            
+
             <styles:CodeEditorRibbon Margin="20,0,0,0" Grid.Row="0" Grid.Column="1" />
-            
+
             <ComboBox Grid.Column="2"
                       Width="175"
                       Height="32"
                       Margin="0,0,20,0"
+                      ItemsSource="{Binding SupportedLanguagesItemSource}"
+                      DisplayMemberPath="DisplayName"
                       HorizontalAlignment="Right"
+                      HorizontalContentAlignment="Center"
                       materialDesign:HintAssist.Hint="Language"
-                      ItemsSource="{Binding ShortStringList}"
-                      Style="{StaticResource MahApps.Styles.ComboBox}">
-                <ComboBoxItem
-                    Content="Item 1" />
-                <ComboBoxItem
-                    Content="Item 2" />
-                <ComboBoxItem
-                    Content="Item 3" />
+                      Style="{StaticResource MahApps.Styles.ComboBox}"
+                      SelectedItem="{Binding SelectedLanguage}">
             </ComboBox>
 
         </Grid>
-        
+
         <!-- Page Content -->
         <wpf:WebView2 Grid.Row="1" x:Name="CodeEditorWebView"
                       DefaultBackgroundColor="Transparent"

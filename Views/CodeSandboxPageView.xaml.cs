@@ -8,6 +8,7 @@ using System.Windows.Controls;
 using System.Windows.Input;
 using dev_flow.Enums;
 using dev_flow.Properties;
+using dev_flow.ViewModels;
 using MahApps.Metro.Controls.Dialogs;
 using Microsoft.Web.WebView2.Core;
 
@@ -27,24 +28,26 @@ public partial class CodeSandboxPageView : UserControl
     public CodeSandboxPageView()
     {
         InitializeComponent();
+        DataContext = new CodeSandboxPageViewModel(this);
 
         _editorHtmlPath = Path.Combine(
             AppDomain.CurrentDomain.BaseDirectory, EditorFileName);
-    
+
         InitialiseEditorAsync();
     }
 
-    private async Task LoadEditorHtml(string theme, string language, string code)
+    private async Task LoadEditorHtml(string theme, string? language = null)
     {
         _editorHtmlContent = await File.ReadAllTextAsync(_editorHtmlPath);
 
         var templatePath = Path.Combine(
             AppDomain.CurrentDomain.BaseDirectory, EditorTemplateFileName);
-
+        
+        var codeEditorValue = Settings.Default.CodeEditorValue;
         string htmlContent = await File.ReadAllTextAsync(templatePath);
         htmlContent = htmlContent.Replace("{{THEME}}", theme);
-        htmlContent = htmlContent.Replace("{{LANGUAGE}}", language);
-        htmlContent = htmlContent.Replace("{{EDITOR_VALUE}}", code);
+        htmlContent = htmlContent.Replace("{{LANGUAGE}}", Settings.Default.CodeEditorLanguage);
+        htmlContent = htmlContent.Replace("{{EDITOR_VALUE}}",codeEditorValue);
 
         await File.WriteAllTextAsync(_editorHtmlPath, htmlContent);
 
@@ -57,11 +60,11 @@ public partial class CodeSandboxPageView : UserControl
 
         if (Settings.Default.Theme == ThemeEnum.DarkTheme)
         {
-            await LoadEditorHtml("vs-dark", "csharp", string.Empty);
+            await LoadEditorHtml("vs-dark");
         }
         else
         {
-            await LoadEditorHtml("vs", "csharp", string.Empty);
+            await LoadEditorHtml("vs");
         }
     }
 

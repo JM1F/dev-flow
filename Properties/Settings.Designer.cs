@@ -47,6 +47,7 @@ namespace dev_flow.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("")]
         public global::System.Collections.Specialized.StringCollection Favourites {
             get {
                 return ((global::System.Collections.Specialized.StringCollection)(this["Favourites"]));
@@ -70,7 +71,7 @@ namespace dev_flow.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("")]
+        [global::System.Configuration.DefaultSettingValueAttribute(@"██████  ███████ ██    ██ ███████ ██       ██████  ██     ██\n██   ██ ██      ██    ██ ██      ██      ██    ██ ██     ██\n██   ██ █████   ██    ██ █████   ██      ██    ██ ██  █  ██\n██   ██ ██       ██  ██  ██      ██      ██    ██ ██ ███ ██\n██████  ███████   ████   ██      ███████  ██████   ███ ███  \n                                                             \n\nBegin Coding Here!\n\n - Change language syntax in the top right.\n\n - Open files within the editor. \n\n - Save files locally or save to your device.")]
         public string CodeEditorValue {
             get {
                 return ((string)(this["CodeEditorValue"]));
@@ -82,7 +83,7 @@ namespace dev_flow.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("")]
+        [global::System.Configuration.DefaultSettingValueAttribute("csharp")]
         public string CodeEditorLanguage {
             get {
                 return ((string)(this["CodeEditorLanguage"]));
