@@ -7,14 +7,13 @@ using System.Windows;
 using System.Windows.Input;
 using dev_flow.Commands;
 using dev_flow.Commands.dev_flow.Commands;
+using dev_flow.Constants;
 using dev_flow.Helpers;
-using dev_flow.Interfaces;
 using dev_flow.Models;
 using dev_flow.Properties;
 using dev_flow.ViewModels.Shared;
 using MahApps.Metro.Controls.Dialogs;
 using Microsoft.VisualBasic.FileIO;
-using Constants = dev_flow.Interfaces.Constants;
 using SearchOption = System.IO.SearchOption;
 
 namespace dev_flow.ViewModels;
@@ -173,7 +172,7 @@ public class BaseHomeWorkspacesViewModel : ViewModelBase
                     await Task.Run(() =>
                     {
                         var destinationBaseDirectory = Path.Combine(AppDomain.CurrentDomain.BaseDirectory,
-                            Constants.TopLevelDirectory);
+                            DevFlowConstants.TopLevelDirectory);
 
                         var importDirectoryName = Path.GetFileName(topLevelImportDirectory);
                         var destinationDirectory = Path.Combine(destinationBaseDirectory, importDirectoryName);
@@ -338,7 +337,7 @@ public class BaseHomeWorkspacesViewModel : ViewModelBase
             else
             {
                 _newDisplayCards.AddRange(string.IsNullOrEmpty(WorkspaceSearchTerm)
-                    ? filteredCards.OrderByDescending(workspace => workspace.DateModified).Take(5)
+                    ? filteredCards.OrderByDescending(workspace => workspace.DateModified).Take(20)
                     : filteredCards.Take(20));
             }
 
@@ -414,7 +413,7 @@ public class BaseHomeWorkspacesViewModel : ViewModelBase
                         ID = _workspaceIdIncrement
                     }, this);
 
-                    var workspacePath = Path.Combine(Constants.TopLevelDirectory, dialogResult);
+                    var workspacePath = Path.Combine(DevFlowConstants.TopLevelDirectory, dialogResult);
 
                     try
                     {
@@ -479,7 +478,7 @@ public class BaseHomeWorkspacesViewModel : ViewModelBase
         {
             // Get the current directory and the root directory
             var currentDirectory = Settings.Default.WorkspacePath;
-            var rootDirectory = Path.Combine(currentDirectory, Constants.TopLevelDirectory);
+            var rootDirectory = Path.Combine(currentDirectory, DevFlowConstants.TopLevelDirectory);
             if (Directory.Exists(rootDirectory))
             {
                 var subDirectories = await Task.Run(() =>
@@ -550,7 +549,7 @@ public class BaseHomeWorkspacesViewModel : ViewModelBase
 
             DisplayedWorkspaceCards.AddRange(_isFavouritesPage
                 ? sortedWorkspaces.Take(20).Where(workspace => workspace.IsFavourite)
-                : sortedWorkspaces.Take(5));
+                : sortedWorkspaces.Take(20));
 
             CheckMainCollectionBodyTextVisibility();
         }
@@ -621,7 +620,7 @@ public class BaseHomeWorkspacesViewModel : ViewModelBase
         if (!string.IsNullOrEmpty(dialogResult))
         {
             var previousDirectoryPath = workspaceItem.TrimmedBaseWorkspacePath;
-            var newDirectoryPath = Path.Combine(Constants.TopLevelDirectory, dialogResult);
+            var newDirectoryPath = Path.Combine(DevFlowConstants.TopLevelDirectory, dialogResult);
 
             try
             {

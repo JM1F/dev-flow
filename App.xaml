@@ -41,6 +41,10 @@
                 <Setter Property="CaretBrush" Value="{DynamicResource MahApps.Brushes.Text}" />
             </Style>
 
+            <Style TargetType="{x:Type ListBoxItem}" BasedOn="{StaticResource MaterialDesignListBoxItem}">
+                <Setter Property="Background" Value="Aqua" />
+            </Style>
+
         </ResourceDictionary>
     </Application.Resources>
 </Application>

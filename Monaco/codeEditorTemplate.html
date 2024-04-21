@@ -28,7 +28,7 @@
 <script src='./min/vs/editor/editor.main.js'></script>
 <script>
     var editor = monaco.editor.create(document.getElementById('container'), {
-        value: '{{EDITOR_VALUE}}',
+        value: "",
         language: '{{LANGUAGE}}',
         theme: '{{THEME}}',
         quickSuggestions: true,
@@ -42,12 +42,7 @@
     window.addEventListener('resize', function () {
         editor.layout();
     });
-
-    function getValueFromMonacoEditor() {
-        var editor = monaco.editor.getModels()[0];
-        var value = editor.getValue();
-        return value;
-    }
+    
 </script>
 </body>
 </html> 

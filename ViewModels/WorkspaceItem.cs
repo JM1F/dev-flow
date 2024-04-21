@@ -4,8 +4,8 @@ using System.Threading.Tasks;
 using System.Windows.Input;
 using dev_flow.Commands;
 using dev_flow.Commands.dev_flow.Commands;
+using dev_flow.Constants;
 using dev_flow.Helpers;
-using dev_flow.Interfaces;
 using dev_flow.Models;
 using dev_flow.ViewModels.Shared;
 
@@ -68,7 +68,7 @@ public class WorkspaceItem : ViewModelBase
         }
     }
 
-    public string TrimmedBaseWorkspacePath => Constants.TopLevelDirectory + "/" + _cardModel.Name;
+    public string TrimmedBaseWorkspacePath => DevFlowConstants.TopLevelDirectory + "/" + _cardModel.Name;
     public string TrimmedDocumentsWorkspacePath => "Documents";
     public string LowerCaseName => _cardModel.Name.ToLower();
 

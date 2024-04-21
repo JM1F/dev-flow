@@ -14,7 +14,7 @@
 
             <Button Grid.Column="0"
                     ToolTip="Save Locally"
-                    Command="{Binding SaveCommand}"
+                    Command="{Binding SaveCodeLocallyCommand}"
                     Width="100">
                 <StackPanel>
                     <materialDesign:PackIcon
@@ -28,7 +28,7 @@
             </Button>
             <Button Grid.Column="1"
                     ToolTip="Save As"
-                    Command="{Binding SaveCommand}"
+                    Command="{Binding SaveCodeAsCommand}"
                     Width="100">
                 <StackPanel>
                     <materialDesign:PackIcon
@@ -42,7 +42,7 @@
             </Button>
             <Button Grid.Column="2"
                     ToolTip="Open File"
-                    Command="{Binding SaveCommand}"
+                    Command="{Binding OpenCodeCommand}"
                     Width="100">
                 <StackPanel>
                     <materialDesign:PackIcon

@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using dev_flow.Models;
 
+namespace dev_flow.Constants;
 public static class LanguageInfo
 {
     public static readonly List<LanguageItem?> Languages = new List<LanguageItem?>

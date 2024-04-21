@@ -3,107 +3,122 @@
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
                     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
                     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-                    xmlns:local="clr-namespace:dev_flow.Assets.Styles"
+                    xmlns:converters="clr-namespace:dev_flow.Converters"
                     xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+                    xmlns:enums="clr-namespace:dev_flow.Enums"
                     mc:Ignorable="d">
 
+    <ResourceDictionary.MergedDictionaries>
+        <ResourceDictionary Source="/Assets/Styles/SimpleScrollBarStyle.xaml" />
+    </ResourceDictionary.MergedDictionaries>
+
     <DataTemplate x:Key="TaskItemTemplate">
-        <materialDesign:FlipperClassic
-            materialDesign:ElevationAssist.Elevation="Dp0"
-            Background="Aqua"
-            Style="{StaticResource MaterialDesignCardFlipperClassic}">
-            <materialDesign:FlipperClassic.FrontContent>
-                <Grid>
-                    <StackPanel
-                        HorizontalAlignment="Center"
-                        VerticalAlignment="Center">
-                        <TextBlock
-                            Text="{Binding Title}" />
-                        <Button
-                            Margin="0,4,0,0"
-                            Command="{x:Static materialDesign:FlipperClassic.FlipCommand}"
-                            Content="EDIT"
-                            Style="{StaticResource MaterialDesignFlatButton}" />
-                    </StackPanel>
-                </Grid>
-            </materialDesign:FlipperClassic.FrontContent>
-            <materialDesign:FlipperClassic.BackContent>
-                <Grid
-                    Width="200"
-                    Height="256">
-                    <Grid.RowDefinitions>
-                        <RowDefinition
-                            Height="Auto" />
-                        <RowDefinition
-                            Height="*" />
-                    </Grid.RowDefinitions>
-                    <materialDesign:ColorZone
-                        Padding="6"
-                        Mode="SecondaryMid">
-                        <StackPanel
-                            Orientation="Horizontal">
-                            <Button
-                                HorizontalAlignment="Left"
-                                Command="{x:Static materialDesign:FlipperClassic.FlipCommand}"
-                                Style="{StaticResource MaterialDesignToolForegroundButton}">
-                                <materialDesign:PackIcon
-                                    HorizontalAlignment="Right"
-                                    Kind="ArrowLeft" />
-                            </Button>
-                            <TextBlock
-                                Margin="8,0,0,0"
-                                VerticalAlignment="Center"
-                                Text="EDIT USER" />
-                        </StackPanel>
-                    </materialDesign:ColorZone>
-                    <Grid
-                        Grid.Row="1"
-                        Width="172"
-                        Margin="0,6,0,0"
-                        HorizontalAlignment="Center"
-                        VerticalAlignment="Top">
+        <Grid>
+            <materialDesign:FlipperClassic
+                materialDesign:ElevationAssist.Elevation="Dp0"
+                materialDesign:ShadowAssist.Darken="True"
+                Background="{DynamicResource MahApps.Brushes.Accent}"
+                Style="{StaticResource MaterialDesignCardFlipperClassic}"
+                Padding="10">
+                <materialDesign:FlipperClassic.FrontContent>
+                    <Grid MaxHeight="250">
                         <Grid.RowDefinitions>
-                            <RowDefinition />
-                            <RowDefinition />
-                            <RowDefinition />
-                            <RowDefinition />
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="*" />
+                            <RowDefinition Height="Auto" />
                         </Grid.RowDefinitions>
-                        <TextBox
-                            Margin="0,12,0,0"
-                            materialDesign:HintAssist.Hint="First name"
-                            materialDesign:HintAssist.IsFloating="True"
-                            Text="James" />
-                        <TextBox
-                            Grid.Row="1"
-                            Margin="0,12,0,0"
-                            materialDesign:HintAssist.Hint="Last name"
-                            materialDesign:HintAssist.IsFloating="True"
-                            Text="Willock" />
-                        <StackPanel
-                            Grid.Row="2"
-                            Margin="0,12,0,0"
-                            HorizontalAlignment="Right"
-                            Orientation="Horizontal">
+
+                        <TextBlock Grid.Row="0" Text="{Binding Title}" FontSize="20" FontWeight="Bold"
+                                   TextTrimming="CharacterEllipsis" Margin="10" />
+
+                        <ScrollViewer Grid.Row="1" Style="{StaticResource CustomScrollViewerStyle}">
                             <TextBlock
-                                VerticalAlignment="Center"
-                                Text="Email Contact" />
-                            <ToggleButton
-                                Margin="8,0,0,0" />
-                        </StackPanel>
-                        <StackPanel
-                            Grid.Row="3"
-                            Margin="0,12,0,0"
-                            HorizontalAlignment="Right"
-                            Orientation="Horizontal">
-                            <TextBlock
-                                VerticalAlignment="Center"
-                                Text="Telephone Contact" />
-                            <ToggleButton
-                                Margin="8,0,0,0" />
-                        </StackPanel>
+                                Text="{Binding Description}"
+                                TextWrapping="Wrap" Margin="10" />
+                        </ScrollViewer>
+
+                        <Grid Grid.Row="2" Margin="10">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="Auto" />
+                                <ColumnDefinition Width="*" />
+                                <ColumnDefinition Width="Auto" />
+                            </Grid.ColumnDefinitions>
+
+                            <Ellipse Grid.Column="0" Width="20" Height="20"
+                                     Fill="{Binding Severity, Converter={converters:SeverityColourConverter}}"
+                                     Margin="0,0,10,0" />
+
+                            <TextBlock Grid.Column="1" Text="{Binding DueDate, StringFormat='dd/MM/yyyy'}"
+                                       VerticalAlignment="Center" />
+
+                            <Button Grid.Column="2" Content="Edit" Padding="10,5"
+                                    Command="{x:Static materialDesign:FlipperClassic.FlipCommand}"
+                                    Style="{StaticResource MaterialDesignFlatButton}" />
+                        </Grid>
                     </Grid>
-                </Grid>
-            </materialDesign:FlipperClassic.BackContent>
-        </materialDesign:FlipperClassic>
+                </materialDesign:FlipperClassic.FrontContent>
+                <materialDesign:FlipperClassic.BackContent>
+                    <Grid>
+                        <Grid.RowDefinitions>
+                            <RowDefinition
+                                Height="Auto" />
+                            <RowDefinition
+                                Height="*" />
+                        </Grid.RowDefinitions>
+                        <materialDesign:ColorZone
+                            Padding="6"
+                            Mode="SecondaryMid">
+                            <StackPanel
+                                Orientation="Horizontal">
+                                <Button
+                                    HorizontalAlignment="Left"
+                                    Command="{x:Static materialDesign:FlipperClassic.FlipCommand}"
+                                    Style="{StaticResource MaterialDesignToolForegroundButton}">
+                                    <materialDesign:PackIcon
+                                        HorizontalAlignment="Right"
+                                        Kind="ArrowLeft" />
+                                </Button>
+                                <TextBlock
+                                    Margin="8,0,0,0"
+                                    VerticalAlignment="Center"
+                                    Text="Back" />
+                            </StackPanel>
+                        </materialDesign:ColorZone>
+                        <Grid Grid.Row="1" Margin="15">
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto" />
+                                <RowDefinition Height="Auto" />
+                                <RowDefinition Height="Auto" />
+                                <RowDefinition Height="Auto" />
+                                <RowDefinition Height="Auto" />
+                                <RowDefinition Height="Auto" />
+                            </Grid.RowDefinitions>
+
+                            <TextBlock Text="Edit task" FontWeight="Bold" />
+                            <TextBox Grid.Row="1" Margin="0,8,0,0" materialDesign:HintAssist.Hint="Title"
+                                     Text="{Binding Title, Mode=TwoWay ,UpdateSourceTrigger=PropertyChanged}"
+                                     MaxLength="100" />
+                            <TextBox Grid.Row="2" Margin="0,8,0,0" materialDesign:HintAssist.Hint="Description"
+                                     Text="{Binding Description, Mode=TwoWay ,UpdateSourceTrigger=PropertyChanged}"
+                                     MaxLength="1000"
+                                     AcceptsReturn="True"
+                                     Height="150" />
+                            <ComboBox Grid.Row="3" Margin="0,8,0,0" materialDesign:HintAssist.Hint="Severity"
+                                      SelectedItem="{Binding Severity, Mode=TwoWay ,UpdateSourceTrigger=PropertyChanged}">
+                                <ComboBox.ItemsSource>
+                                    <x:Array Type="{x:Type enums:KanbanSeverityEnum}">
+                                        <enums:KanbanSeverityEnum>Low</enums:KanbanSeverityEnum>
+                                        <enums:KanbanSeverityEnum>Medium</enums:KanbanSeverityEnum>
+                                        <enums:KanbanSeverityEnum>High</enums:KanbanSeverityEnum>
+                                    </x:Array>
+                                </ComboBox.ItemsSource>
+                            </ComboBox>
+                            <DatePicker Grid.Row="4" Margin="0,8,0,0" materialDesign:HintAssist.Hint="Due Date"
+                                        SelectedDate="{Binding DueDate, Mode=TwoWay ,UpdateSourceTrigger=PropertyChanged}" />
+                        </Grid>
+                    </Grid>
+                </materialDesign:FlipperClassic.BackContent>
+            </materialDesign:FlipperClassic>
+        </Grid>
     </DataTemplate>
 </ResourceDictionary>

@@ -5,10 +5,10 @@ using System.Threading;
 using System.Windows;
 using System.Xml.Serialization;
 using ControlzEx.Theming;
+using dev_flow.Constants;
 using dev_flow.Enums;
 using dev_flow.Models;
 using dev_flow.Properties;
-using Constants = dev_flow.Interfaces.Constants;
 
 namespace dev_flow
 {
@@ -26,7 +26,7 @@ namespace dev_flow
         protected override void OnStartup(StartupEventArgs e)
         {
             // Create a mutex to ensure only one instance of the application is running
-            _mutex = new Mutex(true, Constants.MutexName, out var isNewAppInstance);
+            _mutex = new Mutex(true, DevFlowConstants.MutexName, out var isNewAppInstance);
 
             // If another instance of the application is already running, show a message and close.
             if (!isNewAppInstance)
@@ -50,7 +50,7 @@ namespace dev_flow
         {
             var currentDirectory = Settings.Default.WorkspacePath;
 
-            var kanbanPath = Path.Combine(currentDirectory, Constants.KanbanBoardFileName);
+            var kanbanPath = Path.Combine(currentDirectory, DevFlowConstants.KanbanBoardFileName);
 
             if (!File.Exists(kanbanPath))
             {
@@ -58,7 +58,7 @@ namespace dev_flow
                 {
                     Types = new List<KanbanType>
                     {
-                        new() { Name = "To-Do", Tasks = new List<KanbanTask>() },
+                        new() { Name = "ToDo", Tasks = new List<KanbanTask>() },
                         new() { Name = "Doing", Tasks = new List<KanbanTask>() },
                         new() { Name = "Done", Tasks = new List<KanbanTask>() }
                     }
@@ -94,7 +94,7 @@ namespace dev_flow
             var currentDirectory = Settings.Default.WorkspacePath;
 
             // Combine the app directory path with the directory name
-            var directoryPath = Path.Combine(currentDirectory, Constants.TopLevelDirectory);
+            var directoryPath = Path.Combine(currentDirectory, DevFlowConstants.TopLevelDirectory);
 
             // Check if the directory exists
             if (!Directory.Exists(directoryPath))

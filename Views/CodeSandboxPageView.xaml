@@ -10,7 +10,10 @@
              xmlns:wpf="clr-namespace:Microsoft.Web.WebView2.Wpf;assembly=Microsoft.Web.WebView2.Wpf"
              xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
              xmlns:styles="clr-namespace:dev_flow.Assets.Styles"
-             mc:Ignorable="d">
+             xmlns:controls="http://metro.mahapps.com/winfx/xaml/controls"
+             mc:Ignorable="d"
+             Loaded="CodeSandboxPageView_OnLoaded"
+             Unloaded="CodeSandboxPageView_OnUnloaded">
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="75" />
@@ -77,6 +80,13 @@
                       KeyDown="CodeEditorWebView_OnKeyDown"
                       NavigationCompleted="CodeEditorWebView_OnNavigationCompleted"
                       Visibility="Collapsed" />
+
+        <!-- Progress Ring -->
+        <controls:ProgressRing x:Name="CodeEditorProgressRing" Grid.Row="1" Width="50" Height="50"
+                               VerticalAlignment="Center"
+                               HorizontalAlignment="Center"
+                               Visibility="Visible">
+        </controls:ProgressRing>
 
     </Grid>
 </UserControl>

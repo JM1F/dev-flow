@@ -3,7 +3,7 @@ using System.Windows.Controls;
 
 namespace dev_flow.Assets.Styles;
 
-public partial class TaskItem : ResourceDictionary
+public partial class TaskItem
 {
     public TaskItem()
     {

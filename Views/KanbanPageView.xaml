@@ -3,25 +3,36 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-             xmlns:styles="clr-namespace:dev_flow.Assets.Styles"
              xmlns:iconPacks="http://metro.mahapps.com/winfx/xaml/iconpacks"
              xmlns:mah="http://metro.mahapps.com/winfx/xaml/controls"
              xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
              xmlns:dd="urn:gong-wpf-dragdrop"
+             xmlns:local="clr-namespace:dev_flow.Models"
+             xmlns:enums="clr-namespace:dev_flow.Enums"
              mc:Ignorable="d"
              Padding="25px"
              Loaded="KanbanPageView_OnLoaded"
              Unloaded="KanbanPageView_OnUnloaded">
+    <UserControl.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="/Assets/Styles/SimpleScrollBarStyle.xaml" />
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
+    </UserControl.Resources>
+
     <Grid>
         <Grid.RowDefinitions>
-            <RowDefinition Height="50" />
             <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
         </Grid.RowDefinitions>
 
         <!-- Title -->
         <Grid Grid.Row="0" Margin="0,0,0,10">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="Auto" />
+                <ColumnDefinition Width="Auto" />
+                <ColumnDefinition Width="*" />
                 <ColumnDefinition Width="Auto" />
             </Grid.ColumnDefinitions>
 
@@ -37,9 +48,46 @@
                 Tasks
             </TextBlock>
 
-        </Grid>
+            <materialDesign:PopupBox
+                Grid.Column="3"
+                Width="25"
+                Height="25"
+                Style="{StaticResource MaterialDesignMultiFloatingActionSecondaryPopupBox}"
+                ToolTip="Manage items"
+                UnfurlOrientation="Horizontal"
+                Background="{DynamicResource MahApps.Brushes.Accent}"
+                materialDesign:ElevationAssist.Elevation="Dp1"
+                PlacementMode="LeftAndAlignMiddles">
+                <materialDesign:PopupBox.ToggleContent>
+                    <materialDesign:PackIcon Kind="MenuLeft" />
+                </materialDesign:PopupBox.ToggleContent>
+                <StackPanel
+                    Orientation="Horizontal">
+                    <Button
+                        ToolTip="Save All Tasks"
+                        Command="{Binding SaveAllTasksCommand}"
+                        Width="100"
+                        Margin="10,0"
+                        Style="{StaticResource MaterialDesignRaisedButton}"
+                        BorderThickness="0"
+                        Background="{DynamicResource MahApps.Brushes.Accent}"
+                        Foreground="{DynamicResource MahApps.Brushes.Text}">
+                        <StackPanel Orientation="Horizontal">
+                            <materialDesign:PackIcon
+                                VerticalAlignment="Center"
+                                Kind="ContentSaveAll"
+                                Margin="0,0,5,0" />
+                            <TextBlock
+                                Text="Save All"
+                                FontWeight="Normal"
+                                VerticalAlignment="Center" />
+                        </StackPanel>
+                    </Button>
+                </StackPanel>
+            </materialDesign:PopupBox>
 
-        <Border Grid.Row="0" BorderThickness="0,0,0,2" BorderBrush="{DynamicResource MahApps.Brushes.Gray}" />
+
+        </Grid>
 
         <!-- Page Content -->
         <Grid Grid.Row="1">
@@ -50,30 +98,273 @@
             </Grid.ColumnDefinitions>
 
             <!-- To-do Tasks -->
-            <ListBox Grid.Column="0" ItemsSource="{Binding TodoTasks}"
-                     ItemTemplate="{StaticResource TaskItemTemplate}"
-                     dd:DragDrop.IsDragSource="True" dd:DragDrop.IsDropTarget="True"
-                     dd:DragDrop.DropHandler="{Binding}"
-                     dd:DragDrop.DragAdornerTemplate="{StaticResource TaskItemTemplate}"
-                     dd:DragDrop.EffectMoveAdornerTemplate="{StaticResource DropAdornerTemplate}">
-            </ListBox>
+            <materialDesign:DialogHost Identifier="TodoDialog">
+                <Border BorderBrush="{DynamicResource MahApps.Brushes.Gray}" BorderThickness="1">
+                    <Grid>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="60" />
+                            <RowDefinition Height="*" />
+                        </Grid.RowDefinitions>
+
+                        <Grid Grid.Row="0" VerticalAlignment="Top"
+                              Background="{DynamicResource MahApps.Brushes.AccentBase}">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="Auto" />
+                                <ColumnDefinition Width="*" />
+                                <ColumnDefinition Width="Auto" />
+                            </Grid.ColumnDefinitions>
+
+                            <TextBlock Foreground="{DynamicResource MahApps.Brushes.Text}" Text="Todo" FontSize="26"
+                                       FontWeight="Bold" Margin="10" />
+
+
+                            <materialDesign:PopupBox
+                                Grid.Column="2"
+                                Width="35"
+                                Height="35"
+                                Margin="10"
+                                materialDesign:ButtonAssist.CornerRadius="0"
+                                PlacementMode="LeftAndAlignMiddles"
+                                Style="{StaticResource MaterialDesignMultiFloatingActionPopupBox}"
+                                ToolTip="Manage items"
+                                Background="#222222"
+                                Foreground="White"
+                                materialDesign:ElevationAssist.Elevation="Dp1">
+                                <StackPanel
+                                    Orientation="Horizontal">
+                                    <!-- Add Task Button -->
+                                    <Button
+                                        Command="{Binding AddTaskCommand}"
+                                        CommandParameter="{x:Static enums:KanbanStatusEnum.ToDo}"
+                                        ToolTip="Add a file"
+                                        materialDesign:ElevationAssist.Elevation="Dp1"
+                                        Background="#222222"
+                                        Foreground="White"
+                                        Opacity="0.75"
+                                        Width="35"
+                                        Height="35"
+                                        BorderThickness="0">
+                                        <Path
+                                            Width="15"
+                                            Height="15"
+                                            Data="M19,13H13V19H11V13H5V11H11V5H13V11H19V13Z"
+                                            Fill="{Binding RelativeSource={RelativeSource AncestorType=Button}, Path=Foreground}"
+                                            Stretch="Uniform" />
+                                    </Button>
+                                    <!-- Delete Task Button -->
+                                    <Button
+                                        Command="{Binding DeleteTaskCommand}"
+                                        CommandParameter="{Binding ElementName=ListBoxTodo, Path=SelectedItem}"
+                                        ToolTip="Refresh documents directory"
+                                        materialDesign:ElevationAssist.Elevation="Dp1"
+                                        Background="#222222"
+                                        Foreground="White"
+                                        Opacity="0.75"
+                                        Width="35"
+                                        Height="35"
+                                        BorderThickness="0">
+                                        <Path
+                                            Width="15"
+                                            Height="15"
+                                            Data="M19,4H15.5L14.5,3H9.5L8.5,4H5V6H19M6,19A2,2 0 0,0 8,21H16A2,2 0 0,0 18,19V7H6V19Z"
+                                            Fill="{Binding RelativeSource={RelativeSource AncestorType=Button}, Path=Foreground}"
+                                            Stretch="Uniform" />
+                                    </Button>
+                                </StackPanel>
+                            </materialDesign:PopupBox>
+                        </Grid>
+
+                        <Grid Grid.Row="1">
+                            <ListBox x:Name="ListBoxTodo"
+                                     HorizontalContentAlignment="Stretch"
+                                     ScrollViewer.HorizontalScrollBarVisibility="Disabled"
+                                     ScrollViewer.CanContentScroll="True"
+                                     ScrollViewer.PanningMode="VerticalOnly"
+                                     ScrollViewer.PanningDeceleration="0.1"
+                                     Style="{StaticResource MaterialDesignListBox}"
+                                     ItemsSource="{Binding TodoTasks}"
+                                     ItemTemplate="{StaticResource TaskItemTemplate}"
+                                     dd:DragDrop.IsDragSource="True" dd:DragDrop.IsDropTarget="True"
+                                     dd:DragDrop.DropHandler="{Binding }"
+                                     materialDesign:RippleAssist.IsDisabled="True"
+                                     dd:DragDrop.DragAdornerTemplate="{StaticResource TaskItemTemplate}"
+                                     dd:DragDrop.ShowAlwaysDropTargetAdorner="True"
+                                     dd:DragDrop.DropTargetAdornerBrush="{DynamicResource MahApps.Brushes.Accent}">
+                                <ListBox.Resources>
+                                    <Style TargetType="{x:Type ScrollViewer}"
+                                           BasedOn="{StaticResource CustomScrollViewerStyle}" />
+                                </ListBox.Resources>
+
+                            </ListBox>
+                        </Grid>
+                    </Grid>
+                </Border>
+            </materialDesign:DialogHost>
 
             <!-- In Progress -->
-            <ListBox Grid.Column="1" ItemsSource="{Binding DoingTasks}"
-                     ItemTemplate="{StaticResource TaskItemTemplate}"
-                     dd:DragDrop.IsDragSource="True" dd:DragDrop.IsDropTarget="True"
-                     dd:DragDrop.DropHandler="{Binding}"
-                     dd:DragDrop.DragAdornerTemplate="{StaticResource TaskItemTemplate}">
+            <materialDesign:DialogHost Grid.Column="1" Identifier="DoingDialog">
+                <Border BorderBrush="{DynamicResource MahApps.Brushes.Gray}" BorderThickness="0,1,0,1">
+                    <Grid>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="100" />
+                            <RowDefinition Height="*" />
+                        </Grid.RowDefinitions>
 
-            </ListBox>
+                        <Grid Grid.Row="0">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="Auto" />
+                                <ColumnDefinition Width="*" />
+                                <ColumnDefinition Width="Auto" />
+                            </Grid.ColumnDefinitions>
+
+                            <TextBlock Text="Doing" FontSize="18" FontWeight="Bold" Margin="10" />
+
+
+                            <materialDesign:PopupBox
+                                Grid.Column="2"
+                                Width="50"
+                                Height="50"
+                                Style="{StaticResource MaterialDesignMultiFloatingActionPopupBox}"
+                                ToolTip="Manage items"
+                                Background="{DynamicResource MahApps.Brushes.Accent}"
+                                materialDesign:ElevationAssist.Elevation="Dp1">
+                                <StackPanel
+                                    Orientation="Horizontal">
+                                    <!-- Add File Button -->
+                                    <Button
+                                        Command="{Binding AddTaskCommand}"
+                                        CommandParameter="{x:Static enums:KanbanStatusEnum.Doing}"
+                                        ToolTip="Add a file"
+                                        materialDesign:ElevationAssist.Elevation="Dp1"
+                                        Background="{DynamicResource MahApps.Brushes.Accent}"
+                                        Opacity="0.75">
+                                        <Path
+                                            Width="15"
+                                            Height="15"
+                                            Data="M19,13H13V19H11V13H5V11H11V5H13V11H19V13Z"
+                                            Fill="{Binding RelativeSource={RelativeSource AncestorType=Button}, Path=Foreground}"
+                                            Stretch="Uniform" />
+                                    </Button>
+                                    <!-- Delete Task Button -->
+                                    <Button
+                                        Command="{Binding DeleteTaskCommand}"
+                                        CommandParameter="{Binding ElementName=ListBoxDoing, Path=SelectedItem}"
+                                        ToolTip="Refresh documents directory"
+                                        materialDesign:ElevationAssist.Elevation="Dp1"
+                                        Background="{DynamicResource MahApps.Brushes.Accent}"
+                                        Opacity="0.75">
+                                        <Path
+                                            Width="15"
+                                            Height="15"
+                                            Data="M18 14.5C19.11 14.5 20.11 14.95 20.83 15.67L22 14.5V18.5H18L19.77 16.73C19.32 16.28 
+                            18.69 16 18 16C16.62 16 15.5 17.12 15.5 18.5C15.5 19.88 16.62 21 18 21C18.82 21 19.54 20.61 
+                            20 20H21.71C21.12 21.47 19.68 22.5 18 22.5C15.79 22.5 14 20.71 14 18.5C14 16.29 15.79 14.5 
+                            18 14.5M10 4L12 6H20C21.1 6 22 6.89 22 8V13C21 12.38 19.79 12 18.5 12C14.91 12 12 14.91 12 
+                            18.5C12 19 12.06 19.5 12.17 20H4C2.89 20 2 19.1 2 18L2 6C2 4.89 2.89 4 4 4H10Z"
+                                            Fill="{Binding RelativeSource={RelativeSource AncestorType=Button}, Path=Foreground}"
+                                            Stretch="Uniform" />
+                                    </Button>
+                                </StackPanel>
+                            </materialDesign:PopupBox>
+                        </Grid>
+
+                        <Grid Grid.Row="1">
+                            <ListBox x:Name="ListBoxDoing"
+                                     ItemsSource="{Binding DoingTasks}"
+                                     ItemTemplate="{StaticResource TaskItemTemplate}"
+                                     dd:DragDrop.IsDragSource="True" dd:DragDrop.IsDropTarget="True"
+                                     dd:DragDrop.DropHandler="{Binding}"
+                                     dd:DragDrop.DragAdornerTemplate="{StaticResource TaskItemTemplate}"
+                                     dd:DragDrop.EffectMoveAdornerTemplate="{StaticResource DropAdornerTemplate}">
+
+                            </ListBox>
+                        </Grid>
+                    </Grid>
+                </Border>
+            </materialDesign:DialogHost>
 
             <!-- Done Tasks -->
-            <ListBox Grid.Column="2" ItemsSource="{Binding DoneTasks}"
-                     ItemTemplate="{StaticResource TaskItemTemplate}"
-                     dd:DragDrop.IsDragSource="True" dd:DragDrop.IsDropTarget="True"
-                     dd:DragDrop.DropHandler="{Binding}"
-                     dd:DragDrop.DragAdornerTemplate="{StaticResource TaskItemTemplate}">
-            </ListBox>
+            <materialDesign:DialogHost Grid.Column="2" Identifier="DoneDialog">
+                <Border BorderBrush="{DynamicResource MahApps.Brushes.Gray}" BorderThickness="1">
+                    <Grid>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="100" />
+                            <RowDefinition Height="*" />
+                        </Grid.RowDefinitions>
+
+                        <Grid Grid.Row="0">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="Auto" />
+                                <ColumnDefinition Width="*" />
+                                <ColumnDefinition Width="Auto" />
+                            </Grid.ColumnDefinitions>
+
+                            <TextBlock Text="Done" FontSize="18" FontWeight="Bold" Margin="10" />
+
+
+                            <materialDesign:PopupBox
+                                Grid.Column="2"
+                                Width="50"
+                                Height="50"
+                                Style="{StaticResource MaterialDesignMultiFloatingActionPopupBox}"
+                                ToolTip="Manage items"
+                                Background="{DynamicResource MahApps.Brushes.Accent}"
+                                materialDesign:ElevationAssist.Elevation="Dp1">
+                                <StackPanel
+                                    Orientation="Horizontal">
+                                    <!-- Add File Button -->
+                                    <Button
+                                        Command="{Binding AddTaskCommand}"
+                                        CommandParameter="{x:Static enums:KanbanStatusEnum.Done}"
+                                        ToolTip="Add a file"
+                                        materialDesign:ElevationAssist.Elevation="Dp1"
+                                        Background="{DynamicResource MahApps.Brushes.Accent}"
+                                        Opacity="0.75">
+                                        <Path
+                                            Width="15"
+                                            Height="15"
+                                            Data="M19,13H13V19H11V13H5V11H11V5H13V11H19V13Z"
+                                            Fill="{Binding RelativeSource={RelativeSource AncestorType=Button}, Path=Foreground}"
+                                            Stretch="Uniform" />
+                                    </Button>
+                                    <!-- Delete Task Button -->
+                                    <Button
+                                        Command="{Binding DeleteTaskCommand}"
+                                        CommandParameter="{Binding ElementName=ListBoxDone, Path=SelectedItem}"
+                                        ToolTip="Refresh documents directory"
+                                        materialDesign:ElevationAssist.Elevation="Dp1"
+                                        Background="{DynamicResource MahApps.Brushes.Accent}"
+                                        Opacity="0.75">
+                                        <Path
+                                            Width="15"
+                                            Height="15"
+                                            Data="M18 14.5C19.11 14.5 20.11 14.95 20.83 15.67L22 14.5V18.5H18L19.77 16.73C19.32 16.28 
+                            18.69 16 18 16C16.62 16 15.5 17.12 15.5 18.5C15.5 19.88 16.62 21 18 21C18.82 21 19.54 20.61 
+                            20 20H21.71C21.12 21.47 19.68 22.5 18 22.5C15.79 22.5 14 20.71 14 18.5C14 16.29 15.79 14.5 
+                            18 14.5M10 4L12 6H20C21.1 6 22 6.89 22 8V13C21 12.38 19.79 12 18.5 12C14.91 12 12 14.91 12 
+                            18.5C12 19 12.06 19.5 12.17 20H4C2.89 20 2 19.1 2 18L2 6C2 4.89 2.89 4 4 4H10Z"
+                                            Fill="{Binding RelativeSource={RelativeSource AncestorType=Button}, Path=Foreground}"
+                                            Stretch="Uniform" />
+                                    </Button>
+                                </StackPanel>
+                            </materialDesign:PopupBox>
+                        </Grid>
+
+                        <Grid Grid.Row="1">
+                            <ListBox x:Name="ListBoxDone"
+                                     ItemsSource="{Binding DoneTasks}"
+                                     ItemTemplate="{StaticResource TaskItemTemplate}"
+                                     dd:DragDrop.IsDragSource="True" dd:DragDrop.IsDropTarget="True"
+                                     dd:DragDrop.DropHandler="{Binding}"
+                                     dd:DragDrop.DragAdornerTemplate="{StaticResource TaskItemTemplate}"
+                                     dd:DragDrop.EffectMoveAdornerTemplate="{StaticResource DropAdornerTemplate}">
+
+                            </ListBox>
+                        </Grid>
+                    </Grid>
+                </Border>
+            </materialDesign:DialogHost>
+
         </Grid>
 
     </Grid>

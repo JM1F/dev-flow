@@ -2,14 +2,16 @@
 using System.Diagnostics;
 using System.IO;
 using System.IO.Compression;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Input;
+using System.Xml.Linq;
 using ControlzEx.Theming;
 using dev_flow.Commands;
 using dev_flow.Commands.dev_flow.Commands;
+using dev_flow.Constants;
 using dev_flow.Enums;
-using dev_flow.Interfaces;
 using dev_flow.Properties;
 using dev_flow.ViewModels.Shared;
 using MahApps.Metro.Controls.Dialogs;
@@ -25,7 +27,9 @@ public class SettingsPageViewModel : ViewModelBase
     public ICommand ThemeChangedCommand { get; }
     public ICommand OpenExportLocation { get; }
     public ICommand ExportAllCommand { get; }
-    public ICommand DeleteAllCommand { get; }
+    public ICommand DeleteAllWorkspacesCommand { get; }
+
+    public ICommand DeleteAllKanbanTasksCommand { get; }
 
     // Properties
 
@@ -53,7 +57,60 @@ public class SettingsPageViewModel : ViewModelBase
         ThemeChangedCommand = new RelayCommand(OnThemeChanged);
         OpenExportLocation = new RelayCommand(OnOpenExportLocation);
         ExportAllCommand = new AsyncRelayCommand(async () => await RunExportAllWorkspaces());
-        DeleteAllCommand = new AsyncRelayCommand(async () => await RunDeleteAllWorkspaces());
+        DeleteAllWorkspacesCommand = new AsyncRelayCommand(async () => await RunDeleteAllWorkspaces());
+        DeleteAllKanbanTasksCommand = new AsyncRelayCommand(async () => await RunDeleteAllKanbanTasks());
+    }
+
+    private async Task RunDeleteAllKanbanTasks()
+    {
+        try
+        {
+            // Show a confirmation dialog
+            var dialogResult =
+                await _dialogCoordinator.ShowMessageAsync(this, "Delete All Kanban Tasks",
+                    "Deleting all kanban tasks cannot be undone, all data will be removed permanently.\n\nAre you sure you want to delete all kanban tasks?",
+                    MessageDialogStyle.AffirmativeAndNegative);
+
+            if (dialogResult == MessageDialogResult.Affirmative)
+            {
+                var progressDialog = await _dialogCoordinator.ShowProgressAsync(this, "Deleting All Tasks",
+                    "All tasks are being deleted. It may take a couple of minutes...");
+
+                progressDialog.SetIndeterminate();
+
+                await Task.Run(DeleteAllKanbanTasksAsync);
+
+                await progressDialog.CloseAsync();
+            }
+        }
+        // Handle any exceptions
+        catch (Exception ex)
+        {
+            Console.WriteLine($"Error deleting all tasks: {ex.Message}");
+
+            await _dialogCoordinator.ShowMessageAsync(this, "Error: Deleting All Tasks",
+                "An error occurred while deleting all tasks.");
+        }
+    }
+
+    private async Task DeleteAllKanbanTasksAsync()
+    {
+        await using var fileStream = new FileStream(DevFlowConstants.KanbanBoardFileName, FileMode.Open,
+            FileAccess.Read, FileShare.Read);
+        var xmlDoc = await XDocument.LoadAsync(fileStream, LoadOptions.None, CancellationToken.None);
+        fileStream.Close();
+
+        // Find all the KanbanTask elements within the KanbanTasks elements
+        var taskElements = xmlDoc.Descendants("KanbanTasks").Descendants("KanbanTask");
+
+        // Remove all the KanbanTask elements
+        taskElements.Remove();
+
+        // Save the modified XML document back to the file asynchronously
+        await using var outputStream = new FileStream(DevFlowConstants.KanbanBoardFileName, FileMode.Create,
+            FileAccess.Write, FileShare.None);
+        await xmlDoc.SaveAsync(outputStream, SaveOptions.None, CancellationToken.None);
+        outputStream.Close();
     }
 
     /// <summary>
@@ -65,7 +122,7 @@ public class SettingsPageViewModel : ViewModelBase
         var currentDirectory = Settings.Default.WorkspacePath;
 
         // Combine the app directory path with the directory name
-        var directoryPath = Path.Combine(currentDirectory, Constants.TopLevelDirectory);
+        var directoryPath = Path.Combine(currentDirectory, DevFlowConstants.TopLevelDirectory);
 
         // Check if the directory exists
         if (!Directory.Exists(directoryPath))
@@ -93,7 +150,7 @@ public class SettingsPageViewModel : ViewModelBase
     /// </summary>
     private Task DeleteAllWorkspacesAsync()
     {
-        var directoryPath = Constants.TopLevelDirectory;
+        var directoryPath = DevFlowConstants.TopLevelDirectory;
 
         try
         {
@@ -197,7 +254,7 @@ public class SettingsPageViewModel : ViewModelBase
     private Task ExportAllWorkspacesAsync()
     {
         var exportLocation = Settings.Default.DefaultExportLocation;
-        var topLevelDirectory = Constants.TopLevelDirectory;
+        var topLevelDirectory = DevFlowConstants.TopLevelDirectory;
         string? zipFilePath = null;
 
         try

@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Windows.Controls;
 using System.Windows.Navigation;
-using dev_flow.Interfaces;
+using dev_flow.Constants;
 
 namespace dev_flow.Managers.Navigation;
 

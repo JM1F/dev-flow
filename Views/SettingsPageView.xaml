@@ -20,6 +20,7 @@
             <RowDefinition Height="Auto" />
             <RowDefinition Height="Auto" />
             <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
         </Grid.RowDefinitions>
 
         <!-- Title -->
@@ -145,10 +146,28 @@
             </views:GeneralDisplayBoxControl>
 
         </Grid>
-
+        
         <Grid Grid.Row="5">
+            <!-- Erase All Kanban Tasks -->
+            <views:GeneralDisplayBoxControl IconKind="DeleteEmpty"
+                                            Header="Erase All Kanban Tasks"
+                                            Description="Permanently delete all saved kanban tasks.">
+                <Button
+                    Width="100"
+                    Content="Delete"
+                    Style="{StaticResource MaterialDesignRaisedButton}"
+                    ToolTip="Delete All Workspaces"
+                    BorderThickness="0"
+                    Command="{Binding DeleteAllKanbanTasksCommand}"
+                    Background="DarkRed"
+                    Foreground="#FFFFFF"
+                    wpf:ElevationAssist.Elevation="Dp0" />
+            </views:GeneralDisplayBoxControl>
+        </Grid>
+
+        <Grid Grid.Row="6">
             <!-- Erase All Workspaces -->
-            <views:GeneralDisplayBoxControl IconKind="Delete"
+            <views:GeneralDisplayBoxControl IconKind="DeleteAlert"
                                             Header="Erase All Workspaces"
                                             Description="Permanently delete all workspaces and attached documents.">
                 <Button
@@ -157,7 +176,7 @@
                     Style="{StaticResource MaterialDesignRaisedButton}"
                     ToolTip="Delete All Workspaces"
                     BorderThickness="0"
-                    Command="{Binding DeleteAllCommand}"
+                    Command="{Binding DeleteAllWorkspacesCommand}"
                     Background="DarkRed"
                     Foreground="#FFFFFF"
                     wpf:ElevationAssist.Elevation="Dp0" />

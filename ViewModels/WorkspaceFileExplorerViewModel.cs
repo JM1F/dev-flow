@@ -6,7 +6,6 @@ using System.Threading.Tasks;
 using System.Windows.Input;
 using dev_flow.Commands;
 using dev_flow.Commands.dev_flow.Commands;
-using dev_flow.Interfaces;
 using dev_flow.Models;
 using dev_flow.ViewModels.Shared;
 using MahApps.Metro.Controls.Dialogs;
