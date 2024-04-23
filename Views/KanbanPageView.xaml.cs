@@ -12,7 +12,7 @@ namespace dev_flow.Views;
 /// <summary>
 /// Code-behind for the KanbanPageView.xaml file.
 /// </summary>
-public partial class KanbanPageView : UserControl
+public partial class KanbanPageView : IDisposable
 {
     public KanbanPageView()
     {
@@ -30,5 +30,17 @@ public partial class KanbanPageView : UserControl
     {
         // Unregister the dialog coordinator as memory leak prevention on unload
         DialogParticipation.SetRegister(this, null);
+    }
+
+    public void Dispose()
+    {
+        ListBoxTodo.ItemsSource = null;
+        ListBoxTodo = null;
+
+        ListBoxDoing.ItemsSource = null;
+        ListBoxDoing = null;
+
+        ListBoxDone.ItemsSource = null;
+        ListBoxDone = null;
     }
 }

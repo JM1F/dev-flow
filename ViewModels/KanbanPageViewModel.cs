@@ -24,9 +24,10 @@ using MaterialDesignThemes.Wpf;
 
 namespace dev_flow.ViewModels;
 
-public class KanbanPageViewModel : ViewModelBase, IDropTarget
+public class KanbanPageViewModel : ViewModelBase, IDropTarget, IDisposable
 {
     private readonly DialogCoordinator _dialogCoordinator;
+    private bool _disposed;
 
     private RangedObservableCollection<KanbanTask> _todoTasks;
     private RangedObservableCollection<KanbanTask> _doingTasks;
@@ -298,6 +299,8 @@ public class KanbanPageViewModel : ViewModelBase, IDropTarget
         // Save the modified XML document back to the file
         await using var fileStream = new FileStream(xmlFilePath, FileMode.Create);
         await doc.SaveAsync(fileStream, SaveOptions.None, CancellationToken.None);
+        fileStream.Close();
+        await fileStream.DisposeAsync();
     }
 
     private async Task SaveTaskToXmlAsync(KanbanTask task)
@@ -329,6 +332,7 @@ public class KanbanPageViewModel : ViewModelBase, IDropTarget
             await using var fileStream = new FileStream(xmlFilePath, FileMode.Create);
             await doc.SaveAsync(fileStream, SaveOptions.None, CancellationToken.None);
             fileStream.Close();
+            await fileStream.DisposeAsync();
         }
     }
 
@@ -384,6 +388,7 @@ public class KanbanPageViewModel : ViewModelBase, IDropTarget
             bufferSize: 4096, useAsync: true);
         await xmlDoc.SaveAsync(fileStream, SaveOptions.None, CancellationToken.None);
         fileStream.Close();
+        await fileStream.DisposeAsync();
     }
 
     private async Task UpdateXmlFileAsync(KanbanTask taskToRemove)
@@ -449,15 +454,15 @@ public class KanbanPageViewModel : ViewModelBase, IDropTarget
             switch (kanbanTypeName)
             {
                 case "ToDo":
-                    TodoTasks = new RangedObservableCollection<KanbanTask>();
+                    TodoTasks.Clear();
                     TodoTasks.AddRange(tasks);
                     break;
                 case "Doing":
-                    DoingTasks = new RangedObservableCollection<KanbanTask>();
+                    DoingTasks.Clear();
                     DoingTasks.AddRange(tasks);
                     break;
                 case "Done":
-                    DoneTasks = new RangedObservableCollection<KanbanTask>();
+                    DoneTasks.Clear();
                     DoneTasks.AddRange(tasks);
                     break;
             }
@@ -468,7 +473,10 @@ public class KanbanPageViewModel : ViewModelBase, IDropTarget
     {
         await using var fileStream = new FileStream(filePath, FileMode.Open, FileAccess.Read, FileShare.Read,
             bufferSize: 4096, useAsync: true);
-        return await XDocument.LoadAsync(fileStream, LoadOptions.None, CancellationToken.None);
+        var xmlDoc = await XDocument.LoadAsync(fileStream, LoadOptions.None, CancellationToken.None);
+        fileStream.Close();
+        await fileStream.DisposeAsync();
+        return xmlDoc;
     }
 
     public void DragOver(IDropInfo dropInfo)
@@ -537,5 +545,30 @@ public class KanbanPageViewModel : ViewModelBase, IDropTarget
                 }
             }
         }
+    }
+
+    public void Dispose()
+    {
+        Dispose(true);
+        GC.SuppressFinalize(this);
+    }
+
+    protected virtual void Dispose(bool disposing)
+    {
+        if (_disposed)
+            return;
+
+        if (disposing)
+        {
+            TodoTasks.Clear();
+            DoingTasks.Clear();
+            DoneTasks.Clear();
+
+            TodoTasks = null;
+            DoneTasks = null;
+            DoneTasks = null;
+        }
+
+        _disposed = true;
     }
 }

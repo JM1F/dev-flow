@@ -284,6 +284,12 @@
                                  dd:DragDrop.EffectMoveAdornerTemplate="{StaticResource DropAdornerTemplate}"
                                  dd:DragDrop.DragAdornerTemplate="{StaticResource TaskItemTemplate}"
                                  dd:DragDrop.ShowAlwaysDropTargetAdorner="True">
+                            <ListBox.ItemsPanel>
+                                <ItemsPanelTemplate>
+                                    <VirtualizingStackPanel IsVirtualizing="True"
+                                                            ScrollViewer.IsDeferredScrollingEnabled="True" />
+                                </ItemsPanelTemplate>
+                            </ListBox.ItemsPanel>
                             <ListBox.Resources>
                                 <Style TargetType="{x:Type ScrollViewer}"
                                        BasedOn="{StaticResource CustomScrollViewerStyle}" />
@@ -479,6 +485,12 @@
                                  dd:DragDrop.DragAdornerTemplate="{StaticResource TaskItemTemplate}"
                                  dd:DragDrop.EffectMoveAdornerTemplate="{StaticResource DropAdornerTemplate}"
                                  dd:DragDrop.ShowAlwaysDropTargetAdorner="True">
+                            <ListBox.ItemsPanel>
+                                <ItemsPanelTemplate>
+                                    <VirtualizingStackPanel IsVirtualizing="True"
+                                                            ScrollViewer.IsDeferredScrollingEnabled="True" />
+                                </ItemsPanelTemplate>
+                            </ListBox.ItemsPanel>
                             <ListBox.Resources>
                                 <Style TargetType="{x:Type ScrollViewer}"
                                        BasedOn="{StaticResource CustomScrollViewerStyle}" />
@@ -674,6 +686,12 @@
                                  dd:DragDrop.EffectMoveAdornerTemplate="{StaticResource DropAdornerTemplate}"
                                  dd:DragDrop.DragAdornerTemplate="{StaticResource TaskItemTemplate}"
                                  dd:DragDrop.ShowAlwaysDropTargetAdorner="True">
+                            <ListBox.ItemsPanel>
+                                <ItemsPanelTemplate>
+                                    <VirtualizingStackPanel IsVirtualizing="True"
+                                                            ScrollViewer.IsDeferredScrollingEnabled="True" />
+                                </ItemsPanelTemplate>
+                            </ListBox.ItemsPanel>
                             <ListBox.Resources>
                                 <Style TargetType="{x:Type ScrollViewer}"
                                        BasedOn="{StaticResource CustomScrollViewerStyle}" />
