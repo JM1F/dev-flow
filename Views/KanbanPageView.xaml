@@ -21,6 +21,7 @@
         </ResourceDictionary>
     </UserControl.Resources>
 
+
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto" />
@@ -57,9 +58,10 @@
                 UnfurlOrientation="Horizontal"
                 Background="{DynamicResource MahApps.Brushes.Accent}"
                 materialDesign:ElevationAssist.Elevation="Dp1"
-                PlacementMode="LeftAndAlignMiddles">
+                PlacementMode="LeftAndAlignMiddles"
+                Foreground="{DynamicResource MahApps.Brushes.Text}">
                 <materialDesign:PopupBox.ToggleContent>
-                    <materialDesign:PackIcon Kind="MenuLeft" />
+                    <materialDesign:PackIcon Kind="ContentSave" />
                 </materialDesign:PopupBox.ToggleContent>
                 <StackPanel
                     Orientation="Horizontal">
@@ -103,6 +105,7 @@
                     <Grid>
                         <Grid.RowDefinitions>
                             <RowDefinition Height="60" />
+                            <RowDefinition Height="30" />
                             <RowDefinition Height="*" />
                         </Grid.RowDefinitions>
 
@@ -126,21 +129,23 @@
                                 materialDesign:ButtonAssist.CornerRadius="0"
                                 PlacementMode="LeftAndAlignMiddles"
                                 Style="{StaticResource MaterialDesignMultiFloatingActionPopupBox}"
-                                ToolTip="Manage items"
+                                ToolTip="Manage tasks"
                                 Background="#222222"
                                 Foreground="White"
                                 materialDesign:ElevationAssist.Elevation="Dp1">
+                                <materialDesign:PopupBox.ToggleContent>
+                                    <materialDesign:PackIcon Kind="Pencil" />
+                                </materialDesign:PopupBox.ToggleContent>
                                 <StackPanel
                                     Orientation="Horizontal">
                                     <!-- Add Task Button -->
                                     <Button
                                         Command="{Binding AddTaskCommand}"
                                         CommandParameter="{x:Static enums:KanbanStatusEnum.ToDo}"
-                                        ToolTip="Add a file"
+                                        ToolTip="Add a new task"
                                         materialDesign:ElevationAssist.Elevation="Dp1"
                                         Background="#222222"
                                         Foreground="White"
-                                        Opacity="0.75"
                                         Width="35"
                                         Height="35"
                                         BorderThickness="0">
@@ -155,11 +160,10 @@
                                     <Button
                                         Command="{Binding DeleteTaskCommand}"
                                         CommandParameter="{Binding ElementName=ListBoxTodo, Path=SelectedItem}"
-                                        ToolTip="Refresh documents directory"
+                                        ToolTip="Delete selected task"
                                         materialDesign:ElevationAssist.Elevation="Dp1"
                                         Background="#222222"
                                         Foreground="White"
-                                        Opacity="0.75"
                                         Width="35"
                                         Height="35"
                                         BorderThickness="0">
@@ -175,28 +179,117 @@
                         </Grid>
 
                         <Grid Grid.Row="1">
-                            <ListBox x:Name="ListBoxTodo"
-                                     HorizontalContentAlignment="Stretch"
-                                     ScrollViewer.HorizontalScrollBarVisibility="Disabled"
-                                     ScrollViewer.CanContentScroll="True"
-                                     ScrollViewer.PanningMode="VerticalOnly"
-                                     ScrollViewer.PanningDeceleration="0.1"
-                                     Style="{StaticResource MaterialDesignListBox}"
-                                     ItemsSource="{Binding TodoTasks}"
-                                     ItemTemplate="{StaticResource TaskItemTemplate}"
-                                     dd:DragDrop.IsDragSource="True" dd:DragDrop.IsDropTarget="True"
-                                     dd:DragDrop.DropHandler="{Binding }"
-                                     materialDesign:RippleAssist.IsDisabled="True"
-                                     dd:DragDrop.DragAdornerTemplate="{StaticResource TaskItemTemplate}"
-                                     dd:DragDrop.ShowAlwaysDropTargetAdorner="True"
-                                     dd:DragDrop.DropTargetAdornerBrush="{DynamicResource MahApps.Brushes.Accent}">
-                                <ListBox.Resources>
-                                    <Style TargetType="{x:Type ScrollViewer}"
-                                           BasedOn="{StaticResource CustomScrollViewerStyle}" />
-                                </ListBox.Resources>
+                            <materialDesign:PopupBox
+                                Width="25"
+                                Height="25"
+                                Margin="10,5,0,0"
+                                PlacementMode="RightAndAlignMiddles"
+                                Style="{StaticResource MaterialDesignMultiFloatingActionPopupBox}"
+                                ToolTip="Filter tasks"
+                                Background="#222222"
+                                Foreground="White"
+                                materialDesign:ElevationAssist.Elevation="Dp1">
+                                <materialDesign:PopupBox.ToggleContent>
+                                    <materialDesign:PackIcon Kind="Sort" />
+                                </materialDesign:PopupBox.ToggleContent>
+                                <StackPanel
+                                    Orientation="Horizontal">
+                                    <!-- Sort tasks by severity -->
+                                    <Button
+                                        Command="{Binding SortTodoTasksBySeverityCommand}"
+                                        ToolTip="Filter tasks by severity"
+                                        materialDesign:ElevationAssist.Elevation="Dp1"
+                                        Background="#222222"
+                                        Foreground="White"
+                                        Width="25"
+                                        Height="25"
+                                        BorderThickness="0">
+                                        <Path
+                                            Width="10"
+                                            Height="10"
+                                            Data="M19 7H22L18 3L14 7H17V21H19M5 7C5 8.1 5.9 9 7 9C8.1 9 9 8.1 9 7C9 5.9 8.1 5 7 5C5.9 5 5 5.9 5 7M7 3C9.21 3 11 4.79 11 7C11 9.21 9.21 11 7 11C4.79 11 3 9.21 3 7C3 4.79 4.79 3 7 3M7 13C4.79 13 3 14.79 3 17C3 19.21 4.79 21 7 21C9.21 21 11 19.21 11 17C11 14.79 9.21 13 7 13Z"
+                                            Fill="{Binding RelativeSource={RelativeSource AncestorType=Button}, Path=Foreground}"
+                                            Stretch="Uniform" />
+                                    </Button>
 
-                            </ListBox>
+                                    <!-- Sort tasks by due date -->
+                                    <Button
+                                        Command="{Binding SortTodoTasksByDueDateCommand}"
+                                        ToolTip="Filter tasks by due date"
+                                        materialDesign:ElevationAssist.Elevation="Dp1"
+                                        Background="#222222"
+                                        Foreground="White"
+                                        Width="25"
+                                        Height="25"
+                                        BorderThickness="0">
+                                        <Path
+                                            Width="10"
+                                            Height="10"
+                                            Data="M19 7H16L20 3L24 7H21V21H19V7M8 16H11V13H8V16M13 5H12V3H10V5H6V3H4V5H3C1.89 5 1 5.89 1 7V18C1 19.11 1.89 20 3 20H13C14.11 20 15 19.11 15 18V7C15 5.89 14.11 5 13 5M3 18L3 11H13L13 18L3 18Z"
+                                            Fill="{Binding RelativeSource={RelativeSource AncestorType=Button}, Path=Foreground}"
+                                            Stretch="Uniform" />
+                                    </Button>
+
+                                    <!-- Sort tasks alphabetically -->
+                                    <Button
+                                        Command="{Binding SortTodoTasksAlphabeticallyCommand}"
+                                        ToolTip="Filter tasks alphabetically"
+                                        materialDesign:ElevationAssist.Elevation="Dp1"
+                                        Background="#222222"
+                                        Foreground="White"
+                                        Width="25"
+                                        Height="25"
+                                        BorderThickness="0">
+                                        <Path
+                                            Width="10"
+                                            Height="10"
+                                            Data="M19 7H22L18 3L14 7H17V21H19M11 13V15L7.67 19H11V21H5V19L8.33 15H5V13M9 3H7C5.9 3 5 3.9 5 5V11H7V9H9V11H11V5C11 3.9 10.11 3 9 3M9 7H7V5H9Z"
+                                            Fill="{Binding RelativeSource={RelativeSource AncestorType=Button}, Path=Foreground}"
+                                            Stretch="Uniform" />
+                                    </Button>
+
+                                    <!-- Sort tasks by creation date -->
+                                    <Button
+                                        Command="{Binding SortTodoTasksByCreationDateCommand}"
+                                        ToolTip="Filter tasks by creation date"
+                                        materialDesign:ElevationAssist.Elevation="Dp1"
+                                        Background="#222222"
+                                        Foreground="White"
+                                        Width="25"
+                                        Height="25"
+                                        BorderThickness="0">
+                                        <Path
+                                            Width="10"
+                                            Height="10"
+                                            Data="M18 7H15L19 3L23 7H20V21H18V7M8 5C4.14 5 1 8.13 1 12C1 15.87 4.13 19 8 19C11.86 19 15 15.87 15 12C15 8.13 11.87 5 8 5M10.19 14.53L7 12.69V9H8.5V11.82L10.94 13.23L10.19 14.53Z"
+                                            Fill="{Binding RelativeSource={RelativeSource AncestorType=Button}, Path=Foreground}"
+                                            Stretch="Uniform" />
+                                    </Button>
+                                </StackPanel>
+                            </materialDesign:PopupBox>
                         </Grid>
+
+                        <ListBox Grid.Row="2" x:Name="ListBoxTodo"
+                                 HorizontalContentAlignment="Stretch"
+                                 ScrollViewer.HorizontalScrollBarVisibility="Disabled"
+                                 ScrollViewer.CanContentScroll="True"
+                                 ScrollViewer.PanningMode="VerticalOnly"
+                                 ScrollViewer.PanningDeceleration="0.1"
+                                 Style="{StaticResource MaterialDesignListBox}"
+                                 ItemsSource="{Binding TodoTasks}"
+                                 ItemTemplate="{StaticResource TaskItemTemplate}"
+                                 dd:DragDrop.IsDragSource="True" dd:DragDrop.IsDropTarget="True"
+                                 dd:DragDrop.DropHandler="{Binding }"
+                                 materialDesign:RippleAssist.IsDisabled="True"
+                                 dd:DragDrop.EffectMoveAdornerTemplate="{StaticResource DropAdornerTemplate}"
+                                 dd:DragDrop.DragAdornerTemplate="{StaticResource TaskItemTemplate}"
+                                 dd:DragDrop.ShowAlwaysDropTargetAdorner="True">
+                            <ListBox.Resources>
+                                <Style TargetType="{x:Type ScrollViewer}"
+                                       BasedOn="{StaticResource CustomScrollViewerStyle}" />
+                            </ListBox.Resources>
+
+                        </ListBox>
                     </Grid>
                 </Border>
             </materialDesign:DialogHost>
@@ -206,38 +299,51 @@
                 <Border BorderBrush="{DynamicResource MahApps.Brushes.Gray}" BorderThickness="0,1,0,1">
                     <Grid>
                         <Grid.RowDefinitions>
-                            <RowDefinition Height="100" />
+                            <RowDefinition Height="60" />
+                            <RowDefinition Height="30" />
                             <RowDefinition Height="*" />
                         </Grid.RowDefinitions>
 
-                        <Grid Grid.Row="0">
+                        <Grid Grid.Row="0" VerticalAlignment="Top"
+                              Background="{DynamicResource MahApps.Brushes.AccentBase}">
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="Auto" />
                                 <ColumnDefinition Width="*" />
                                 <ColumnDefinition Width="Auto" />
                             </Grid.ColumnDefinitions>
 
-                            <TextBlock Text="Doing" FontSize="18" FontWeight="Bold" Margin="10" />
+                            <TextBlock Foreground="{DynamicResource MahApps.Brushes.Text}" Text="Doing" FontSize="26"
+                                       FontWeight="Bold" Margin="10" />
 
 
                             <materialDesign:PopupBox
                                 Grid.Column="2"
-                                Width="50"
-                                Height="50"
+                                Width="35"
+                                Height="35"
+                                Margin="10"
+                                materialDesign:ButtonAssist.CornerRadius="0"
+                                PlacementMode="LeftAndAlignMiddles"
                                 Style="{StaticResource MaterialDesignMultiFloatingActionPopupBox}"
-                                ToolTip="Manage items"
-                                Background="{DynamicResource MahApps.Brushes.Accent}"
+                                ToolTip="Manage tasks"
+                                Background="#222222"
+                                Foreground="White"
                                 materialDesign:ElevationAssist.Elevation="Dp1">
+                                <materialDesign:PopupBox.ToggleContent>
+                                    <materialDesign:PackIcon Kind="Pencil" />
+                                </materialDesign:PopupBox.ToggleContent>
                                 <StackPanel
                                     Orientation="Horizontal">
-                                    <!-- Add File Button -->
+                                    <!-- Add Task Button -->
                                     <Button
                                         Command="{Binding AddTaskCommand}"
                                         CommandParameter="{x:Static enums:KanbanStatusEnum.Doing}"
-                                        ToolTip="Add a file"
+                                        ToolTip="Add a new task"
                                         materialDesign:ElevationAssist.Elevation="Dp1"
-                                        Background="{DynamicResource MahApps.Brushes.Accent}"
-                                        Opacity="0.75">
+                                        Background="#222222"
+                                        Foreground="White"
+                                        Width="35"
+                                        Height="35"
+                                        BorderThickness="0">
                                         <Path
                                             Width="15"
                                             Height="15"
@@ -249,18 +355,17 @@
                                     <Button
                                         Command="{Binding DeleteTaskCommand}"
                                         CommandParameter="{Binding ElementName=ListBoxDoing, Path=SelectedItem}"
-                                        ToolTip="Refresh documents directory"
+                                        ToolTip="Delete selected task"
                                         materialDesign:ElevationAssist.Elevation="Dp1"
-                                        Background="{DynamicResource MahApps.Brushes.Accent}"
-                                        Opacity="0.75">
+                                        Background="#222222"
+                                        Foreground="White"
+                                        Width="35"
+                                        Height="35"
+                                        BorderThickness="0">
                                         <Path
                                             Width="15"
                                             Height="15"
-                                            Data="M18 14.5C19.11 14.5 20.11 14.95 20.83 15.67L22 14.5V18.5H18L19.77 16.73C19.32 16.28 
-                            18.69 16 18 16C16.62 16 15.5 17.12 15.5 18.5C15.5 19.88 16.62 21 18 21C18.82 21 19.54 20.61 
-                            20 20H21.71C21.12 21.47 19.68 22.5 18 22.5C15.79 22.5 14 20.71 14 18.5C14 16.29 15.79 14.5 
-                            18 14.5M10 4L12 6H20C21.1 6 22 6.89 22 8V13C21 12.38 19.79 12 18.5 12C14.91 12 12 14.91 12 
-                            18.5C12 19 12.06 19.5 12.17 20H4C2.89 20 2 19.1 2 18L2 6C2 4.89 2.89 4 4 4H10Z"
+                                            Data="M19,4H15.5L14.5,3H9.5L8.5,4H5V6H19M6,19A2,2 0 0,0 8,21H16A2,2 0 0,0 18,19V7H6V19Z"
                                             Fill="{Binding RelativeSource={RelativeSource AncestorType=Button}, Path=Foreground}"
                                             Stretch="Uniform" />
                                     </Button>
@@ -269,16 +374,117 @@
                         </Grid>
 
                         <Grid Grid.Row="1">
-                            <ListBox x:Name="ListBoxDoing"
-                                     ItemsSource="{Binding DoingTasks}"
-                                     ItemTemplate="{StaticResource TaskItemTemplate}"
-                                     dd:DragDrop.IsDragSource="True" dd:DragDrop.IsDropTarget="True"
-                                     dd:DragDrop.DropHandler="{Binding}"
-                                     dd:DragDrop.DragAdornerTemplate="{StaticResource TaskItemTemplate}"
-                                     dd:DragDrop.EffectMoveAdornerTemplate="{StaticResource DropAdornerTemplate}">
+                            <materialDesign:PopupBox
+                                Width="25"
+                                Height="25"
+                                Margin="10,5,0,0"
+                                PlacementMode="RightAndAlignMiddles"
+                                Style="{StaticResource MaterialDesignMultiFloatingActionPopupBox}"
+                                ToolTip="Filter tasks"
+                                Background="#222222"
+                                Foreground="White"
+                                materialDesign:ElevationAssist.Elevation="Dp1">
+                                <materialDesign:PopupBox.ToggleContent>
+                                    <materialDesign:PackIcon Kind="Sort" />
+                                </materialDesign:PopupBox.ToggleContent>
+                                <StackPanel
+                                    Orientation="Horizontal">
+                                    <!-- Sort tasks by severity -->
+                                    <Button
+                                        Command="{Binding SortDoingTasksBySeverityCommand}"
+                                        ToolTip="Filter tasks by severity"
+                                        materialDesign:ElevationAssist.Elevation="Dp1"
+                                        Background="#222222"
+                                        Foreground="White"
+                                        Width="25"
+                                        Height="25"
+                                        BorderThickness="0">
+                                        <Path
+                                            Width="10"
+                                            Height="10"
+                                            Data="M19 7H22L18 3L14 7H17V21H19M5 7C5 8.1 5.9 9 7 9C8.1 9 9 8.1 9 7C9 5.9 8.1 5 7 5C5.9 5 5 5.9 5 7M7 3C9.21 3 11 4.79 11 7C11 9.21 9.21 11 7 11C4.79 11 3 9.21 3 7C3 4.79 4.79 3 7 3M7 13C4.79 13 3 14.79 3 17C3 19.21 4.79 21 7 21C9.21 21 11 19.21 11 17C11 14.79 9.21 13 7 13Z"
+                                            Fill="{Binding RelativeSource={RelativeSource AncestorType=Button}, Path=Foreground}"
+                                            Stretch="Uniform" />
+                                    </Button>
 
-                            </ListBox>
+                                    <!-- Sort tasks by due date -->
+                                    <Button
+                                        Command="{Binding SortDoingTasksByDueDateCommand}"
+                                        ToolTip="Filter tasks by due date"
+                                        materialDesign:ElevationAssist.Elevation="Dp1"
+                                        Background="#222222"
+                                        Foreground="White"
+                                        Width="25"
+                                        Height="25"
+                                        BorderThickness="0">
+                                        <Path
+                                            Width="10"
+                                            Height="10"
+                                            Data="M19 7H16L20 3L24 7H21V21H19V7M8 16H11V13H8V16M13 5H12V3H10V5H6V3H4V5H3C1.89 5 1 5.89 1 7V18C1 19.11 1.89 20 3 20H13C14.11 20 15 19.11 15 18V7C15 5.89 14.11 5 13 5M3 18L3 11H13L13 18L3 18Z"
+                                            Fill="{Binding RelativeSource={RelativeSource AncestorType=Button}, Path=Foreground}"
+                                            Stretch="Uniform" />
+                                    </Button>
+
+                                    <!-- Sort tasks alphabetically -->
+                                    <Button
+                                        Command="{Binding SortDoingTasksAlphabeticallyCommand}"
+                                        ToolTip="Filter tasks alphabetically"
+                                        materialDesign:ElevationAssist.Elevation="Dp1"
+                                        Background="#222222"
+                                        Foreground="White"
+                                        Width="25"
+                                        Height="25"
+                                        BorderThickness="0">
+                                        <Path
+                                            Width="10"
+                                            Height="10"
+                                            Data="M19 7H22L18 3L14 7H17V21H19M11 13V15L7.67 19H11V21H5V19L8.33 15H5V13M9 3H7C5.9 3 5 3.9 5 5V11H7V9H9V11H11V5C11 3.9 10.11 3 9 3M9 7H7V5H9Z"
+                                            Fill="{Binding RelativeSource={RelativeSource AncestorType=Button}, Path=Foreground}"
+                                            Stretch="Uniform" />
+                                    </Button>
+
+                                    <!-- Sort tasks by creation date -->
+                                    <Button
+                                        Command="{Binding SortDoingTasksByCreationDateCommand}"
+                                        ToolTip="Filter tasks by creation date"
+                                        materialDesign:ElevationAssist.Elevation="Dp1"
+                                        Background="#222222"
+                                        Foreground="White"
+                                        Width="25"
+                                        Height="25"
+                                        BorderThickness="0">
+                                        <Path
+                                            Width="10"
+                                            Height="10"
+                                            Data="M18 7H15L19 3L23 7H20V21H18V7M8 5C4.14 5 1 8.13 1 12C1 15.87 4.13 19 8 19C11.86 19 15 15.87 15 12C15 8.13 11.87 5 8 5M10.19 14.53L7 12.69V9H8.5V11.82L10.94 13.23L10.19 14.53Z"
+                                            Fill="{Binding RelativeSource={RelativeSource AncestorType=Button}, Path=Foreground}"
+                                            Stretch="Uniform" />
+                                    </Button>
+                                </StackPanel>
+                            </materialDesign:PopupBox>
                         </Grid>
+
+                        <ListBox Grid.Row="2" x:Name="ListBoxDoing"
+                                 HorizontalContentAlignment="Stretch"
+                                 ScrollViewer.HorizontalScrollBarVisibility="Disabled"
+                                 ScrollViewer.CanContentScroll="True"
+                                 ScrollViewer.PanningMode="VerticalOnly"
+                                 ScrollViewer.PanningDeceleration="0.1"
+                                 Style="{StaticResource MaterialDesignListBox}"
+                                 ItemsSource="{Binding DoingTasks}"
+                                 ItemTemplate="{StaticResource TaskItemTemplate}"
+                                 dd:DragDrop.IsDragSource="True" dd:DragDrop.IsDropTarget="True"
+                                 dd:DragDrop.DropHandler="{Binding }"
+                                 materialDesign:RippleAssist.IsDisabled="True"
+                                 dd:DragDrop.DragAdornerTemplate="{StaticResource TaskItemTemplate}"
+                                 dd:DragDrop.EffectMoveAdornerTemplate="{StaticResource DropAdornerTemplate}"
+                                 dd:DragDrop.ShowAlwaysDropTargetAdorner="True">
+                            <ListBox.Resources>
+                                <Style TargetType="{x:Type ScrollViewer}"
+                                       BasedOn="{StaticResource CustomScrollViewerStyle}" />
+                            </ListBox.Resources>
+
+                        </ListBox>
                     </Grid>
                 </Border>
             </materialDesign:DialogHost>
@@ -288,38 +494,51 @@
                 <Border BorderBrush="{DynamicResource MahApps.Brushes.Gray}" BorderThickness="1">
                     <Grid>
                         <Grid.RowDefinitions>
-                            <RowDefinition Height="100" />
+                            <RowDefinition Height="60" />
+                            <RowDefinition Height="30" />
                             <RowDefinition Height="*" />
                         </Grid.RowDefinitions>
 
-                        <Grid Grid.Row="0">
+                        <Grid Grid.Row="0" VerticalAlignment="Top"
+                              Background="{DynamicResource MahApps.Brushes.AccentBase}">
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="Auto" />
                                 <ColumnDefinition Width="*" />
                                 <ColumnDefinition Width="Auto" />
                             </Grid.ColumnDefinitions>
 
-                            <TextBlock Text="Done" FontSize="18" FontWeight="Bold" Margin="10" />
+                            <TextBlock Foreground="{DynamicResource MahApps.Brushes.Text}" Text="Done" FontSize="26"
+                                       FontWeight="Bold" Margin="10" />
 
 
                             <materialDesign:PopupBox
                                 Grid.Column="2"
-                                Width="50"
-                                Height="50"
+                                Width="35"
+                                Height="35"
+                                Margin="10"
+                                materialDesign:ButtonAssist.CornerRadius="0"
+                                PlacementMode="LeftAndAlignMiddles"
                                 Style="{StaticResource MaterialDesignMultiFloatingActionPopupBox}"
-                                ToolTip="Manage items"
-                                Background="{DynamicResource MahApps.Brushes.Accent}"
+                                ToolTip="Manage tasks"
+                                Background="#222222"
+                                Foreground="White"
                                 materialDesign:ElevationAssist.Elevation="Dp1">
+                                <materialDesign:PopupBox.ToggleContent>
+                                    <materialDesign:PackIcon Kind="Pencil" />
+                                </materialDesign:PopupBox.ToggleContent>
                                 <StackPanel
                                     Orientation="Horizontal">
-                                    <!-- Add File Button -->
+                                    <!-- Add Task Button -->
                                     <Button
                                         Command="{Binding AddTaskCommand}"
                                         CommandParameter="{x:Static enums:KanbanStatusEnum.Done}"
-                                        ToolTip="Add a file"
+                                        ToolTip="Add a new task"
                                         materialDesign:ElevationAssist.Elevation="Dp1"
-                                        Background="{DynamicResource MahApps.Brushes.Accent}"
-                                        Opacity="0.75">
+                                        Background="#222222"
+                                        Foreground="White"
+                                        Width="35"
+                                        Height="35"
+                                        BorderThickness="0">
                                         <Path
                                             Width="15"
                                             Height="15"
@@ -331,18 +550,17 @@
                                     <Button
                                         Command="{Binding DeleteTaskCommand}"
                                         CommandParameter="{Binding ElementName=ListBoxDone, Path=SelectedItem}"
-                                        ToolTip="Refresh documents directory"
+                                        ToolTip="Delete selected task"
                                         materialDesign:ElevationAssist.Elevation="Dp1"
-                                        Background="{DynamicResource MahApps.Brushes.Accent}"
-                                        Opacity="0.75">
+                                        Background="#222222"
+                                        Foreground="White"
+                                        Width="35"
+                                        Height="35"
+                                        BorderThickness="0">
                                         <Path
                                             Width="15"
                                             Height="15"
-                                            Data="M18 14.5C19.11 14.5 20.11 14.95 20.83 15.67L22 14.5V18.5H18L19.77 16.73C19.32 16.28 
-                            18.69 16 18 16C16.62 16 15.5 17.12 15.5 18.5C15.5 19.88 16.62 21 18 21C18.82 21 19.54 20.61 
-                            20 20H21.71C21.12 21.47 19.68 22.5 18 22.5C15.79 22.5 14 20.71 14 18.5C14 16.29 15.79 14.5 
-                            18 14.5M10 4L12 6H20C21.1 6 22 6.89 22 8V13C21 12.38 19.79 12 18.5 12C14.91 12 12 14.91 12 
-                            18.5C12 19 12.06 19.5 12.17 20H4C2.89 20 2 19.1 2 18L2 6C2 4.89 2.89 4 4 4H10Z"
+                                            Data="M19,4H15.5L14.5,3H9.5L8.5,4H5V6H19M6,19A2,2 0 0,0 8,21H16A2,2 0 0,0 18,19V7H6V19Z"
                                             Fill="{Binding RelativeSource={RelativeSource AncestorType=Button}, Path=Foreground}"
                                             Stretch="Uniform" />
                                     </Button>
@@ -351,16 +569,117 @@
                         </Grid>
 
                         <Grid Grid.Row="1">
-                            <ListBox x:Name="ListBoxDone"
-                                     ItemsSource="{Binding DoneTasks}"
-                                     ItemTemplate="{StaticResource TaskItemTemplate}"
-                                     dd:DragDrop.IsDragSource="True" dd:DragDrop.IsDropTarget="True"
-                                     dd:DragDrop.DropHandler="{Binding}"
-                                     dd:DragDrop.DragAdornerTemplate="{StaticResource TaskItemTemplate}"
-                                     dd:DragDrop.EffectMoveAdornerTemplate="{StaticResource DropAdornerTemplate}">
+                            <materialDesign:PopupBox
+                                Width="25"
+                                Height="25"
+                                Margin="10,5,0,0"
+                                PlacementMode="RightAndAlignMiddles"
+                                Style="{StaticResource MaterialDesignMultiFloatingActionPopupBox}"
+                                ToolTip="Filter tasks"
+                                Background="#222222"
+                                Foreground="White"
+                                materialDesign:ElevationAssist.Elevation="Dp1">
+                                <materialDesign:PopupBox.ToggleContent>
+                                    <materialDesign:PackIcon Kind="Sort" />
+                                </materialDesign:PopupBox.ToggleContent>
+                                <StackPanel
+                                    Orientation="Horizontal">
+                                    <!-- Sort tasks by severity -->
+                                    <Button
+                                        Command="{Binding SortDoneTasksBySeverityCommand}"
+                                        ToolTip="Filter tasks by severity"
+                                        materialDesign:ElevationAssist.Elevation="Dp1"
+                                        Background="#222222"
+                                        Foreground="White"
+                                        Width="25"
+                                        Height="25"
+                                        BorderThickness="0">
+                                        <Path
+                                            Width="10"
+                                            Height="10"
+                                            Data="M19 7H22L18 3L14 7H17V21H19M5 7C5 8.1 5.9 9 7 9C8.1 9 9 8.1 9 7C9 5.9 8.1 5 7 5C5.9 5 5 5.9 5 7M7 3C9.21 3 11 4.79 11 7C11 9.21 9.21 11 7 11C4.79 11 3 9.21 3 7C3 4.79 4.79 3 7 3M7 13C4.79 13 3 14.79 3 17C3 19.21 4.79 21 7 21C9.21 21 11 19.21 11 17C11 14.79 9.21 13 7 13Z"
+                                            Fill="{Binding RelativeSource={RelativeSource AncestorType=Button}, Path=Foreground}"
+                                            Stretch="Uniform" />
+                                    </Button>
 
-                            </ListBox>
+                                    <!-- Sort tasks by due date -->
+                                    <Button
+                                        Command="{Binding SortDoneTasksByDueDateCommand}"
+                                        ToolTip="Filter tasks by due date"
+                                        materialDesign:ElevationAssist.Elevation="Dp1"
+                                        Background="#222222"
+                                        Foreground="White"
+                                        Width="25"
+                                        Height="25"
+                                        BorderThickness="0">
+                                        <Path
+                                            Width="10"
+                                            Height="10"
+                                            Data="M19 7H16L20 3L24 7H21V21H19V7M8 16H11V13H8V16M13 5H12V3H10V5H6V3H4V5H3C1.89 5 1 5.89 1 7V18C1 19.11 1.89 20 3 20H13C14.11 20 15 19.11 15 18V7C15 5.89 14.11 5 13 5M3 18L3 11H13L13 18L3 18Z"
+                                            Fill="{Binding RelativeSource={RelativeSource AncestorType=Button}, Path=Foreground}"
+                                            Stretch="Uniform" />
+                                    </Button>
+
+                                    <!-- Sort tasks alphabetically -->
+                                    <Button
+                                        Command="{Binding SortDoneTasksAlphabeticallyCommand}"
+                                        ToolTip="Filter tasks alphabetically"
+                                        materialDesign:ElevationAssist.Elevation="Dp1"
+                                        Background="#222222"
+                                        Foreground="White"
+                                        Width="25"
+                                        Height="25"
+                                        BorderThickness="0">
+                                        <Path
+                                            Width="10"
+                                            Height="10"
+                                            Data="M19 7H22L18 3L14 7H17V21H19M11 13V15L7.67 19H11V21H5V19L8.33 15H5V13M9 3H7C5.9 3 5 3.9 5 5V11H7V9H9V11H11V5C11 3.9 10.11 3 9 3M9 7H7V5H9Z"
+                                            Fill="{Binding RelativeSource={RelativeSource AncestorType=Button}, Path=Foreground}"
+                                            Stretch="Uniform" />
+                                    </Button>
+
+                                    <!-- Sort tasks by creation date -->
+                                    <Button
+                                        Command="{Binding SortDoneTasksByCreationDateCommand}"
+                                        ToolTip="Filter tasks by creation date"
+                                        materialDesign:ElevationAssist.Elevation="Dp1"
+                                        Background="#222222"
+                                        Foreground="White"
+                                        Width="25"
+                                        Height="25"
+                                        BorderThickness="0">
+                                        <Path
+                                            Width="10"
+                                            Height="10"
+                                            Data="M18 7H15L19 3L23 7H20V21H18V7M8 5C4.14 5 1 8.13 1 12C1 15.87 4.13 19 8 19C11.86 19 15 15.87 15 12C15 8.13 11.87 5 8 5M10.19 14.53L7 12.69V9H8.5V11.82L10.94 13.23L10.19 14.53Z"
+                                            Fill="{Binding RelativeSource={RelativeSource AncestorType=Button}, Path=Foreground}"
+                                            Stretch="Uniform" />
+                                    </Button>
+                                </StackPanel>
+                            </materialDesign:PopupBox>
                         </Grid>
+
+                        <ListBox Grid.Row="2" x:Name="ListBoxDone"
+                                 HorizontalContentAlignment="Stretch"
+                                 ScrollViewer.HorizontalScrollBarVisibility="Disabled"
+                                 ScrollViewer.CanContentScroll="True"
+                                 ScrollViewer.PanningMode="VerticalOnly"
+                                 ScrollViewer.PanningDeceleration="0.1"
+                                 Style="{StaticResource MaterialDesignListBox}"
+                                 ItemsSource="{Binding DoneTasks}"
+                                 ItemTemplate="{StaticResource TaskItemTemplate}"
+                                 dd:DragDrop.IsDragSource="True" dd:DragDrop.IsDropTarget="True"
+                                 dd:DragDrop.DropHandler="{Binding }"
+                                 materialDesign:RippleAssist.IsDisabled="True"
+                                 dd:DragDrop.EffectMoveAdornerTemplate="{StaticResource DropAdornerTemplate}"
+                                 dd:DragDrop.DragAdornerTemplate="{StaticResource TaskItemTemplate}"
+                                 dd:DragDrop.ShowAlwaysDropTargetAdorner="True">
+                            <ListBox.Resources>
+                                <Style TargetType="{x:Type ScrollViewer}"
+                                       BasedOn="{StaticResource CustomScrollViewerStyle}" />
+                            </ListBox.Resources>
+
+                        </ListBox>
                     </Grid>
                 </Border>
             </materialDesign:DialogHost>

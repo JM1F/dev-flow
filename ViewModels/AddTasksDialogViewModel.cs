@@ -54,7 +54,19 @@ public class AddTasksDialogViewModel : ViewModelBase
         set
         {
             _dueDate = value;
-            OnPropertyChanged(nameof(DateTime));
+            OnPropertyChanged(nameof(DueDate));
+        }
+    }
+
+    private DateTime _dateCreated;
+
+    public DateTime DateCreated
+    {
+        get => _dateCreated;
+        set
+        {
+            _dateCreated = value;
+            OnPropertyChanged(nameof(DateCreated));
         }
     }
 
@@ -77,7 +89,8 @@ public class AddTasksDialogViewModel : ViewModelBase
             Description = Description,
             Status = _kanbanStatusEnum,
             Severity = Severity,
-            DueDate = DueDate ?? DateTime.Now
+            DueDate = DueDate ?? DateTime.Now,
+            DateCreated = DateTime.Now
         }, null);
     }
 }

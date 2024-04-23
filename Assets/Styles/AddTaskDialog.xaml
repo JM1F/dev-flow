@@ -7,40 +7,94 @@
              xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
              xmlns:enums="clr-namespace:dev_flow.Enums"
              mc:Ignorable="d"
-             d:DesignHeight="300" d:DesignWidth="300">
+             Width="250"
+             MaxWidth="250"
+             MaxHeight="300">
 
-    <Grid Margin="15" Background="Gold">
-        <Grid.RowDefinitions>
-            <RowDefinition Height="Auto" />
-            <RowDefinition Height="Auto" />
-            <RowDefinition Height="Auto" />
-            <RowDefinition Height="Auto" />
-            <RowDefinition Height="Auto" />
-            <RowDefinition Height="Auto" />
-        </Grid.RowDefinitions>
+    <UserControl.Resources>
+        <Style x:Key="CustomDatePickerStyle" TargetType="DatePicker" BasedOn="{StaticResource MaterialDesignFloatingHintDatePicker}">
+        <Setter Property="Foreground" Value="White" />
+        <Setter Property="materialDesign:HintAssist.Foreground" Value="White" />
+        <Setter Property="materialDesign:TextFieldAssist.UnderlineBrush" Value="White" />
+        <Setter Property="materialDesign:CalendarAssist.HeaderBackground" Value="White" />
+        <Setter Property="materialDesign:CalendarAssist.HeaderForeground" Value="Black" />
+        <Setter Property="CalendarStyle">
+            <Setter.Value>
+                <Style TargetType="Calendar" BasedOn="{StaticResource MaterialDesignCalendarPortrait}">
+                    <Setter Property="Background" Value="#444444" />
+                    <Setter Property="Foreground" Value="White" />
+                    <Setter Property="BorderBrush" Value="#666666" />
+                    <Setter Property="BorderThickness" Value="1" />
+                    <Setter Property="CalendarDayButtonStyle">
+                        <Setter.Value>
+                            <Style TargetType="CalendarDayButton" BasedOn="{StaticResource MaterialDesignCalendarDayButton}">
+                                <Setter Property="Background" Value="#555555" />
+                                <Setter Property="Foreground" Value="White" />
+                                <Setter Property="BorderBrush" Value="#777777" />
+                                <Setter Property="BorderThickness" Value="1" />
+                            </Style>
+                        </Setter.Value>
+                    </Setter>
+                    <Setter Property="CalendarItemStyle">
+                        <Setter.Value>
+                            <Style TargetType="CalendarItem" BasedOn="{StaticResource MaterialDesignCalendarItemPortrait}">
+                                <Setter Property="Background" Value="#666666" />
+                                <Setter Property="Foreground" Value="White" />
+                            </Style>
+                        </Setter.Value>
+                    </Setter>
+                </Style>
+            </Setter.Value>
+        </Setter>
+    </Style>
+    </UserControl.Resources>
 
-        <TextBlock Text="Add a new task" />
-        <TextBox Grid.Row="1" Margin="0,8,0,0" materialDesign:HintAssist.Hint="Title" Text="{Binding Title}" />
-        <TextBox Grid.Row="2" Margin="0,8,0,0" materialDesign:HintAssist.Hint="Description"
-                 Text="{Binding Description}" />
-        <ComboBox Grid.Row="3" Margin="0,8,0,0" materialDesign:HintAssist.Hint="Severity"
-                  SelectedItem="{Binding Severity}">
-            <ComboBox.ItemsSource>
-                <x:Array Type="{x:Type enums:KanbanSeverityEnum}">
-                    <enums:KanbanSeverityEnum>Low</enums:KanbanSeverityEnum>
-                    <enums:KanbanSeverityEnum>Medium</enums:KanbanSeverityEnum>
-                    <enums:KanbanSeverityEnum>High</enums:KanbanSeverityEnum>
-                </x:Array>
-            </ComboBox.ItemsSource>
-        </ComboBox>
-        <DatePicker Grid.Row="4" Margin="0,8,0,0" materialDesign:HintAssist.Hint="Due Date"
-                    SelectedDate="{Binding DueDate}" />
+    <Grid Background="#222222">
 
-        <StackPanel Grid.Row="5" Orientation="Horizontal" HorizontalAlignment="Right" Margin="0,16,0,0">
-            <Button Content="Save" Command="{Binding SaveTaskCommand}" Style="{StaticResource MaterialDesignRaisedButton}"
-                    Margin="0,0,8,0" />
-            <Button Content="Cancel" Command="{x:Static materialDesign:DialogHost.CloseDialogCommand}"
-                    Style="{StaticResource MaterialDesignRaisedButton}" />
-        </StackPanel>
+        <Grid Margin="10">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+            </Grid.RowDefinitions>
+
+            <TextBlock FontWeight="Bold" Foreground="White" Text="Add a new task" />
+            <TextBox Grid.Row="1" Foreground="White" Margin="0,8,0,0"
+                     materialDesign:HintAssist.Hint="Title" Text="{Binding Title}" />
+            <TextBox Grid.Row="2" Foreground="White" Margin="0,8,0,0"
+                     materialDesign:HintAssist.Hint="Description"
+                     Text="{Binding Description}"
+                     AcceptsReturn="True" />
+            <ComboBox Grid.Row="3" Margin="0,8,0,0" Foreground="White"
+                      materialDesign:HintAssist.Hint="Severity"
+                      SelectedItem="{Binding Severity}">
+                <ComboBox.ItemsSource>
+                    <x:Array Type="{x:Type enums:KanbanSeverityEnum}">
+                        <enums:KanbanSeverityEnum>Low</enums:KanbanSeverityEnum>
+                        <enums:KanbanSeverityEnum>Medium</enums:KanbanSeverityEnum>
+                        <enums:KanbanSeverityEnum>High</enums:KanbanSeverityEnum>
+                    </x:Array>
+                </ComboBox.ItemsSource>
+            </ComboBox>
+            <DatePicker Grid.Row="4" Margin="0,8,0,0"
+                        materialDesign:HintAssist.Hint="Due Date"
+                        SelectedDate="{Binding DueDate}"
+                        Foreground="White"
+                        Style="{StaticResource CustomDatePickerStyle}">
+            </DatePicker>
+
+            <StackPanel Grid.Row="5" Orientation="Horizontal" HorizontalAlignment="Right" Margin="0,16,0,0">
+                <Button Content="Save" Command="{Binding SaveTaskCommand}"
+                        Style="{StaticResource MaterialDesignFlatButton}"
+                        Foreground="White"
+                        Margin="0,0,8,0" />
+                <Button Content="Cancel" Command="{x:Static materialDesign:DialogHost.CloseDialogCommand}"
+                        Style="{StaticResource MaterialDesignFlatButton}"
+                        Foreground="White" />
+            </StackPanel>
+        </Grid>
     </Grid>
 </UserControl>

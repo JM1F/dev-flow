@@ -17,6 +17,7 @@ public class KanbanTask : INotifyPropertyChanged
     private string _description;
     private KanbanSeverityEnum _severity;
     private DateTime _dueDate;
+    private DateTime _dateCreated;
     private KanbanStatusEnum _status;
 
     [XmlElement("ID")]
@@ -71,6 +72,17 @@ public class KanbanTask : INotifyPropertyChanged
         {
             _dueDate = value;
             OnPropertyChanged(nameof(DueDate));
+        }
+    }
+
+    [XmlElement("DateCreated")]
+    public DateTime DateCreated
+    {
+        get => _dateCreated;
+        set
+        {
+            _dateCreated = value;
+            OnPropertyChanged(nameof(DateCreated));
         }
     }
 
