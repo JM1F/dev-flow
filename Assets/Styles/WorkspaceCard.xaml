@@ -11,8 +11,9 @@
     <Border CornerRadius="10" BorderBrush="{DynamicResource MahApps.Brushes.Gray}" Margin="15, 25,15,25"
             BorderThickness="1"
             RenderTransformOrigin="0.5,0.5" MaxWidth="196">
+
         <Border.RenderTransform>
-            <ScaleTransform x:Name="scaleTransform" ScaleX="1" ScaleY="1" />
+            <ScaleTransform x:Name="ScaleTransform" ScaleX="1" ScaleY="1" RenderOptions.BitmapScalingMode="Fant" />
         </Border.RenderTransform>
 
         <!-- Triggers for mouse enter and leave events -->
@@ -21,9 +22,9 @@
                 <BeginStoryboard>
                     <Storyboard>
                         <!-- Scale animation on mouse enter -->
-                        <DoubleAnimation Storyboard.TargetName="scaleTransform" Storyboard.TargetProperty="ScaleX"
+                        <DoubleAnimation Storyboard.TargetName="ScaleTransform" Storyboard.TargetProperty="ScaleX"
                                          To="1.1" Duration="0:0:0.3" />
-                        <DoubleAnimation Storyboard.TargetName="scaleTransform" Storyboard.TargetProperty="ScaleY"
+                        <DoubleAnimation Storyboard.TargetName="ScaleTransform" Storyboard.TargetProperty="ScaleY"
                                          To="1.1" Duration="0:0:0.3" />
                     </Storyboard>
                 </BeginStoryboard>
@@ -32,9 +33,9 @@
                 <BeginStoryboard>
                     <Storyboard>
                         <!-- Scale animation on mouse leave -->
-                        <DoubleAnimation Storyboard.TargetName="scaleTransform" Storyboard.TargetProperty="ScaleX"
+                        <DoubleAnimation Storyboard.TargetName="ScaleTransform" Storyboard.TargetProperty="ScaleX"
                                          To="1" Duration="0:0:0.3" />
-                        <DoubleAnimation Storyboard.TargetName="scaleTransform" Storyboard.TargetProperty="ScaleY"
+                        <DoubleAnimation Storyboard.TargetName="ScaleTransform" Storyboard.TargetProperty="ScaleY"
                                          To="1" Duration="0:0:0.3" />
                     </Storyboard>
                 </BeginStoryboard>
@@ -75,10 +76,14 @@
                     Grid.Row="1"
                     Margin="8,24,8,0">
                     <TextBlock
-                        FontWeight="Bold" Text="{Binding Name}" TextTrimming="CharacterEllipsis">
+                        FontWeight="Bold" Text="{Binding Name}" TextTrimming="CharacterEllipsis"
+                        TextOptions.TextFormattingMode="Display"
+                        RenderOptions.BitmapScalingMode="Fant">
                     </TextBlock>
                     <TextBlock
-                        Text="{Binding DateModified}" />
+                        Text="{Binding DateModified, StringFormat='dd/MM/yyyy HH:mm:ss tt'}"
+                        TextOptions.TextFormattingMode="Display"
+                        RenderOptions.BitmapScalingMode="Fant" />
                 </StackPanel>
                 <!-- Buttons for workspace actions -->
                 <StackPanel
