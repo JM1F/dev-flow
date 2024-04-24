@@ -8,6 +8,9 @@ using MaterialDesignThemes.Wpf;
 
 namespace dev_flow.ViewModels;
 
+/// <summary>
+/// Represents the ViewModel for the AddTasksDialog.
+/// </summary>
 public class AddTasksDialogViewModel : ViewModelBase
 {
     private string _title;

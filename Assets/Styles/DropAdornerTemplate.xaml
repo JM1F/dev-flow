@@ -3,7 +3,8 @@
                     xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes">
     <DataTemplate x:Key="DropAdornerTemplate">
         <Grid>
-            <materialDesign:PackIcon Kind="Arrow" Foreground="{DynamicResource MahApps.Brushes.Text}" Width="20" Height="20" />
+            <materialDesign:PackIcon Kind="Arrow" Foreground="{DynamicResource MahApps.Brushes.Text}" Width="20"
+                                     Height="20" />
         </Grid>
     </DataTemplate>
 </ResourceDictionary>

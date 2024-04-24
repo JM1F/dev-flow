@@ -23,10 +23,10 @@ namespace dev_flow.ViewModels;
 
 public class CodeSandboxPageViewModel : ViewModelBase
 {
-    private CodeSandboxPageView _codeSandboxPageView;
+    // Properties
     private WebView2? _codeEditorWebView;
     private string _codeEditorValue;
-    public List<LanguageItem?> SupportedLanguagesItemSource { get; set; }
+    private List<LanguageItem?> SupportedLanguagesItemSource { get; set; }
 
     private LanguageItem? _selectedLanguage;
     private readonly DialogCoordinator _dialogCoordinator;
@@ -42,18 +42,18 @@ public class CodeSandboxPageViewModel : ViewModelBase
         }
     }
 
+    // Commands
     public ICommand SaveCodeLocallyCommand { get; set; }
     public ICommand SaveCodeAsCommand { get; set; }
     public ICommand OpenCodeCommand { get; set; }
 
     public CodeSandboxPageViewModel(CodeSandboxPageView codeSandboxPageView)
     {
-        _codeSandboxPageView = codeSandboxPageView;
-
         _codeEditorWebView = codeSandboxPageView.FindName("CodeEditorWebView") as WebView2;
 
         SupportedLanguagesItemSource = LanguageInfo.Languages;
 
+        // Set the selected language based on the settings
         SelectedLanguage = SupportedLanguagesItemSource.Find(supportedLanguage =>
             supportedLanguage?.Name == Settings.Default.CodeEditorLanguage);
 
@@ -64,6 +64,9 @@ public class CodeSandboxPageViewModel : ViewModelBase
         OpenCodeCommand = new AsyncRelayCommand(OpenCode);
     }
 
+    /// <summary>
+    /// Opens a code file in the code editor.
+    /// </summary>
     private async Task OpenCode()
     {
         // Generate the filter string dynamically based on the LanguageInfo class and the attributes
@@ -87,18 +90,36 @@ public class CodeSandboxPageViewModel : ViewModelBase
                 "Opening Code", "Please wait while the code is being opened...");
             progressDialogController.SetIndeterminate();
 
-            var fileName = openFileDialog.FileName;
-            var fileContent = await File.ReadAllTextAsync(fileName);
+            try
+            {
+                var fileName = openFileDialog.FileName;
+                var fileContent = await File.ReadAllTextAsync(fileName);
 
-            await _codeEditorWebView.CoreWebView2.ExecuteScriptAsync(
-                $"monaco.editor.getModels()[0].setValue(`{fileContent}`);");
-
-            await progressDialogController.CloseAsync();
-
-            _codeEditorWebView.Visibility = Visibility.Visible;
+                await _codeEditorWebView.CoreWebView2.ExecuteScriptAsync(
+                    $"monaco.editor.getModels()[0].setValue(`{fileContent}`);");
+            }
+            catch (IOException ex)
+            {
+                _codeEditorWebView.Visibility = Visibility.Collapsed;
+                await _dialogCoordinator.ShowMessageAsync(this, "Error",
+                    $"An error occurred while reading the file: {ex.Message}");
+            }
+            catch (Exception ex)
+            {
+                _codeEditorWebView.Visibility = Visibility.Collapsed;
+                await _dialogCoordinator.ShowMessageAsync(this, "Error", $"An unexpected error occurred: {ex.Message}");
+            }
+            finally
+            {
+                await progressDialogController.CloseAsync();
+                _codeEditorWebView.Visibility = Visibility.Visible;
+            }
         }
     }
 
+    /// <summary>
+    /// Save as the code in the code editor to a file.
+    /// </summary>
     private async Task SaveCodeAs()
     {
         if (_codeEditorWebView != null)
@@ -110,29 +131,50 @@ public class CodeSandboxPageViewModel : ViewModelBase
 
             progressDialogController.SetIndeterminate();
 
-            await GetAndStripCodeFromEditor();
-
-            SaveFileDialog saveFileDialog = new SaveFileDialog
+            try
             {
-                FileName = $"DevFlow_{SelectedLanguage?.DisplayName}", // Default file name
-                DefaultExt = SelectedLanguage?.Extension, // Default file extension based on selected language
-                Filter = "All Files (*.*)|*.*" // Allow any file extension
-            };
+                await GetAndStripCodeFromEditor();
 
-            if (saveFileDialog.ShowDialog() == true)
-            {
-                string filePath = saveFileDialog.FileName;
-                await File.WriteAllTextAsync(filePath, _codeEditorValue);
+                SaveFileDialog saveFileDialog = new SaveFileDialog
+                {
+                    FileName = $"DevFlow_{SelectedLanguage?.DisplayName}", // Default file name
+                    DefaultExt = SelectedLanguage?.Extension, // Default file extension based on selected language
+                    Filter = "All Files (*.*)|*.*" // Allow any file extension
+                };
 
-                await SaveCodeToSettings(_codeEditorValue);
+                if (saveFileDialog.ShowDialog() == true)
+                {
+                    string filePath = saveFileDialog.FileName;
+
+                    try
+                    {
+                        await File.WriteAllTextAsync(filePath, _codeEditorValue);
+                        await SaveCodeToSettings(_codeEditorValue);
+                    }
+                    catch (IOException ex)
+                    {
+                        _codeEditorWebView.Visibility = Visibility.Collapsed;
+                        await _dialogCoordinator.ShowMessageAsync(this, "Error",
+                            $"An error occurred while saving the file: {ex.Message}");
+                    }
+                }
             }
-
-            await progressDialogController.CloseAsync();
-
-            _codeEditorWebView.Visibility = Visibility.Visible;
+            catch (Exception ex)
+            {
+                _codeEditorWebView.Visibility = Visibility.Collapsed;
+                await _dialogCoordinator.ShowMessageAsync(this, "Error", $"An unexpected error occurred: {ex.Message}");
+            }
+            finally
+            {
+                await progressDialogController.CloseAsync();
+                _codeEditorWebView.Visibility = Visibility.Visible;
+            }
         }
     }
 
+    /// <summary>
+    /// Save the code in the code editor locally.
+    /// </summary>
     private async Task SaveCodeLocally()
     {
         if (_codeEditorWebView != null)
@@ -144,16 +186,37 @@ public class CodeSandboxPageViewModel : ViewModelBase
 
             progressDialogController.SetIndeterminate();
 
-            await GetAndStripCodeFromEditor();
+            try
+            {
+                await GetAndStripCodeFromEditor();
 
-            await SaveCodeToSettings(_codeEditorValue);
-
-            await progressDialogController.CloseAsync();
-
-            _codeEditorWebView.Visibility = Visibility.Visible;
+                try
+                {
+                    await SaveCodeToSettings(_codeEditorValue);
+                }
+                catch (Exception ex)
+                {
+                    _codeEditorWebView.Visibility = Visibility.Collapsed;
+                    await _dialogCoordinator.ShowMessageAsync(this, "Error",
+                        $"An error occurred while saving the code locally: {ex.Message}");
+                }
+            }
+            catch (Exception ex)
+            {
+                _codeEditorWebView.Visibility = Visibility.Collapsed;
+                await _dialogCoordinator.ShowMessageAsync(this, "Error", $"An unexpected error occurred: {ex.Message}");
+            }
+            finally
+            {
+                await progressDialogController.CloseAsync();
+                _codeEditorWebView.Visibility = Visibility.Visible;
+            }
         }
     }
 
+    /// <summary>
+    /// Gets the code from the code editor and strips it of escape sequences.
+    /// </summary>
     private async Task GetAndStripCodeFromEditor()
     {
         if (_codeEditorWebView != null)
@@ -161,6 +224,7 @@ public class CodeSandboxPageViewModel : ViewModelBase
             var rawCodeEditorValue = await _codeEditorWebView.CoreWebView2.ExecuteScriptAsync("editor.getValue();");
             var editedCodeEditorValue = rawCodeEditorValue;
 
+            // Remove the starting and ending double quotes if they exist
             if (rawCodeEditorValue.StartsWith("\"") && rawCodeEditorValue.EndsWith("\""))
             {
                 // Remove the starting and ending double quotes
@@ -213,6 +277,11 @@ public class CodeSandboxPageViewModel : ViewModelBase
         }
     }
 
+    /// <summary>
+    /// Saves the code to the settings.
+    /// </summary>
+    /// <param name="code"></param>
+    /// <returns></returns>
     private Task SaveCodeToSettings(string? code)
     {
         Settings.Default.CodeEditorValue = code;
@@ -221,10 +290,14 @@ public class CodeSandboxPageViewModel : ViewModelBase
         return Task.CompletedTask;
     }
 
+    /// <summary>
+    /// Handles the language selection changed event.
+    /// </summary>
     private void OnLanguageSelectionChanged()
     {
         if (SelectedLanguage != null && _codeEditorWebView?.CoreWebView2 != null)
         {
+            // Set the language of the code editor in javaScript.
             _codeEditorWebView.CoreWebView2.ExecuteScriptAsync(
                 $"monaco.editor.setModelLanguage(editor.getModel(), `{SelectedLanguage?.Name}`);");
         }

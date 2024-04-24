@@ -26,6 +26,7 @@ namespace dev_flow.ViewModels;
 
 public class KanbanPageViewModel : ViewModelBase, IDropTarget, IDisposable
 {
+    // Properties
     private readonly DialogCoordinator _dialogCoordinator;
     private bool _disposed;
 
@@ -63,6 +64,7 @@ public class KanbanPageViewModel : ViewModelBase, IDropTarget, IDisposable
         }
     }
 
+    // General Commands
     public ICommand DeleteTaskCommand { get; set; }
     public ICommand AddTaskCommand { get; set; }
     public ICommand SaveAllTasksCommand { get; set; }
@@ -94,6 +96,7 @@ public class KanbanPageViewModel : ViewModelBase, IDropTarget, IDisposable
         DoingTasks = new RangedObservableCollection<KanbanTask>();
         DoneTasks = new RangedObservableCollection<KanbanTask>();
 
+        // General Commands
         DeleteTaskCommand = new AsyncParameterRelayCommand<KanbanTask>(DeleteKanbanTask);
         AddTaskCommand = new AsyncParameterRelayCommand<KanbanStatusEnum>(AddKanbanTask);
         SaveAllTasksCommand = new AsyncRelayCommand(SaveTaskCollectionsToXmlAsync);
@@ -119,6 +122,9 @@ public class KanbanPageViewModel : ViewModelBase, IDropTarget, IDisposable
         _ = LoadKanbanTasksAsync();
     }
 
+    /// <summary>
+    /// Sorts the Done tasks by creation date.
+    /// </summary>
     private void SortDoneTasksByCreationDate()
     {
         var sortedCreationDateDoneTasks = DoneTasks.OrderByDescending(task => task.DateCreated).ToList();
@@ -127,6 +133,9 @@ public class KanbanPageViewModel : ViewModelBase, IDropTarget, IDisposable
         DoneTasks.AddRange(sortedCreationDateDoneTasks);
     }
 
+    /// <summary>
+    /// Sorts the Done tasks alphabetically.
+    /// </summary>
     private void SortDoneTasksAlphabetically()
     {
         var sortedAlphabeticallyDoneTasks = DoneTasks.OrderByDescending(task => task.Title).ToList();
@@ -136,6 +145,9 @@ public class KanbanPageViewModel : ViewModelBase, IDropTarget, IDisposable
         DoneTasks.AddRange(sortedAlphabeticallyDoneTasks);
     }
 
+    /// <summary>
+    /// Sorts the Done tasks by due date.
+    /// </summary>
     private void SortDoneTasksByDueDate()
     {
         var sortedDueDateDoneTasks = DoneTasks.OrderByDescending(task => task.DueDate).ToList();
@@ -144,6 +156,9 @@ public class KanbanPageViewModel : ViewModelBase, IDropTarget, IDisposable
         DoneTasks.AddRange(sortedDueDateDoneTasks);
     }
 
+    /// <summary>
+    /// Sorts the Done tasks by severity.
+    /// </summary>
     private void SortDoneTasksBySeverity()
     {
         var sortedSeverityDoneTasks = DoneTasks.OrderByDescending(task => task.Severity).ToList();
@@ -152,6 +167,9 @@ public class KanbanPageViewModel : ViewModelBase, IDropTarget, IDisposable
         DoneTasks.AddRange(sortedSeverityDoneTasks);
     }
 
+    /// <summary>
+    /// Sorts the Doing tasks by creation date.
+    /// </summary>
     private void SortDoingTasksByCreationDate()
     {
         var sortedCreationDateDoingTasks = DoingTasks.OrderByDescending(task => task.DateCreated).ToList();
@@ -160,6 +178,9 @@ public class KanbanPageViewModel : ViewModelBase, IDropTarget, IDisposable
         DoingTasks.AddRange(sortedCreationDateDoingTasks);
     }
 
+    /// <summary>
+    /// Sorts the Doing tasks alphabetically.
+    /// </summary>
     private void SortDoingTasksAlphabetically()
     {
         var sortedAlphabeticallyDoingTasks = DoingTasks.OrderByDescending(task => task.Title).ToList();
@@ -169,6 +190,9 @@ public class KanbanPageViewModel : ViewModelBase, IDropTarget, IDisposable
         DoingTasks.AddRange(sortedAlphabeticallyDoingTasks);
     }
 
+    /// <summary>
+    /// Sorts the Doing tasks by due date.
+    /// </summary>
     private void SortDoingTasksByDueDate()
     {
         var sortedDueDateDoingTasks = DoingTasks.OrderByDescending(task => task.DueDate).ToList();
@@ -177,6 +201,9 @@ public class KanbanPageViewModel : ViewModelBase, IDropTarget, IDisposable
         DoingTasks.AddRange(sortedDueDateDoingTasks);
     }
 
+    /// <summary>
+    /// Sorts the Doing tasks by severity.
+    /// </summary>
     private void SortDoingTasksBySeverity()
     {
         var sortedSeverityDoingTasks = DoingTasks.OrderByDescending(task => task.Severity).ToList();
@@ -185,6 +212,9 @@ public class KanbanPageViewModel : ViewModelBase, IDropTarget, IDisposable
         DoingTasks.AddRange(sortedSeverityDoingTasks);
     }
 
+    /// <summary>
+    /// Sorts the To-do tasks by creation date.
+    /// </summary>
     private void SortTodoTasksByCreationDate()
     {
         var sortedCreationDateTodoTasks = TodoTasks.OrderByDescending(task => task.DateCreated).ToList();
@@ -193,6 +223,9 @@ public class KanbanPageViewModel : ViewModelBase, IDropTarget, IDisposable
         TodoTasks.AddRange(sortedCreationDateTodoTasks);
     }
 
+    /// <summary>
+    /// Sorts the To-do tasks alphabetically.
+    /// </summary>
     private void SortTodoTasksAlphabetically()
     {
         var sortedAlphabeticallyTodoTasks = TodoTasks.OrderByDescending(task => task.Title).ToList();
@@ -202,6 +235,9 @@ public class KanbanPageViewModel : ViewModelBase, IDropTarget, IDisposable
         TodoTasks.AddRange(sortedAlphabeticallyTodoTasks);
     }
 
+    /// <summary>
+    /// Sorts the To-do tasks by due date.
+    /// </summary>
     private void SortTodoTasksByDueDate()
     {
         var sortedDueDateTodoTasks = TodoTasks.OrderByDescending(task => task.DueDate).ToList();
@@ -210,6 +246,9 @@ public class KanbanPageViewModel : ViewModelBase, IDropTarget, IDisposable
         TodoTasks.AddRange(sortedDueDateTodoTasks);
     }
 
+    /// <summary>
+    /// Sorts the To-do tasks by severity.
+    /// </summary>
     private void SortTodoTasksBySeverity()
     {
         var sortedSeverityTodoTasks = TodoTasks.OrderByDescending(task => task.Severity).ToList();
@@ -219,6 +258,9 @@ public class KanbanPageViewModel : ViewModelBase, IDropTarget, IDisposable
     }
 
 
+    /// <summary>
+    /// Saves the task collections to the XML file.
+    /// </summary>
     private async Task SaveTaskCollectionsToXmlAsync()
     {
         var xmlFilePath = DevFlowConstants.KanbanBoardFileName;
@@ -303,6 +345,10 @@ public class KanbanPageViewModel : ViewModelBase, IDropTarget, IDisposable
         await fileStream.DisposeAsync();
     }
 
+    /// <summary>
+    /// Saves the task to the XML file.
+    /// </summary>
+    /// <param name="task"></param>
     private async Task SaveTaskToXmlAsync(KanbanTask task)
     {
         var xmlFilePath = DevFlowConstants.KanbanBoardFileName;
@@ -326,7 +372,7 @@ public class KanbanPageViewModel : ViewModelBase, IDropTarget, IDisposable
                 new XElement("DateCreated", task.DateCreated.ToString("yyyy-MM-dd")),
                 new XElement("Status", task.Status)
             );
-
+            // Add the new task to the beginning of the tasks list
             tasksElement?.AddFirst(newTaskElement);
 
             await using var fileStream = new FileStream(xmlFilePath, FileMode.Create);
@@ -337,6 +383,10 @@ public class KanbanPageViewModel : ViewModelBase, IDropTarget, IDisposable
     }
 
 
+    /// <summary>
+    /// Adds a new task to the specified kanban board.
+    /// </summary>
+    /// <param name="kanbanBoard"></param>
     private async Task AddKanbanTask(KanbanStatusEnum kanbanBoard)
     {
         var dialog = new AddTaskDialog()
@@ -382,6 +432,11 @@ public class KanbanPageViewModel : ViewModelBase, IDropTarget, IDisposable
         }
     }
 
+    /// <summary>
+    /// Saves the XML document to the specified file path.
+    /// </summary>
+    /// <param name="xmlDoc"></param>
+    /// <param name="filePath"></param>
     private async Task SaveXmlAsync(XDocument xmlDoc, string filePath)
     {
         await using var fileStream = new FileStream(filePath, FileMode.Create, FileAccess.Write, FileShare.None,
@@ -391,6 +446,10 @@ public class KanbanPageViewModel : ViewModelBase, IDropTarget, IDisposable
         await fileStream.DisposeAsync();
     }
 
+    /// <summary>
+    /// Updates the XML file.
+    /// </summary>
+    /// <param name="taskToRemove"></param>
     private async Task UpdateXmlFileAsync(KanbanTask taskToRemove)
     {
         XDocument xmlDoc = await LoadXmlAsync(DevFlowConstants.KanbanBoardFileName);
@@ -412,6 +471,10 @@ public class KanbanPageViewModel : ViewModelBase, IDropTarget, IDisposable
         await SaveXmlAsync(xmlDoc, DevFlowConstants.KanbanBoardFileName);
     }
 
+    /// <summary>
+    /// Deletes the specified Kanban task.
+    /// </summary>
+    /// <param name="task"></param>
     private async Task DeleteKanbanTask(KanbanTask task)
     {
         if (task != null)
@@ -428,6 +491,9 @@ public class KanbanPageViewModel : ViewModelBase, IDropTarget, IDisposable
     }
 
 
+    /// <summary>
+    /// Loads the Kanban tasks from the XML file.
+    /// </summary>
     private async Task LoadKanbanTasksAsync()
     {
         XDocument xmlDoc = await LoadXmlAsync(DevFlowConstants.KanbanBoardFileName);
@@ -437,7 +503,7 @@ public class KanbanPageViewModel : ViewModelBase, IDropTarget, IDisposable
         foreach (var kanbanType in kanbanTypes)
         {
             string kanbanTypeName = kanbanType.Element("Name").Value;
-
+            // Create new KanbanTask objects from the XML data
             var tasks = kanbanType.Element("KanbanTasks").Elements("KanbanTask")
                 .Select(task => new KanbanTask
                 {
@@ -451,6 +517,7 @@ public class KanbanPageViewModel : ViewModelBase, IDropTarget, IDisposable
                     Status = (KanbanStatusEnum)Enum.Parse(typeof(KanbanStatusEnum), task.Element("Status").Value)
                 });
 
+            // Add the tasks to the appropriate collection
             switch (kanbanTypeName)
             {
                 case "ToDo":
@@ -469,6 +536,11 @@ public class KanbanPageViewModel : ViewModelBase, IDropTarget, IDisposable
         }
     }
 
+    /// <summary>
+    /// Loads the XML document asynchronously.
+    /// </summary>
+    /// <param name="filePath"></param>
+    /// <returns></returns>
     private async Task<XDocument> LoadXmlAsync(string filePath)
     {
         await using var fileStream = new FileStream(filePath, FileMode.Open, FileAccess.Read, FileShare.Read,
@@ -479,17 +551,27 @@ public class KanbanPageViewModel : ViewModelBase, IDropTarget, IDisposable
         return xmlDoc;
     }
 
+    /// <summary>
+    /// Handles the drag over event.
+    /// </summary>
+    /// <param name="dropInfo"></param>
     public void DragOver(IDropInfo dropInfo)
     {
         if (dropInfo is { Data: KanbanTask, TargetCollection: not null })
         {
+            // Allow the drop
             dropInfo.DropTargetAdorner = DropTargetAdorners.Insert;
             dropInfo.Effects = DragDropEffects.Move;
         }
     }
 
+    /// <summary>
+    /// Handles the drop event.
+    /// </summary>
+    /// <param name="dropInfo"></param>
     public void Drop(IDropInfo dropInfo)
     {
+        // Check if the data is a KanbanTask and the target collection is not null
         if (dropInfo.Data is KanbanTask task && dropInfo.TargetCollection != null)
         {
             var sourceCollection = dropInfo.DragInfo.SourceCollection.TryGetList();
@@ -504,13 +586,14 @@ public class KanbanPageViewModel : ViewModelBase, IDropTarget, IDisposable
                     if (index != dropInfo.InsertIndex)
                     {
                         sourceCollection.RemoveAt(index);
+                        // Adjust the insert index based on the removed item
                         if (dropInfo.InsertIndex >= 0 && dropInfo.InsertIndex < sourceCollection.Count)
                         {
                             sourceCollection.Insert(dropInfo.InsertIndex, task);
                         }
                         else
                         {
-                            // Handle invalid insert index, e.g., append to the end of the collection
+                            // Handle invalid insert index, append to the end of the collection
                             sourceCollection.Add(task);
                         }
                     }
@@ -525,7 +608,7 @@ public class KanbanPageViewModel : ViewModelBase, IDropTarget, IDisposable
                     }
                     else
                     {
-                        // Handle invalid insert index, e.g., append to the end of the collection
+                        // Handle invalid insert index, append to the end of the collection
                         targetCollection.Add(task);
                     }
 

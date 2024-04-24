@@ -61,6 +61,9 @@ public class SettingsPageViewModel : ViewModelBase
         DeleteAllKanbanTasksCommand = new AsyncRelayCommand(async () => await RunDeleteAllKanbanTasks());
     }
 
+    /// <summary>
+    /// Runs delete all kanban task method asynchronously.
+    /// </summary>
     private async Task RunDeleteAllKanbanTasks()
     {
         try
@@ -93,6 +96,9 @@ public class SettingsPageViewModel : ViewModelBase
         }
     }
 
+    /// <summary>
+    /// Deletes all kanban tasks asynchronously.
+    /// </summary>
     private async Task DeleteAllKanbanTasksAsync()
     {
         await using var fileStream = new FileStream(DevFlowConstants.KanbanBoardFileName, FileMode.Open,

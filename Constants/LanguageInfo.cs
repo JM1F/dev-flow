@@ -2,8 +2,15 @@
 using dev_flow.Models;
 
 namespace dev_flow.Constants;
+
+/// <summary>
+/// Contains all information about the supported languages.
+/// </summary>
 public static class LanguageInfo
 {
+    /// <summary>
+    /// A list of all supported languages.
+    /// </summary>
     public static readonly List<LanguageItem?> Languages = new List<LanguageItem?>
     {
         new LanguageItem { Name = "abap", DisplayName = "ABAP", Extension = ".abap" },

@@ -11,7 +11,7 @@
             Background="Transparent"
             Style="{StaticResource MahApps.Styles.ToolBar}"
             OverflowMode="Never">
-
+            <!-- Save Locally Button -->
             <Button Grid.Column="0"
                     ToolTip="Save Locally"
                     Command="{Binding SaveCodeLocallyCommand}"
@@ -26,6 +26,7 @@
                         FontWeight="Normal" />
                 </StackPanel>
             </Button>
+            <!-- Save As Button -->
             <Button Grid.Column="1"
                     ToolTip="Save As"
                     Command="{Binding SaveCodeAsCommand}"
@@ -40,6 +41,7 @@
                         FontWeight="Normal" />
                 </StackPanel>
             </Button>
+            <!-- Open File Button -->
             <Button Grid.Column="2"
                     ToolTip="Open File"
                     Command="{Binding OpenCodeCommand}"

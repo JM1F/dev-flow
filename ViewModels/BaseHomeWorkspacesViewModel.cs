@@ -135,7 +135,7 @@ public class BaseHomeWorkspacesViewModel : ViewModelBase
     }
 
     /// <summary>
-    /// Imports a workspace from an open folder dialog.
+    /// Imports a workspace from a zip file.
     /// </summary>
     private async Task<Task> OnImportWorkspaceFromZip()
     {
@@ -188,6 +188,10 @@ public class BaseHomeWorkspacesViewModel : ViewModelBase
         return Task.CompletedTask;
     }
 
+    /// <summary>
+    /// Imports a workspace from a directory.
+    /// </summary>
+    /// <returns></returns>
     private async Task<Task> OnImportWorkspaceFromDirectory()
     {
         try
@@ -221,6 +225,12 @@ public class BaseHomeWorkspacesViewModel : ViewModelBase
         return Task.CompletedTask;
     }
 
+    /// <summary>
+    /// Imports workspaces from a base directory.
+    /// </summary>
+    /// <param name="sourceDirectory"></param>
+    /// <param name="destinationBaseDirectory"></param>
+    /// <exception cref="Exception"></exception>
     private async Task ImportWorkspacesFromBaseDirectory(string sourceDirectory, string destinationBaseDirectory)
     {
         var workspaceName = Path.GetFileName(sourceDirectory);
@@ -376,7 +386,6 @@ public class BaseHomeWorkspacesViewModel : ViewModelBase
     /// </summary>
     private async Task<Task> UpdateDisplayedCardsAsync()
     {
-        IsLoading = true;
         await Application.Current.Dispatcher.InvokeAsync(() =>
         {
             _newDisplayCards.Clear();
@@ -416,7 +425,6 @@ public class BaseHomeWorkspacesViewModel : ViewModelBase
                 CheckMainCollectionBodyTextVisibility();
             }
         });
-        IsLoading = false;
         return Task.CompletedTask;
     }
 
@@ -641,8 +649,6 @@ public class BaseHomeWorkspacesViewModel : ViewModelBase
             {
                 try
                 {
-                    IsLoading = true;
-
                     // Asynchronously delete the workspace directory and remove the workspace from the collection
                     await Task.Run(() => Directory.Delete(workspaceItem.FullWorkspacePath, true));
                     WorkspaceCards.Remove(workspaceItem);
@@ -662,8 +668,6 @@ public class BaseHomeWorkspacesViewModel : ViewModelBase
                 }
             }
         }
-
-        IsLoading = false;
     }
 
     /// <summary>
@@ -672,8 +676,6 @@ public class BaseHomeWorkspacesViewModel : ViewModelBase
     /// <param name="workspaceItem">The workspace whose name is to be edited.</param>
     public async void EditWorkspaceName(WorkspaceItem workspaceItem)
     {
-        IsLoading = true;
-
         // Input dialog to get the new workspace name
         var dialogResult =
             await _dialogCoordinator.ShowInputAsync(this, "Edit Workspace Name", "Rename Workspace:");
@@ -731,8 +733,6 @@ public class BaseHomeWorkspacesViewModel : ViewModelBase
                 Console.WriteLine($"Error renaming directory: {ex.Message}");
             }
         }
-
-        IsLoading = false;
     }
 
     /// <summary>
@@ -741,7 +741,6 @@ public class BaseHomeWorkspacesViewModel : ViewModelBase
     /// <param name="workspaceItem">The workspace whose favourite status is to be toggled.</param>
     public async void FavouriteToggled(WorkspaceItem workspaceItem)
     {
-        IsLoading = true;
         if (workspaceItem.IsFavourite)
         {
             Settings.Default.Favourites.Remove(workspaceItem.Name);
@@ -755,8 +754,9 @@ public class BaseHomeWorkspacesViewModel : ViewModelBase
 
         Settings.Default.Save();
 
-        await UpdateDisplayedCardsAsync();
-
-        IsLoading = false;
+        if (_isFavouritesPage)
+        {
+            await UpdateDisplayedCardsAsync();
+        }
     }
 }

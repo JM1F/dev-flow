@@ -13,7 +13,6 @@
              MaxHeight="350">
 
     <Grid Background="#222222">
-
         <Grid Margin="10">
             <Grid.RowDefinitions>
                 <RowDefinition Height="Auto" />
@@ -25,11 +24,13 @@
             </Grid.RowDefinitions>
 
             <TextBlock FontWeight="Bold" Foreground="White" Text="Add a new task" />
+            <!-- Title -->
             <TextBox Grid.Row="1" Foreground="White" Margin="0,8,0,0"
                      materialDesign:HintAssist.Hint="Title" Text="{Binding Title}"
                      CaretBrush="White"
                      VerticalContentAlignment="Center"
                      MaxLength="100" />
+            <!-- Description -->
             <TextBox Grid.Row="2" Foreground="White" Margin="0,16,0,0"
                      materialDesign:HintAssist.Hint="Description"
                      Text="{Binding Description}"
@@ -38,14 +39,15 @@
                      MaxLines="4"
                      MaxLength="1000"
                      VerticalContentAlignment="Center"
-                     VerticalScrollBarVisibility="Visible">
+                     VerticalScrollBarVisibility="Visible"
+                     HorizontalScrollBarVisibility="Auto">
                 <TextBox.Resources>
                     <Style TargetType="{x:Type ScrollBar}"
                            BasedOn="{StaticResource MahApps.Styles.ScrollBar}">
                     </Style>
                 </TextBox.Resources>
             </TextBox>
-            
+            <!-- Severity Combobox -->
             <ComboBox Grid.Row="3" Margin="0,25,0,0"
                       materialDesign:HintAssist.Hint="Severity"
                       SelectedItem="{Binding Severity}"
@@ -58,7 +60,7 @@
                     </x:Array>
                 </ComboBox.ItemsSource>
             </ComboBox>
-            
+            <!-- Due Date Picker -->
             <DatePicker x:Name="AddTaskDatePicker" Grid.Row="4" Margin="0,8,0,0"
                         SelectedDate="{Binding DueDate}"
                         materialDesign:HintAssist.Hint="Add due date"
@@ -72,10 +74,12 @@
             </DatePicker>
 
             <StackPanel Grid.Row="5" Orientation="Horizontal" HorizontalAlignment="Right" Margin="0,16,0,0">
+                <!-- Save Button -->
                 <Button Content="Save" Command="{Binding SaveTaskCommand}"
                         Style="{StaticResource MaterialDesignFlatButton}"
                         Foreground="White"
                         Margin="0,0,8,0" />
+                <!-- Cancel Button -->
                 <Button Content="Cancel" Command="{x:Static materialDesign:DialogHost.CloseDialogCommand}"
                         Style="{StaticResource MaterialDesignFlatButton}"
                         Foreground="White" />

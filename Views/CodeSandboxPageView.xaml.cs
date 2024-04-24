@@ -37,6 +37,11 @@ public partial class CodeSandboxPageView : UserControl
         _ = InitialiseEditorAsync();
     }
 
+    /// <summary>
+    /// Loads the editor HTML content.
+    /// </summary>
+    /// <param name="theme"></param>
+    /// <param name="language"></param>
     private async Task LoadEditorHtml(string theme, string? language = null)
     {
         var templatePath = Path.Combine(
@@ -52,10 +57,14 @@ public partial class CodeSandboxPageView : UserControl
         CodeEditorWebView.Source = new Uri(_editorHtmlPath);
     }
 
+    /// <summary>
+    /// Initialises the code editor.
+    /// </summary>
     private async Task InitialiseEditorAsync()
     {
         try
         {
+            // Ensure the CoreWebView2 is ready
             await CodeEditorWebView.EnsureCoreWebView2Async();
 
             if (Settings.Default.Theme == ThemeEnum.DarkTheme)
@@ -78,13 +87,21 @@ public partial class CodeSandboxPageView : UserControl
         catch (Exception ex)
         {
             // Handle any other exceptions
+            var errorMessage = $"WebView2 initialisation error: {ex.Message}";
+
             Console.WriteLine($"WebView2 initialisation error: {ex.Message}");
+            MessageBox.Show(errorMessage, "Initialisation Error", MessageBoxButton.OK, MessageBoxImage.Error);
 
             // Dispose of the WebView2 control
             CodeEditorWebView?.Dispose();
         }
     }
 
+    /// <summary>
+    /// Handles the KeyDown event of the CodeEditorWebView control.
+    /// </summary>
+    /// <param name="sender"></param>
+    /// <param name="e"></param>
     private void CodeEditorWebView_OnKeyDown(object sender, KeyEventArgs e)
     {
         if (e.Key == Key.F5)
@@ -93,6 +110,11 @@ public partial class CodeSandboxPageView : UserControl
         }
     }
 
+    /// <summary>
+    /// Handles the NavigationStarting event of the CodeEditorWebView control.
+    /// </summary>
+    /// <param name="sender"></param>
+    /// <param name="e"></param>
     private void CodeEditorWebView_OnNavigationStarting(object? sender, CoreWebView2NavigationStartingEventArgs e)
     {
         if (CodeEditorWebView != null)
@@ -111,9 +133,15 @@ public partial class CodeSandboxPageView : UserControl
         }
     }
 
+    /// <summary>
+    /// Handles the NavigationCompleted event of the CodeEditorWebView control.
+    /// </summary>
+    /// <param name="sender"></param>
+    /// <param name="e"></param>
     private async void CodeEditorWebView_OnNavigationCompleted(object? sender,
         CoreWebView2NavigationCompletedEventArgs e)
     {
+        // Set the code editor value in webview2 model
         await CodeEditorWebView.CoreWebView2.ExecuteScriptAsync(
             $"monaco.editor.getModels()[0].setValue(`{Settings.Default.CodeEditorValue}`);");
 

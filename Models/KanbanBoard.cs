@@ -3,6 +3,9 @@ using System.Xml.Serialization;
 
 namespace dev_flow.Models;
 
+/// <summary>
+/// Represents a kanban board.
+/// </summary>
 [XmlRoot("KanbanBoard")]
 public class KanbanBoard
 {

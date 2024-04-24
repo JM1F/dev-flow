@@ -3,7 +3,7 @@
                     xmlns:controls="http://metro.mahapps.com/winfx/xaml/controls"
                     xmlns:navigation="clr-namespace:dev_flow.Managers.Navigation"
                     xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes">
-    
+    <!-- Styles & DataTemplate for HamburgerMenu control -->
     <DataTemplate x:Key="MenuItemTemplate" DataType="{x:Type controls:HamburgerMenuIconItem}">
         <Grid Height="48">
             <Grid.ColumnDefinitions>
@@ -83,7 +83,7 @@
                             </Grid>
                         </controls:ClipBorder>
                     </Grid>
-                    
+
                     <ControlTemplate.Triggers>
                         <Trigger Property="IsSelected" Value="True">
                             <Setter TargetName="Background" Property="Background"
