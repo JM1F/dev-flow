@@ -270,10 +270,31 @@ public class SettingsPageViewModel : ViewModelBase
             // Create the zip file of the entire workspace directory
             using (var zipArchive = ZipFile.Open(zipFilePath, ZipArchiveMode.Create))
             {
-                foreach (var file in Directory.EnumerateFiles(topLevelDirectory, "*", SearchOption.AllDirectories))
+                foreach (var workspaceDirectory in Directory.GetDirectories(topLevelDirectory))
                 {
-                    zipArchive.CreateEntryFromFile(file,
-                        Path.Combine(topLevelDirectory, file.Substring(topLevelDirectory.Length + 1)));
+                    var workspaceName = Path.GetFileName(workspaceDirectory);
+                    var documentsDirectory = Path.Combine(workspaceDirectory, "Documents");
+                    var markdownFile = Path.Combine(workspaceDirectory, "markdown.md");
+
+                    // Create the workspace directory in the zip file
+                    zipArchive.CreateEntry(Path.Combine(workspaceName, "Documents/"));
+
+                    if (Directory.Exists(documentsDirectory))
+                    {
+                        // Add all the files in the "Documents" directory to the zip file
+                        foreach (var file in Directory.EnumerateFiles(documentsDirectory, "*",
+                                     SearchOption.AllDirectories))
+                        {
+                            var entryName = Path.GetRelativePath(documentsDirectory, file);
+                            zipArchive.CreateEntryFromFile(file, Path.Combine(workspaceName, "Documents", entryName));
+                        }
+                    }
+
+                    // Add the markdown file to the zip file
+                    if (File.Exists(markdownFile))
+                    {
+                        zipArchive.CreateEntryFromFile(markdownFile, Path.Combine(workspaceName, "markdown.md"));
+                    }
                 }
             }
         }

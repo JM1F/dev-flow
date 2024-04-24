@@ -81,7 +81,7 @@
             <!-- Version -->
             <views:GeneralDisplayBoxControl IconKind="GetApp"
                                             Header="Version"
-                                            Description="0.6">
+                                            Description="1.0">
             </views:GeneralDisplayBoxControl>
         </Grid>
 

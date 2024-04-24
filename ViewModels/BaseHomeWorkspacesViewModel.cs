@@ -30,7 +30,8 @@ public class BaseHomeWorkspacesViewModel : ViewModelBase
     // Commands
     public ICommand AddWorkspaceCommand { get; }
     public ICommand SearchCommand { get; }
-    public ICommand ImportWorkspaceCommand { get; }
+    public ICommand ImportWorkspaceFromDirectoryCommand { get; }
+    public ICommand ImportWorkspaceFromZipCommand { get; }
 
     // Properties
     private RangedObservableCollection<WorkspaceItem> _newDisplayCards;
@@ -129,77 +130,85 @@ public class BaseHomeWorkspacesViewModel : ViewModelBase
         _dialogCoordinator = new DialogCoordinator();
         AddWorkspaceCommand = new RelayCommand(OnAddWorkspace);
         SearchCommand = new AsyncRelayCommand(async () => await UpdateDisplayedCardsAsync());
-        ImportWorkspaceCommand = new AsyncRelayCommand(async () => await OnImportWorkspace());
+        ImportWorkspaceFromDirectoryCommand = new AsyncRelayCommand(async () => await OnImportWorkspaceFromDirectory());
+        ImportWorkspaceFromZipCommand = new AsyncRelayCommand(async () => await OnImportWorkspaceFromZip());
     }
 
     /// <summary>
     /// Imports a workspace from an open folder dialog.
     /// </summary>
-    private async Task<Task> OnImportWorkspace()
+    private async Task<Task> OnImportWorkspaceFromZip()
+    {
+        var tempDirectory = string.Empty;
+
+        try
+        {
+            var openFileDialog = new System.Windows.Forms.OpenFileDialog();
+            openFileDialog.Filter = "Zip Files|*.zip";
+            openFileDialog.Title = "Select the workspace zip file to import";
+            openFileDialog.ValidateNames = true;
+            openFileDialog.CheckFileExists = true;
+            openFileDialog.CheckPathExists = true;
+            openFileDialog.Multiselect = false;
+
+            if (openFileDialog.ShowDialog() == System.Windows.Forms.DialogResult.OK)
+            {
+                var sourcePath = openFileDialog.FileName;
+                var destinationBaseDirectory = Path.Combine(AppDomain.CurrentDomain.BaseDirectory,
+                    DevFlowConstants.TopLevelDirectory);
+
+                // Get the name of the zip file without the extension
+                var zipFileName = Path.GetFileNameWithoutExtension(sourcePath);
+
+                // Import from a zip file
+                tempDirectory = Path.Combine(Path.GetTempPath(), zipFileName);
+                ZipFile.ExtractToDirectory(sourcePath, tempDirectory);
+                await ImportWorkspacesFromBaseDirectory(tempDirectory, destinationBaseDirectory);
+
+                MessageBox.Show("Workspaces imported successfully.", "Import Complete", MessageBoxButton.OK,
+                    MessageBoxImage.Information);
+
+                await UpdateDisplayedCardsAsync();
+            }
+        }
+        catch (Exception ex)
+        {
+            MessageBox.Show($"An error occurred during the import process: {ex.Message}", "Import Error",
+                MessageBoxButton.OK, MessageBoxImage.Error);
+        }
+        finally
+        {
+            // Delete the temporary directory if it exists
+            if (!string.IsNullOrEmpty(tempDirectory) && Directory.Exists(tempDirectory))
+            {
+                Directory.Delete(tempDirectory, true);
+            }
+        }
+
+        return Task.CompletedTask;
+    }
+
+    private async Task<Task> OnImportWorkspaceFromDirectory()
     {
         try
         {
-            // Open a folder browser dialog for the user to select the top-level directory
-            var folderDialog = new System.Windows.Forms.FolderBrowserDialog();
-            folderDialog.Description = "Select the workspace to import";
+            var folderBrowserDialog = new System.Windows.Forms.FolderBrowserDialog();
+            folderBrowserDialog.Description = "Select the workspace directory to import";
+            folderBrowserDialog.ShowNewFolderButton = false;
 
-            if (folderDialog.ShowDialog() == System.Windows.Forms.DialogResult.OK)
+            if (folderBrowserDialog.ShowDialog() == System.Windows.Forms.DialogResult.OK)
             {
-                var topLevelImportDirectory = folderDialog.SelectedPath;
-                var isFileStructureValid = true;
+                var sourcePath = folderBrowserDialog.SelectedPath;
+                var destinationBaseDirectory = Path.Combine(AppDomain.CurrentDomain.BaseDirectory,
+                    DevFlowConstants.TopLevelDirectory);
 
-                // Validate the presence of the "markdown.md" file
-                var markdownFilePath = Path.Combine(topLevelImportDirectory, "markdown.md");
-                if (!File.Exists(markdownFilePath))
-                {
-                    MessageBox.Show("The selected directory does not contain a 'markdown.md' file.", "Validation Error",
-                        MessageBoxButton.OK, MessageBoxImage.Error);
-                    isFileStructureValid = false;
-                }
+                // Import from a directory
+                await ImportWorkspacesFromBaseDirectory(sourcePath, destinationBaseDirectory);
 
-                // Validate the presence of the "Documents" directory
-                var documentsDirectory = Path.Combine(topLevelImportDirectory, "Documents");
-                if (!Directory.Exists(documentsDirectory))
-                {
-                    MessageBox.Show("The selected directory does not contain a 'Documents' directory.",
-                        "Validation Error", MessageBoxButton.OK, MessageBoxImage.Error);
-                    isFileStructureValid = false;
-                }
+                MessageBox.Show("Workspaces imported successfully.", "Import Complete", MessageBoxButton.OK,
+                    MessageBoxImage.Information);
 
-                if (isFileStructureValid)
-                {
-                    // Perform the import asynchronously
-                    await Task.Run(() =>
-                    {
-                        var destinationBaseDirectory = Path.Combine(AppDomain.CurrentDomain.BaseDirectory,
-                            DevFlowConstants.TopLevelDirectory);
-
-                        var importDirectoryName = Path.GetFileName(topLevelImportDirectory);
-                        var destinationDirectory = Path.Combine(destinationBaseDirectory, importDirectoryName);
-                        var destinationDirectoryFullPath = Path.GetFullPath(destinationDirectory);
-
-                        Directory.CreateDirectory(destinationDirectory);
-                        FileSystem.CopyDirectory(topLevelImportDirectory, destinationDirectory, false);
-
-                        // Add the imported workspace to the collection
-                        WorkspaceCards.Add(new WorkspaceItem(new WorkspaceModel()
-                        {
-                            Name = importDirectoryName,
-                            IsFavourite = false,
-                            FullWorkspacePath = destinationDirectoryFullPath,
-                            IsVisible = false,
-                            DateModified = DateTime.Now,
-                            ID = _workspaceIdIncrement
-                        }, this));
-
-                        _workspaceIdIncrement++;
-                    });
-
-                    MessageBox.Show("Directory imported successfully.", "Import Complete", MessageBoxButton.OK,
-                        MessageBoxImage.Information);
-
-                    await UpdateDisplayedCardsAsync();
-                }
+                await UpdateDisplayedCardsAsync();
             }
         }
         // Handle any exceptions that occur during the import process
@@ -210,6 +219,57 @@ public class BaseHomeWorkspacesViewModel : ViewModelBase
         }
 
         return Task.CompletedTask;
+    }
+
+    private async Task ImportWorkspacesFromBaseDirectory(string sourceDirectory, string destinationBaseDirectory)
+    {
+        var workspaceName = Path.GetFileName(sourceDirectory);
+        var destinationDirectory = Path.Combine(destinationBaseDirectory, workspaceName);
+        var destinationDirectoryFullPath = Path.GetFullPath(destinationDirectory);
+
+        // Validate the presence of the "markdown.md" file in the workspace directory
+        var markdownFilePath = Path.Combine(sourceDirectory, "markdown.md");
+        if (!File.Exists(markdownFilePath))
+        {
+            throw new Exception("The workspace does not contain a 'markdown.md' file.");
+        }
+
+        // Validate the presence of the "Documents" directory in the workspace directory
+        var documentsSourceDirectory = Path.Combine(sourceDirectory, "Documents");
+        if (!Directory.Exists(documentsSourceDirectory))
+        {
+            throw new Exception("The workspace does not contain a 'Documents' directory.");
+        }
+
+        try
+        {
+            // Create the destination directory
+            Directory.CreateDirectory(destinationDirectory);
+
+            // Copy the "markdown.md" file
+            File.Copy(markdownFilePath, Path.Combine(destinationDirectory, "markdown.md"));
+
+            // Copy the "Documents" directory
+            var documentsDestinationDirectory = Path.Combine(destinationDirectory, "Documents");
+            FileSystem.CopyDirectory(documentsSourceDirectory, documentsDestinationDirectory, false);
+
+            // Add the imported workspace to the collection
+            WorkspaceCards.Add(new WorkspaceItem(new WorkspaceModel()
+            {
+                Name = workspaceName,
+                IsFavourite = false,
+                FullWorkspacePath = destinationDirectoryFullPath,
+                IsVisible = false,
+                DateModified = DateTime.Now,
+                ID = _workspaceIdIncrement
+            }, this));
+
+            _workspaceIdIncrement++;
+        }
+        catch (Exception ex)
+        {
+            throw new Exception($"An error occurred while importing the workspace '{workspaceName}': {ex.Message}");
+        }
     }
 
     /// <summary>
@@ -276,22 +336,23 @@ public class BaseHomeWorkspacesViewModel : ViewModelBase
                 var documentsDirectory = Path.Combine(topLevelWorkspaceDirectory, "Documents");
                 var markdownFile = Path.Combine(topLevelWorkspaceDirectory, "markdown.md");
 
+                // Create an empty "Documents" directory in the zip file
+                zipArchive.CreateEntry("Documents/");
+
                 if (Directory.Exists(documentsDirectory))
                 {
                     // Add all the files in the "Documents" directory to the zip file
                     foreach (var file in Directory.EnumerateFiles(documentsDirectory, "*", SearchOption.AllDirectories))
                     {
-                        var entryName = Path.Combine("Documents", file.Substring(documentsDirectory.Length + 1));
-                        zipArchive.CreateEntryFromFile(file,
-                            Path.Combine(Path.GetFileName(topLevelWorkspaceDirectory), entryName));
+                        var entryName = Path.GetRelativePath(documentsDirectory, file);
+                        zipArchive.CreateEntryFromFile(file, Path.Combine("Documents", entryName));
                     }
                 }
 
                 // Add the markdown file to the zip file
                 if (File.Exists(markdownFile))
                 {
-                    zipArchive.CreateEntryFromFile(markdownFile,
-                        Path.Combine(Path.GetFileName(topLevelWorkspaceDirectory), "markdown.md"));
+                    zipArchive.CreateEntryFromFile(markdownFile, "markdown.md");
                 }
             }
         }
