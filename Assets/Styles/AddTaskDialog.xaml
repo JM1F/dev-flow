@@ -9,45 +9,8 @@
              mc:Ignorable="d"
              Width="250"
              MaxWidth="250"
-             MaxHeight="300">
-
-    <UserControl.Resources>
-        <Style x:Key="CustomDatePickerStyle" TargetType="DatePicker" BasedOn="{StaticResource MaterialDesignFloatingHintDatePicker}">
-        <Setter Property="Foreground" Value="White" />
-        <Setter Property="materialDesign:HintAssist.Foreground" Value="White" />
-        <Setter Property="materialDesign:TextFieldAssist.UnderlineBrush" Value="White" />
-        <Setter Property="materialDesign:CalendarAssist.HeaderBackground" Value="White" />
-        <Setter Property="materialDesign:CalendarAssist.HeaderForeground" Value="Black" />
-        <Setter Property="CalendarStyle">
-            <Setter.Value>
-                <Style TargetType="Calendar" BasedOn="{StaticResource MaterialDesignCalendarPortrait}">
-                    <Setter Property="Background" Value="#444444" />
-                    <Setter Property="Foreground" Value="White" />
-                    <Setter Property="BorderBrush" Value="#666666" />
-                    <Setter Property="BorderThickness" Value="1" />
-                    <Setter Property="CalendarDayButtonStyle">
-                        <Setter.Value>
-                            <Style TargetType="CalendarDayButton" BasedOn="{StaticResource MaterialDesignCalendarDayButton}">
-                                <Setter Property="Background" Value="#555555" />
-                                <Setter Property="Foreground" Value="White" />
-                                <Setter Property="BorderBrush" Value="#777777" />
-                                <Setter Property="BorderThickness" Value="1" />
-                            </Style>
-                        </Setter.Value>
-                    </Setter>
-                    <Setter Property="CalendarItemStyle">
-                        <Setter.Value>
-                            <Style TargetType="CalendarItem" BasedOn="{StaticResource MaterialDesignCalendarItemPortrait}">
-                                <Setter Property="Background" Value="#666666" />
-                                <Setter Property="Foreground" Value="White" />
-                            </Style>
-                        </Setter.Value>
-                    </Setter>
-                </Style>
-            </Setter.Value>
-        </Setter>
-    </Style>
-    </UserControl.Resources>
+             MinWidth="200"
+             MaxHeight="350">
 
     <Grid Background="#222222">
 
@@ -63,14 +26,30 @@
 
             <TextBlock FontWeight="Bold" Foreground="White" Text="Add a new task" />
             <TextBox Grid.Row="1" Foreground="White" Margin="0,8,0,0"
-                     materialDesign:HintAssist.Hint="Title" Text="{Binding Title}" />
-            <TextBox Grid.Row="2" Foreground="White" Margin="0,8,0,0"
+                     materialDesign:HintAssist.Hint="Title" Text="{Binding Title}"
+                     CaretBrush="White"
+                     VerticalContentAlignment="Center"
+                     MaxLength="100" />
+            <TextBox Grid.Row="2" Foreground="White" Margin="0,16,0,0"
                      materialDesign:HintAssist.Hint="Description"
                      Text="{Binding Description}"
-                     AcceptsReturn="True" />
-            <ComboBox Grid.Row="3" Margin="0,8,0,0" Foreground="White"
+                     AcceptsReturn="True"
+                     CaretBrush="White"
+                     MaxLines="4"
+                     MaxLength="1000"
+                     VerticalContentAlignment="Center"
+                     VerticalScrollBarVisibility="Visible">
+                <TextBox.Resources>
+                    <Style TargetType="{x:Type ScrollBar}"
+                           BasedOn="{StaticResource MahApps.Styles.ScrollBar}">
+                    </Style>
+                </TextBox.Resources>
+            </TextBox>
+            
+            <ComboBox Grid.Row="3" Margin="0,25,0,0"
                       materialDesign:HintAssist.Hint="Severity"
-                      SelectedItem="{Binding Severity}">
+                      SelectedItem="{Binding Severity}"
+                      Style="{StaticResource MahApps.Styles.ComboBox}">
                 <ComboBox.ItemsSource>
                     <x:Array Type="{x:Type enums:KanbanSeverityEnum}">
                         <enums:KanbanSeverityEnum>Low</enums:KanbanSeverityEnum>
@@ -79,11 +58,17 @@
                     </x:Array>
                 </ComboBox.ItemsSource>
             </ComboBox>
-            <DatePicker Grid.Row="4" Margin="0,8,0,0"
-                        materialDesign:HintAssist.Hint="Due Date"
+            
+            <DatePicker x:Name="AddTaskDatePicker" Grid.Row="4" Margin="0,8,0,0"
                         SelectedDate="{Binding DueDate}"
-                        Foreground="White"
-                        Style="{StaticResource CustomDatePickerStyle}">
+                        materialDesign:HintAssist.Hint="Add due date"
+                        VerticalContentAlignment="Center"
+                        Style="{StaticResource MahApps.Styles.DatePicker}">
+                <DatePicker.Resources>
+                    <Style TargetType="DatePickerTextBox"
+                           BasedOn="{StaticResource MaterialDesignDatePickerTextBox}">
+                    </Style>
+                </DatePicker.Resources>
             </DatePicker>
 
             <StackPanel Grid.Row="5" Orientation="Horizontal" HorizontalAlignment="Right" Margin="0,16,0,0">

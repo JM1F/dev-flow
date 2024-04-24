@@ -100,7 +100,7 @@
             </Grid.ColumnDefinitions>
 
             <!-- To-do Tasks -->
-            <materialDesign:DialogHost Identifier="TodoDialog">
+            <materialDesign:DialogHost Identifier="TodoDialog" MinWidth="150">
                 <Border BorderBrush="{DynamicResource MahApps.Brushes.Gray}" BorderThickness="1">
                     <Grid>
                         <Grid.RowDefinitions>
@@ -301,7 +301,7 @@
             </materialDesign:DialogHost>
 
             <!-- In Progress -->
-            <materialDesign:DialogHost Grid.Column="1" Identifier="DoingDialog">
+            <materialDesign:DialogHost Grid.Column="1" Identifier="DoingDialog" MinWidth="150">
                 <Border BorderBrush="{DynamicResource MahApps.Brushes.Gray}" BorderThickness="0,1,0,1">
                     <Grid>
                         <Grid.RowDefinitions>
@@ -502,7 +502,7 @@
             </materialDesign:DialogHost>
 
             <!-- Done Tasks -->
-            <materialDesign:DialogHost Grid.Column="2" Identifier="DoneDialog">
+            <materialDesign:DialogHost Grid.Column="2" Identifier="DoneDialog" MinWidth="150">
                 <Border BorderBrush="{DynamicResource MahApps.Brushes.Gray}" BorderThickness="1">
                     <Grid>
                         <Grid.RowDefinitions>

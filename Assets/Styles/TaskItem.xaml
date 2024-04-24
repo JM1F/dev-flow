@@ -8,10 +8,6 @@
                     xmlns:enums="clr-namespace:dev_flow.Enums"
                     mc:Ignorable="d">
 
-    <ResourceDictionary.MergedDictionaries>
-        <ResourceDictionary Source="/Assets/Styles/SimpleScrollBarStyle.xaml" />
-    </ResourceDictionary.MergedDictionaries>
-
     <DataTemplate x:Key="TaskItemTemplate">
         <Grid>
             <materialDesign:FlipperClassic
@@ -31,9 +27,28 @@
                         <TextBlock Grid.Row="0" Text="{Binding Title}" FontSize="20" FontWeight="Bold"
                                    TextTrimming="CharacterEllipsis" Margin="10" />
 
-                        <TextBlock Grid.Row="1"
-                                   Text="{Binding Description}"
-                                   TextWrapping="Wrap" Margin="10" />
+                        <ScrollViewer Grid.Row="1"
+                                      IsDeferredScrollingEnabled="True"
+                                      VerticalScrollBarVisibility="Auto"
+                                      HorizontalScrollBarVisibility="Hidden">
+                            <ScrollViewer.IsHitTestVisible>
+                                <Binding RelativeSource="{RelativeSource AncestorType=ListBoxItem}" Path="IsSelected" />
+                            </ScrollViewer.IsHitTestVisible>
+
+                            <ScrollViewer.Resources>
+                                <Style TargetType="{x:Type ScrollViewer}"
+                                       BasedOn="{StaticResource MahApps.Styles.ScrollViewer}">
+
+                                </Style>
+                                <Style TargetType="{x:Type ScrollBar}"
+                                       BasedOn="{StaticResource MahApps.Styles.ScrollBar}">
+                                </Style>
+                            </ScrollViewer.Resources>
+
+                            <TextBlock
+                                Text="{Binding Description}"
+                                TextWrapping="Wrap" Margin="10" />
+                        </ScrollViewer>
 
                         <Grid Grid.Row="2" Margin="10">
                             <Grid.ColumnDefinitions>
@@ -92,16 +107,37 @@
                                 <RowDefinition Height="Auto" />
                             </Grid.RowDefinitions>
 
-                            <TextBlock Text="Edit task" FontWeight="Bold" />
+                            <TextBlock Foreground="{DynamicResource MahApps.Brushes.Text}" Text="Edit task"
+                                       FontWeight="Bold" />
                             <TextBox Grid.Row="1" Margin="0,8,0,0" materialDesign:HintAssist.Hint="Title"
                                      Text="{Binding Title, Mode=TwoWay ,UpdateSourceTrigger=PropertyChanged}"
-                                     MaxLength="100" />
-                            <TextBox Grid.Row="2" Margin="0,8,0,0" materialDesign:HintAssist.Hint="Description"
+                                     MaxLength="100"
+                                     VerticalContentAlignment="Center"
+                                     Foreground="{DynamicResource MahApps.Brushes.Text}">
+                            </TextBox>
+
+                            <TextBox Grid.Row="2" Margin="0,16,0,0" materialDesign:HintAssist.Hint="Description"
                                      Text="{Binding Description, Mode=TwoWay ,UpdateSourceTrigger=PropertyChanged}"
                                      MaxLength="1000"
-                                     AcceptsReturn="True" />
-                            <ComboBox Grid.Row="3" Margin="0,8,0,0" materialDesign:HintAssist.Hint="Severity"
-                                      SelectedItem="{Binding Severity, Mode=TwoWay ,UpdateSourceTrigger=PropertyChanged}">
+                                     MaxLines="4"
+                                     AcceptsReturn="True"
+                                     VerticalContentAlignment="Center"
+                                     VerticalScrollBarVisibility="Visible"
+                                     Foreground="{DynamicResource MahApps.Brushes.Text}">
+                                <TextBox.Resources>
+                                    <Style TargetType="{x:Type ScrollViewer}"
+                                           BasedOn="{StaticResource MahApps.Styles.ScrollViewer}">
+
+                                    </Style>
+                                    <Style TargetType="{x:Type ScrollBar}"
+                                           BasedOn="{StaticResource MahApps.Styles.ScrollBar}">
+                                    </Style>
+                                </TextBox.Resources>
+                            </TextBox>
+
+                            <ComboBox Grid.Row="3" Margin="0,25,0,0" materialDesign:HintAssist.Hint="Severity"
+                                      SelectedItem="{Binding Severity, Mode=TwoWay ,UpdateSourceTrigger=PropertyChanged}"
+                                      Style="{StaticResource MahApps.Styles.ComboBox}">
                                 <ComboBox.ItemsSource>
                                     <x:Array Type="{x:Type enums:KanbanSeverityEnum}">
                                         <enums:KanbanSeverityEnum>Low</enums:KanbanSeverityEnum>
@@ -110,8 +146,18 @@
                                     </x:Array>
                                 </ComboBox.ItemsSource>
                             </ComboBox>
-                            <DatePicker Grid.Row="4" Margin="0,8,0,0" materialDesign:HintAssist.Hint="Due Date"
-                                        SelectedDate="{Binding DueDate, Mode=TwoWay ,UpdateSourceTrigger=PropertyChanged}" />
+
+                            <DatePicker Grid.Row="4" Margin="0,8,0,0"
+                                        SelectedDate="{Binding DueDate, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                        Style="{StaticResource MahApps.Styles.DatePicker}"
+                                        materialDesign:HintAssist.Hint="Add due date"
+                                        VerticalContentAlignment="Center">
+                                <DatePicker.Resources>
+                                    <Style TargetType="DatePickerTextBox"
+                                           BasedOn="{StaticResource MaterialDesignDatePickerTextBox}">
+                                    </Style>
+                                </DatePicker.Resources>
+                            </DatePicker>
                         </Grid>
                     </Grid>
                 </materialDesign:FlipperClassic.BackContent>

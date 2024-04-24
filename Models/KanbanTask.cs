@@ -30,7 +30,7 @@ public class KanbanTask : INotifyPropertyChanged
             OnPropertyChanged(nameof(ID));
         }
     }
-
+    
     [XmlElement("Title")]
     public string Title
     {
