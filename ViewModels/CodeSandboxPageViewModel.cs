@@ -26,7 +26,7 @@ public class CodeSandboxPageViewModel : ViewModelBase
     // Properties
     private WebView2? _codeEditorWebView;
     private string _codeEditorValue;
-    private List<LanguageItem?> SupportedLanguagesItemSource { get; set; }
+    public List<LanguageItem?> SupportedLanguagesItemSource { get; set; }
 
     private LanguageItem? _selectedLanguage;
     private readonly DialogCoordinator _dialogCoordinator;
