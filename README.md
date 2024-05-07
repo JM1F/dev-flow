@@ -45,10 +45,13 @@ Welcome to DevFlow, a lightweight application designed to enhance software devel
 
 ## Packages
 
-Markdig 0.36.2
-Microsoft.Web.WebView2 1.0.2420.47
-gong-wpf-dragdrop 3.2.1
-MahApps.Metro 2.4.10
+- Markdig 0.36.2
+
+- Microsoft.Web.WebView2 1.0.2420.47
+
+- gong-wpf-dragdrop 3.2.1
+
+- MahApps.Metro 2.4.10
 
 ## Feedback and Support
 
