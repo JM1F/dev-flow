@@ -43,6 +43,13 @@ Welcome to DevFlow, a lightweight application designed to enhance software devel
 - **Lists**: `-` or `*` for bullets, `1.`, `2.`, etc., for numbers.
 - **Links and Images**: `[link text](URL)` and `![alt text](image URL)`.
 
+## Packages
+
+Markdig 0.36.2
+Microsoft.Web.WebView2 1.0.2420.47
+gong-wpf-dragdrop 3.2.1
+MahApps.Metro 2.4.10
+
 ## Feedback and Support
 
 For questions, suggestions, or issues, please don't hesitate to contact at [DevFlow - GitHub](https://github.com/JM1F/dev-flow).
